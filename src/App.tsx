@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy } from 'react';
+import React, { useEffect, useState, Suspense, lazy, Component } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -50,7 +50,7 @@ const queryClient = new QueryClient({
 });
 
 // Componente de loading otimizado
-const LoadingSpinner = React.memo(() => (
+const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-brand-50 to-background">
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -72,12 +72,12 @@ const LoadingSpinner = React.memo(() => (
       </div>
     </motion.div>
   </div>
-));
+);
 
-LoadingSpinner.displayName = 'LoadingSpinner';
+//LoadingSpinner.displayName = 'LoadingSpinner';
 
 // Componente de fallback para páginas específicas
-const PageFallback = React.memo(({ page }: { page: string }) => (
+const PageFallback = ({ page }: { page: string }) => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-brand-50 to-background">
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -91,12 +91,12 @@ const PageFallback = React.memo(({ page }: { page: string }) => (
       </div>
     </motion.div>
   </div>
-));
+);
 
-PageFallback.displayName = 'PageFallback';
+//PageFallback.displayName = 'PageFallback';
 
 // Componente de erro boundary
-class ErrorBoundary extends React.Component<
+class ErrorBoundary extends Component<
   { children: React.ReactNode },
   { hasError: boolean; error?: Error }
 > {
@@ -109,7 +109,7 @@ class ErrorBoundary extends React.Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: any) {
     console.error('Error Boundary caught an error:', error, errorInfo);
   }
 
@@ -147,7 +147,7 @@ class ErrorBoundary extends React.Component<
 }
 
 // Componente principal da aplicação - Otimizado para performance
-const AppContent = React.memo(() => {
+const AppContent = () => {
   const { errors, clearError, clearErrors } = useErrorHandler();
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -310,12 +310,12 @@ const AppContent = React.memo(() => {
       </MainLayout>
     </ErrorBoundary>
   );
-});
+};
 
-AppContent.displayName = 'AppContent';
+//AppContent.displayName = 'AppContent';
 
 // Componente raiz da aplicação
-const App = React.memo(() => {
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -325,8 +325,8 @@ const App = React.memo(() => {
       </AuthProvider>
     </QueryClientProvider>
   );
-});
+};
 
-App.displayName = 'App';
+//App.displayName = 'App';
 
 export default App;
