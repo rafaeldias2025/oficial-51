@@ -8,9 +8,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useAdminActions, AdminUser } from '@/hooks/useAdminActions';
-import { Users, UserPlus, Edit, Trash2, Search, RotateCw, UserCheck, UserX, Crown, Check, X, AlertCircle } from 'lucide-react';
+import { Users, UserPlus, Edit, Trash2, Search, RotateCw, UserCheck, UserX, Crown, Check, X, AlertCircle, Eye } from 'lucide-react';
 import { ButtonLoading } from '@/components/ui/loading';
 import { supabase } from '@/integrations/supabase/client';
+import { UserDetailModal } from './UserDetailModal';
 
 export const UserManagement: React.FC = () => {
   const { toast } = useToast();
@@ -33,6 +34,8 @@ export const UserManagement: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isUserDetailOpen, setIsUserDetailOpen] = useState(false);
+  const [userDetailData, setUserDetailData] = useState<AdminUser | null>(null);
   
   const [createForm, setCreateForm] = useState({
     email: '',
@@ -404,6 +407,18 @@ export const UserManagement: React.FC = () => {
                     <Button
                       size="sm"
                       variant="outline"
+                      onClick={() => {
+                        setUserDetailData(user);
+                        setIsUserDetailOpen(true);
+                      }}
+                      className="border-blue-500/20 text-blue-400 hover:bg-blue-500/10"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    
+                    <Button
+                      size="sm"
+                      variant="outline"
                       onClick={() => handleEditUser(user)}
                       className="border-white/20 text-white hover:bg-white/10"
                     >
@@ -450,6 +465,16 @@ export const UserManagement: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modal de Detalhes do Usuário */}
+      <UserDetailModal
+        user={userDetailData}
+        isOpen={isUserDetailOpen}
+        onClose={() => {
+          setIsUserDetailOpen(false);
+          setUserDetailData(null);
+        }}
+      />
 
       {/* Modal de Edição */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>

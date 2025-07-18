@@ -48,10 +48,28 @@ export const CourseManagement = () => {
     is_active: true
   });
 
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<any>(null);
+
   const handleCreateCourse = async () => {
     try {
-      await createCourse(courseForm);
+      if (isEditMode && editingCourse) {
+        await updateCourse(editingCourse.id, courseForm);
+        toast({
+          title: "Sucesso",
+          description: "Curso atualizado com sucesso!",
+        });
+      } else {
+        await createCourse(courseForm);
+        toast({
+          title: "Sucesso",
+          description: "Curso criado com sucesso!",
+        });
+      }
+      
       setIsCreateModalOpen(false);
+      setIsEditMode(false);
+      setEditingCourse(null);
       setCourseForm({
         title: '',
         description: '',
@@ -60,17 +78,27 @@ export const CourseManagement = () => {
         price: 0,
         is_active: true
       });
-      toast({
-        title: "Sucesso",
-        description: "Curso criado com sucesso!",
-      });
     } catch (error) {
       toast({
         title: "Erro",
-        description: "Erro ao criar curso",
+        description: isEditMode ? "Erro ao atualizar curso" : "Erro ao criar curso",
         variant: "destructive",
       });
     }
+  };
+
+  const handleEditCourse = (course: any) => {
+    setEditingCourse(course);
+    setCourseForm({
+      title: course.title,
+      description: course.description,
+      image_url: course.image_url || '',
+      category: course.category,
+      price: course.price || 0,
+      is_active: course.is_active
+    });
+    setIsEditMode(true);
+    setIsCreateModalOpen(true);
   };
 
   const handleCreateModule = async () => {
@@ -375,7 +403,9 @@ export const CourseManagement = () => {
           </DialogTrigger>
           <DialogContent className="bg-netflix-card border-netflix-border">
             <DialogHeader>
-              <DialogTitle className="text-netflix-text">Criar Novo Curso</DialogTitle>
+              <DialogTitle className="text-netflix-text">
+                {isEditMode ? 'Editar Curso' : 'Criar Novo Curso'}
+              </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -435,7 +465,7 @@ export const CourseManagement = () => {
                 />
               </div>
               <Button onClick={handleCreateCourse} className="w-full">
-                Criar Curso
+                {isEditMode ? 'Atualizar Curso' : 'Criar Curso'}
               </Button>
             </div>
           </DialogContent>
@@ -470,7 +500,7 @@ export const CourseManagement = () => {
                 
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-instituto-orange">
-                    R$ {course.price.toFixed(2)}
+                    R$ {course.price ? course.price.toFixed(2) : '0.00'}
                   </span>
                   
                   <div className="flex gap-2">
@@ -481,10 +511,18 @@ export const CourseManagement = () => {
                     >
                       <BookOpen className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEditCourse(course)}
+                    >
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => deleteCourse(course.id)}
+                    >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
