@@ -1111,6 +1111,7 @@ export type Database = {
       sessions: {
         Row: {
           assigned_to: string | null
+          available_tools: string[] | null
           category: string | null
           content: string | null
           created_at: string | null
@@ -1131,6 +1132,7 @@ export type Database = {
         }
         Insert: {
           assigned_to?: string | null
+          available_tools?: string[] | null
           category?: string | null
           content?: string | null
           created_at?: string | null
@@ -1151,6 +1153,7 @@ export type Database = {
         }
         Update: {
           assigned_to?: string | null
+          available_tools?: string[] | null
           category?: string | null
           content?: string | null
           created_at?: string | null

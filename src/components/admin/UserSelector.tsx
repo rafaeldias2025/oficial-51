@@ -1,219 +1,116 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { supabase } from '@/integrations/supabase/client';
-import { 
-  Search, 
-  Users, 
-  Filter,
-  TrendingUp,
-  TrendingDown,
-  AlertCircle,
-  CheckCircle,
-  User
-} from 'lucide-react';
+import { Search, X, Users } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-interface UserData {
+interface User {
   id: string;
   full_name: string;
   email: string;
-  created_at: string;
-  physicalData?: any;
-  lastActivity?: string;
-  completionRate?: number;
-  avgScore?: number;
-  status?: 'active' | 'at-risk' | 'inactive';
+  avatar_url?: string;
+  role: string;
 }
 
 interface UserSelectorProps {
-  onUserSelect: (userId: string) => void;
-  selectedUserId: string | null;
+  selectedUsers: string[];
+  onSelectionChange: (userIds: string[]) => void;
+  maxSelection?: number;
 }
 
 export const UserSelector: React.FC<UserSelectorProps> = ({
-  onUserSelect,
-  selectedUserId
+  selectedUsers,
+  onSelectionChange,
+  maxSelection
 }) => {
-  const [users, setUsers] = useState<UserData[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<UserData[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('name');
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadUsers();
+    fetchUsers();
   }, []);
 
   useEffect(() => {
-    filterAndSortUsers();
-  }, [users, searchTerm, statusFilter, sortBy]);
+    filterUsers();
+  }, [users, searchTerm]);
 
-  const loadUsers = async () => {
-    setLoading(true);
+  const fetchUsers = async () => {
     try {
-      // Buscar todos os perfis de clientes
-      const { data: profiles } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, full_name, email, avatar_url, role')
         .eq('role', 'client')
-        .order('created_at', { ascending: false });
+        .order('full_name');
 
-      if (!profiles) return;
-
-      // Para cada perfil, buscar dados adicionais
-      const usersWithData = await Promise.all(
-        profiles.map(async (profile) => {
-          // Buscar dados físicos
-          const { data: physicalData } = await supabase
-            .from('dados_fisicos_usuario')
-            .select('*')
-            .eq('user_id', profile.id)
-            .single();
-
-          // Buscar última atividade
-          const { data: lastMission } = await supabase
-            .from('missao_dia')
-            .select('data, concluido')
-            .eq('user_id', profile.id)
-            .order('data', { ascending: false })
-            .limit(1)
-            .single();
-
-          // Buscar missões recentes para calcular taxa de conclusão
-          const { data: recentMissions } = await supabase
-            .from('missao_dia')
-            .select('concluido')
-            .eq('user_id', profile.id)
-            .order('data', { ascending: false })
-            .limit(7);
-
-          // Buscar pontuação média
-          const { data: scores } = await supabase
-            .from('pontuacao_diaria')
-            .select('total_pontos_dia')
-            .eq('user_id', profile.id)
-            .order('data', { ascending: false })
-            .limit(7);
-
-          // Calcular métricas
-          const completionRate = recentMissions?.length ? 
-            (recentMissions.filter(m => m.concluido).length / recentMissions.length) * 100 : 0;
-
-          const avgScore = scores?.length ? 
-            scores.reduce((acc, s) => acc + (s.total_pontos_dia || 0), 0) / scores.length : 0;
-
-          const daysSinceLastActivity = lastMission?.data ? 
-            Math.floor((new Date().getTime() - new Date(lastMission.data).getTime()) / (1000 * 60 * 60 * 24)) : 999;
-
-          const status: 'active' | 'at-risk' | 'inactive' = daysSinceLastActivity > 3 ? 'inactive' : 
-                        daysSinceLastActivity > 1 ? 'at-risk' : 'active';
-
-          return {
-            id: profile.id,
-            full_name: profile.full_name || 'Cliente',
-            email: profile.email,
-            created_at: profile.created_at,
-            physicalData,
-            lastActivity: lastMission?.data,
-            completionRate,
-            avgScore: Math.round(avgScore),
-            status
-          };
-        })
-      );
-
-      setUsers(usersWithData);
+      if (error) throw error;
+      setUsers(data || []);
     } catch (error) {
-      console.error('Erro ao carregar usuários:', error);
+      console.error('Erro ao buscar usuários:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const filterAndSortUsers = () => {
-    let filtered = users;
-
-    // Filtrar por termo de busca
-    if (searchTerm) {
-      filtered = filtered.filter(user => 
-        user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  const filterUsers = () => {
+    if (!searchTerm.trim()) {
+      setFilteredUsers(users);
+      return;
     }
 
-    // Filtrar por status
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(user => user.status === statusFilter);
-    }
-
-    // Ordenar
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'name':
-          return a.full_name.localeCompare(b.full_name);
-        case 'activity':
-          return (b.lastActivity || '').localeCompare(a.lastActivity || '');
-        case 'completion':
-          return (b.completionRate || 0) - (a.completionRate || 0);
-        case 'score':
-          return (b.avgScore || 0) - (a.avgScore || 0);
-        case 'created':
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        default:
-          return 0;
-      }
-    });
-
+    const filtered = users.filter(user =>
+      user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     setFilteredUsers(filtered);
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'active': return CheckCircle;
-      case 'at-risk': return AlertCircle;
-      case 'inactive': return TrendingDown;
-      default: return User;
+  const handleUserToggle = (userId: string) => {
+    const isSelected = selectedUsers.includes(userId);
+    
+    if (isSelected) {
+      onSelectionChange(selectedUsers.filter(id => id !== userId));
+    } else {
+      if (maxSelection && selectedUsers.length >= maxSelection) {
+        return; // Não permite seleção além do limite
+      }
+      onSelectionChange([...selectedUsers, userId]);
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'text-instituto-green';
-      case 'at-risk': return 'text-instituto-gold';
-      case 'inactive': return 'text-instituto-orange';
-      default: return 'text-netflix-text-muted';
+  const handleSelectAll = () => {
+    if (selectedUsers.length === filteredUsers.length) {
+      onSelectionChange([]);
+    } else {
+      const userIds = maxSelection 
+        ? filteredUsers.slice(0, maxSelection).map(u => u.id)
+        : filteredUsers.map(u => u.id);
+      onSelectionChange(userIds);
     }
   };
 
-  const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-instituto-green text-white';
-      case 'at-risk': return 'bg-instituto-gold text-white';
-      case 'inactive': return 'bg-instituto-orange text-white';
-      default: return 'bg-netflix-border text-netflix-text';
-    }
+  const removeUser = (userId: string) => {
+    onSelectionChange(selectedUsers.filter(id => id !== userId));
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'active': return 'Ativo';
-      case 'at-risk': return 'Em Risco';
-      case 'inactive': return 'Inativo';
-      default: return 'Desconhecido';
-    }
+  const getSelectedUserNames = () => {
+    return users
+      .filter(u => selectedUsers.includes(u.id))
+      .map(u => u.full_name || u.email);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <Card className="bg-netflix-card border-netflix-border">
-        <CardContent className="flex items-center justify-center h-64">
-          <div className="text-center space-y-4">
-            <div className="animate-spin h-8 w-8 border-4 border-instituto-orange border-t-transparent rounded-full mx-auto"></div>
-            <p className="text-netflix-text-muted">Carregando clientes...</p>
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         </CardContent>
       </Card>
@@ -221,107 +118,112 @@ export const UserSelector: React.FC<UserSelectorProps> = ({
   }
 
   return (
-    <Card className="bg-netflix-card border-netflix-border">
-      <CardHeader>
-        <CardTitle className="text-netflix-text flex items-center gap-2">
-          <Users className="h-5 w-5 text-instituto-orange" />
-          Seletor de Clientes ({filteredUsers.length})
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Controles de Filtro */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-netflix-text-muted" />
-              <Input
-                placeholder="Buscar por nome ou email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-netflix-hover border-netflix-border text-netflix-text"
-              />
-            </div>
-          </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full md:w-48 bg-netflix-hover border-netflix-border">
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os Status</SelectItem>
-              <SelectItem value="active">Ativos</SelectItem>
-              <SelectItem value="at-risk">Em Risco</SelectItem>
-              <SelectItem value="inactive">Inativos</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full md:w-48 bg-netflix-hover border-netflix-border">
-              <TrendingUp className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Ordenar" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Nome (A-Z)</SelectItem>
-              <SelectItem value="activity">Última Atividade</SelectItem>
-              <SelectItem value="completion">Taxa de Conclusão</SelectItem>
-              <SelectItem value="score">Pontuação Média</SelectItem>
-              <SelectItem value="created">Mais Recentes</SelectItem>
-            </SelectContent>
-          </Select>
+    <div className="space-y-4">
+      {/* Search and Controls */}
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar usuários..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
         </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleSelectAll}
+          className="min-w-24"
+        >
+          {selectedUsers.length === filteredUsers.length ? 'Desmarcar' : 'Selecionar'} Todos
+        </Button>
+      </div>
 
-        {/* Lista de Usuários */}
-        <div className="space-y-2 max-h-96 overflow-y-auto">
-          {filteredUsers.length === 0 ? (
-            <div className="text-center text-netflix-text-muted py-8">
-              <User className="h-12 w-12 mx-auto mb-4 text-netflix-text-muted" />
-              <p>Nenhum cliente encontrado com os filtros aplicados</p>
-            </div>
-          ) : (
-            filteredUsers.map((user) => {
-              const StatusIcon = getStatusIcon(user.status || 'inactive');
-              return (
-                <div
-                  key={user.id}
-                  className={`p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
-                    selectedUserId === user.id
-                      ? 'border-instituto-orange bg-instituto-orange/10'
-                      : 'border-netflix-border bg-netflix-hover hover:border-instituto-orange/50'
-                  }`}
-                  onClick={() => onUserSelect(user.id)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <StatusIcon className={`h-5 w-5 ${getStatusColor(user.status || 'inactive')}`} />
-                      <div>
-                        <h3 className="font-medium text-netflix-text">{user.full_name}</h3>
-                        <p className="text-sm text-netflix-text-muted">{user.email}</p>
-                      </div>
-                    </div>
-                    <div className="text-right space-y-1">
-                      <Badge className={getStatusBadgeColor(user.status || 'inactive')}>
-                        {getStatusText(user.status || 'inactive')}
-                      </Badge>
-                      <div className="flex gap-2 text-xs text-netflix-text-muted">
-                        <span title="Taxa de Conclusão">
-                          {user.completionRate?.toFixed(0)}%
-                        </span>
-                        <span title="Pontuação Média">
-                          {user.avgScore || 0}pts
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  {user.lastActivity && (
-                    <div className="mt-2 text-xs text-netflix-text-muted">
-                      Última atividade: {new Date(user.lastActivity).toLocaleDateString('pt-BR')}
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          )}
+      {/* Selected Users */}
+      {selectedUsers.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            <span className="text-sm font-medium">
+              {selectedUsers.length} usuário{selectedUsers.length !== 1 ? 's' : ''} selecionado{selectedUsers.length !== 1 ? 's' : ''}
+              {maxSelection && ` (máx: ${maxSelection})`}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {getSelectedUserNames().map((name, index) => (
+              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                {name}
+                <X
+                  className="h-3 w-3 cursor-pointer hover:text-destructive"
+                  onClick={() => removeUser(selectedUsers[index])}
+                />
+              </Badge>
+            ))}
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      )}
+
+      {/* Users List */}
+      <Card>
+        <CardContent className="p-0">
+          <ScrollArea className="h-64">
+            {filteredUsers.length === 0 ? (
+              <div className="p-6 text-center text-muted-foreground">
+                {searchTerm ? 'Nenhum usuário encontrado' : 'Nenhum usuário cadastrado'}
+              </div>
+            ) : (
+              <div className="space-y-1 p-2">
+                {filteredUsers.map((user) => {
+                  const isSelected = selectedUsers.includes(user.id);
+                  const isDisabled = maxSelection && !isSelected && selectedUsers.length >= maxSelection;
+                  
+                  return (
+                    <div
+                      key={user.id}
+                      className={`
+                        flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors
+                        ${isSelected ? 'bg-primary/10 border border-primary/20' : 'hover:bg-muted/50'}
+                        ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+                      `}
+                      onClick={() => !isDisabled && handleUserToggle(user.id)}
+                    >
+                      <Checkbox
+                        checked={isSelected}
+                        disabled={isDisabled}
+                        onChange={() => !isDisabled && handleUserToggle(user.id)}
+                      />
+                      
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.avatar_url} />
+                        <AvatarFallback>
+                          {user.full_name?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">
+                          {user.full_name || 'Nome não informado'}
+                        </p>
+                        <p className="text-sm text-muted-foreground truncate">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      {maxSelection && (
+        <p className="text-xs text-muted-foreground">
+          Máximo de {maxSelection} usuário{maxSelection !== 1 ? 's' : ''} podem ser selecionados
+        </p>
+      )}
+    </div>
   );
 };

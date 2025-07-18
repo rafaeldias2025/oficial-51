@@ -1,311 +1,347 @@
 import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, 
-  Video, 
-  Upload, 
-  Send, 
-  Users, 
-  User,
-  FileText
-} from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
+import { UserSelector } from './UserSelector';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Calendar, Clock, User, Settings } from 'lucide-react';
 
-interface SessionData {
-  titulo: string;
-  descricao: string;
-  conteudo: string;
-  videoFile?: File;
-  pdfFile?: File;
-  videoUrl?: string;
-  destinoTipo: 'usuario' | 'grupo';
-  usuarioSelecionado?: string;
-  grupoSelecionado?: string;
+interface SessionForm {
+  title: string;
+  description: string;
+  content: string;
+  category: string;
+  available_tools: string[];
+  assigned_to: string[];
+  scheduled_date: string;
+  estimated_time: number;
+  send_type: 'immediate' | 'scheduled';
+  is_public: boolean;
+  video_url?: string;
+  pdf_url?: string;
 }
 
-const mockUsers = [
-  { id: '1', name: 'Ana Silva', email: 'ana@email.com' },
-  { id: '2', name: 'Carlos Santos', email: 'carlos@email.com' },
-  { id: '3', name: 'Maria Costa', email: 'maria@email.com' }
-];
-
-const mockGroups = [
-  { id: '1', name: 'Grupo Iniciantes', members: 5 },
-  { id: '2', name: 'Grupo Avançado', members: 8 },
-  { id: '3', name: 'Grupo VIP', members: 3 }
+const wheelTools = [
+  { id: 'energia_vital', name: 'Roda da Energia Vital', description: 'Avalie seu equilíbrio energético' },
+  { id: 'roda_vida', name: 'Roda da Vida', description: 'Analise os 5 pilares da sua vida' },
+  { id: 'saude_energia', name: 'Roda da Saúde e Energia', description: 'Diagnóstico completo dos hábitos' }
 ];
 
 export const SessionManagement: React.FC = () => {
-  const { toast } = useToast();
-  const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState<SessionData>({
-    titulo: '',
-    descricao: '',
-    conteudo: '',
-    destinoTipo: 'usuario'
+  const [form, setForm] = useState<SessionForm>({
+    title: '',
+    description: '',
+    content: '',
+    category: 'personal',
+    available_tools: ['energia_vital'],
+    assigned_to: [],
+    scheduled_date: '',
+    estimated_time: 30,
+    send_type: 'immediate',
+    is_public: false
   });
 
-  const handleFileUpload = (file: File, type: 'video' | 'pdf') => {
-    if (type === 'video') {
-      setFormData({ ...formData, videoFile: file });
-    } else {
-      setFormData({ ...formData, pdfFile: file });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleToolToggle = (toolId: string) => {
+    setForm(prev => ({
+      ...prev,
+      available_tools: prev.available_tools.includes(toolId)
+        ? prev.available_tools.filter(id => id !== toolId)
+        : [...prev.available_tools, toolId]
+    }));
+  };
+
+  const handleUserSelection = (userIds: string[]) => {
+    setForm(prev => ({ ...prev, assigned_to: userIds }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!form.title.trim()) {
+      toast.error('Título é obrigatório');
+      return;
+    }
+
+    if (form.assigned_to.length === 0 && !form.is_public) {
+      toast.error('Selecione pelo menos um usuário ou marque como público');
+      return;
+    }
+
+    if (form.available_tools.length === 0) {
+      toast.error('Selecione pelo menos uma ferramenta');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Se for para usuários específicos, criar uma sessão para cada um
+      if (form.assigned_to.length > 0) {
+        for (const userId of form.assigned_to) {
+          const { error } = await supabase.from('sessions').insert({
+            title: form.title,
+            description: form.description,
+            content: form.content,
+            category: form.category,
+            available_tools: form.available_tools,
+            assigned_to: userId,
+            scheduled_date: form.scheduled_date || null,
+            estimated_time: form.estimated_time,
+            send_type: form.send_type,
+            is_public: false,
+            video_url: form.video_url || null,
+            pdf_url: form.pdf_url || null
+          });
+
+          if (error) throw error;
+        }
+      } else {
+        // Sessão pública
+        const { error } = await supabase.from('sessions').insert({
+          title: form.title,
+          description: form.description,
+          content: form.content,
+          category: form.category,
+          available_tools: form.available_tools,
+          assigned_to: null,
+          scheduled_date: form.scheduled_date || null,
+          estimated_time: form.estimated_time,
+          send_type: form.send_type,
+          is_public: true,
+          video_url: form.video_url || null,
+          pdf_url: form.pdf_url || null
+        });
+
+        if (error) throw error;
+      }
+
+      toast.success('Sessão criada com sucesso!');
+      
+      // Reset form
+      setForm({
+        title: '',
+        description: '',
+        content: '',
+        category: 'personal',
+        available_tools: ['energia_vital'],
+        assigned_to: [],
+        scheduled_date: '',
+        estimated_time: 30,
+        send_type: 'immediate',
+        is_public: false,
+        video_url: '',
+        pdf_url: ''
+      });
+
+    } catch (error) {
+      console.error('Erro ao criar sessão:', error);
+      toast.error('Erro ao criar sessão');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Aqui integraria com Supabase para criar a sessão
-    console.log('Nova sessão:', formData);
-    
-    toast({
-      title: "Sessão criada com sucesso!",
-      description: `"${formData.titulo}" foi enviada para ${formData.destinoTipo === 'usuario' ? 'usuário específico' : 'grupo'}.`,
-    });
-
-    // Reset form
-    setFormData({
-      titulo: '',
-      descricao: '',
-      conteudo: '',
-      destinoTipo: 'usuario'
-    });
-    setIsOpen(false);
-  };
-
   return (
-    <div className="space-y-4">
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button className="w-full instituto-button">
-            <Plus className="h-4 w-4 mr-2" />
-            Criar Nova Sessão
-          </Button>
-        </DialogTrigger>
-        
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Video className="h-5 w-5 text-instituto-purple" />
-              Criar Nova Sessão
-            </DialogTitle>
-          </DialogHeader>
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Informações Básicas */}
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="titulo">Título da Sessão *</Label>
-                <Input
-                  id="titulo"
-                  value={formData.titulo}
-                  onChange={(e) => setFormData({...formData, titulo: e.target.value})}
-                  className="bg-netflix-gray border-netflix-border text-netflix-text"
-                  placeholder="Ex: Reflexão sobre Objetivos de Vida"
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="descricao">Descrição *</Label>
-                <Textarea
-                  id="descricao"
-                  value={formData.descricao}
-                  onChange={(e) => setFormData({...formData, descricao: e.target.value})}
-                  className="bg-netflix-gray border-netflix-border text-netflix-text"
-                  placeholder="Breve descrição do objetivo da sessão..."
-                  required
-                />
-              </div>
-            </div>
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Settings className="h-5 w-5" />
+          Criar Sessão Personalizada
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <Tabs defaultValue="basic" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="basic">Básico</TabsTrigger>
+              <TabsTrigger value="tools">Ferramentas</TabsTrigger>
+              <TabsTrigger value="users">Usuários</TabsTrigger>
+            </TabsList>
 
-            {/* Upload de Arquivos */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-netflix-text">Materiais (Opcional)</h3>
-              
+            <TabsContent value="basic" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="video">Upload de Vídeo</Label>
-                  <div className="mt-2">
-                    <input
-                      type="file"
-                      accept="video/*"
-                      onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], 'video')}
-                      className="hidden"
-                      id="video-upload"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => document.getElementById('video-upload')?.click()}
-                      className="w-full border-netflix-border text-netflix-text hover:bg-netflix-gray"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      {formData.videoFile ? formData.videoFile.name : 'Selecionar Vídeo'}
-                    </Button>
-                  </div>
-                  
-                  <div className="mt-2">
-                    <Label htmlFor="videoUrl">Ou Link do Vídeo</Label>
-                    <Input
-                      id="videoUrl"
-                      value={formData.videoUrl || ''}
-                      onChange={(e) => setFormData({...formData, videoUrl: e.target.value})}
-                      className="bg-netflix-gray border-netflix-border text-netflix-text"
-                      placeholder="https://youtube.com/watch?v=..."
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="title">Título *</Label>
+                  <Input
+                    id="title"
+                    value={form.title}
+                    onChange={(e) => setForm(prev => ({ ...prev, title: e.target.value }))}
+                    placeholder="Nome da sessão"
+                    required
+                  />
                 </div>
-                
-                <div>
-                  <Label htmlFor="pdf">Upload de PDF</Label>
-                  <div className="mt-2">
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], 'pdf')}
-                      className="hidden"
-                      id="pdf-upload"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => document.getElementById('pdf-upload')?.click()}
-                      className="w-full border-netflix-border text-netflix-text hover:bg-netflix-gray"
-                    >
-                      <FileText className="h-4 w-4 mr-2" />
-                      {formData.pdfFile ? formData.pdfFile.name : 'Selecionar PDF'}
-                    </Button>
-                  </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="category">Categoria</Label>
+                  <Select value={form.category} onValueChange={(value) => setForm(prev => ({ ...prev, category: value }))}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="personal">Desenvolvimento Pessoal</SelectItem>
+                      <SelectItem value="health">Saúde e Bem-estar</SelectItem>
+                      <SelectItem value="therapy">Terapia</SelectItem>
+                      <SelectItem value="coaching">Coaching</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
-            </div>
 
-            {/* Conteúdo da Sessão */}
-            <div>
-              <Label htmlFor="conteudo">Conteúdo da Sessão *</Label>
-              <Textarea
-                id="conteudo"
-                value={formData.conteudo}
-                onChange={(e) => setFormData({...formData, conteudo: e.target.value})}
-                className="bg-netflix-gray border-netflix-border text-netflix-text min-h-[120px]"
-                placeholder="Instruções detalhadas, perguntas para reflexão, exercícios práticos..."
-                required
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="description">Descrição</Label>
+                <Textarea
+                  id="description"
+                  value={form.description}
+                  onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Descrição da sessão..."
+                  rows={3}
+                />
+              </div>
 
-            {/* Destino da Sessão */}
-            <div className="space-y-4">
-              <Label>Destino da Sessão *</Label>
-              <RadioGroup
-                value={formData.destinoTipo}
-                onValueChange={(value: 'usuario' | 'grupo') => setFormData({...formData, destinoTipo: value})}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="usuario" id="usuario" />
-                  <Label htmlFor="usuario" className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    Usuário Específico
-                  </Label>
+              <div className="space-y-2">
+                <Label htmlFor="content">Conteúdo/Instruções</Label>
+                <Textarea
+                  id="content"
+                  value={form.content}
+                  onChange={(e) => setForm(prev => ({ ...prev, content: e.target.value }))}
+                  placeholder="Instruções detalhadas para o cliente..."
+                  rows={4}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="estimated_time">Tempo Estimado (min)</Label>
+                  <Input
+                    id="estimated_time"
+                    type="number"
+                    value={form.estimated_time}
+                    onChange={(e) => setForm(prev => ({ ...prev, estimated_time: parseInt(e.target.value) || 30 }))}
+                    min="5"
+                    max="180"
+                  />
                 </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="grupo" id="grupo" />
-                  <Label htmlFor="grupo" className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    Grupo de Usuários
-                  </Label>
-                </div>
-              </RadioGroup>
 
-              {formData.destinoTipo === 'usuario' && (
-                <div>
-                  <Label htmlFor="usuario-select">Selecionar Usuário</Label>
-                  <Select value={formData.usuarioSelecionado || ''} onValueChange={(value) => setFormData({...formData, usuarioSelecionado: value})}>
-                    <SelectTrigger className="bg-netflix-gray border-netflix-border text-netflix-text">
-                      <SelectValue placeholder="Escolha um usuário" />
+                <div className="space-y-2">
+                  <Label htmlFor="send_type">Tipo de Envio</Label>
+                  <Select value={form.send_type} onValueChange={(value: 'immediate' | 'scheduled') => setForm(prev => ({ ...prev, send_type: value }))}>
+                    <SelectTrigger>
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {mockUsers.map((user) => (
-                        <SelectItem key={user.id} value={user.id}>
-                          <div className="flex flex-col">
-                            <span>{user.name}</span>
-                            <span className="text-xs text-netflix-text-muted">{user.email}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="immediate">Imediato</SelectItem>
+                      <SelectItem value="scheduled">Agendado</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              )}
 
-              {formData.destinoTipo === 'grupo' && (
-                <div>
-                  <Label htmlFor="grupo-select">Selecionar Grupo</Label>
-                  <Select value={formData.grupoSelecionado || ''} onValueChange={(value) => setFormData({...formData, grupoSelecionado: value})}>
-                    <SelectTrigger className="bg-netflix-gray border-netflix-border text-netflix-text">
-                      <SelectValue placeholder="Escolha um grupo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {mockGroups.map((group) => (
-                        <SelectItem key={group.id} value={group.id}>
-                          <div className="flex items-center justify-between w-full">
-                            <span>{group.name}</span>
-                            <Badge variant="secondary" className="ml-2">
-                              {group.members} membros
-                            </Badge>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="mt-2 w-full border-netflix-border text-netflix-text hover:bg-netflix-gray"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Criar Novo Grupo
-                  </Button>
+                {form.send_type === 'scheduled' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="scheduled_date">Data Agendada</Label>
+                    <Input
+                      id="scheduled_date"
+                      type="datetime-local"
+                      value={form.scheduled_date}
+                      onChange={(e) => setForm(prev => ({ ...prev, scheduled_date: e.target.value }))}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="video_url">URL do Vídeo (opcional)</Label>
+                  <Input
+                    id="video_url"
+                    value={form.video_url}
+                    onChange={(e) => setForm(prev => ({ ...prev, video_url: e.target.value }))}
+                    placeholder="https://..."
+                  />
                 </div>
-              )}
-            </div>
 
-            <div className="flex gap-3">
-              <Button type="submit" className="instituto-button flex-1">
-                <Send className="h-4 w-4 mr-2" />
-                Publicar Sessão
-              </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setIsOpen(false)}
-                className="border-netflix-border text-netflix-text hover:bg-netflix-gray"
-              >
-                Cancelar
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+                <div className="space-y-2">
+                  <Label htmlFor="pdf_url">URL do PDF (opcional)</Label>
+                  <Input
+                    id="pdf_url"
+                    value={form.pdf_url}
+                    onChange={(e) => setForm(prev => ({ ...prev, pdf_url: e.target.value }))}
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+            </TabsContent>
 
-      {/* Preview de sessões ativas */}
-      <div className="space-y-2">
-        <h4 className="text-sm font-medium text-netflix-text">Sessões Ativas</h4>
-        <div className="space-y-1 max-h-40 overflow-y-auto">
-          <div className="p-2 bg-netflix-hover rounded text-center text-sm text-netflix-text-muted">
-            Nenhuma sessão ativa
+            <TabsContent value="tools" className="space-y-4">
+              <div>
+                <Label className="text-base font-medium">Ferramentas Disponíveis *</Label>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Selecione as ferramentas que estarão disponíveis nesta sessão
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {wheelTools.map((tool) => (
+                    <div key={tool.id} className="flex items-start space-x-3 p-4 border rounded-lg">
+                      <Checkbox
+                        id={tool.id}
+                        checked={form.available_tools.includes(tool.id)}
+                        onCheckedChange={() => handleToolToggle(tool.id)}
+                      />
+                      <div className="flex-1">
+                        <Label htmlFor={tool.id} className="font-medium cursor-pointer">
+                          {tool.name}
+                        </Label>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {tool.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="users" className="space-y-4">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="is_public"
+                    checked={form.is_public}
+                    onCheckedChange={(checked) => setForm(prev => ({ ...prev, is_public: !!checked, assigned_to: checked ? [] : prev.assigned_to }))}
+                  />
+                  <Label htmlFor="is_public">Sessão Pública (todos os usuários)</Label>
+                </div>
+
+                {!form.is_public && (
+                  <div>
+                    <Label className="text-base font-medium">Selecionar Usuários *</Label>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Escolha os usuários que receberão esta sessão
+                    </p>
+                    <UserSelector
+                      selectedUsers={form.assigned_to}
+                      onSelectionChange={handleUserSelection}
+                    />
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex justify-end space-x-2 pt-4 border-t">
+            <Button type="submit" disabled={isLoading} className="min-w-32">
+              {isLoading ? 'Criando...' : 'Criar Sessão'}
+            </Button>
           </div>
-        </div>
-      </div>
-    </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
