@@ -20,40 +20,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useCourses } from '@/hooks/useCourses';
 import { supabase } from '@/integrations/supabase/client';
-
-interface Course {
-  id: string;
-  title: string;
-  description: string | null;
-  image_url: string | null;
-  price: number;
-  is_active: boolean;
-  category: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-interface CourseModule {
-  id: string;
-  title: string;
-  description: string | null;
-  image_url?: string | null;
-  order_index: number;
-  is_active: boolean;
-  course_id: string;
-  lessons?: CourseLesson[];
-}
-
-interface CourseLesson {
-  id: string;
-  title: string;
-  description: string | null;
-  video_url?: string;
-  duration_minutes: number | null;
-  order_index: number;
-  is_active: boolean;
-  module_id: string;
-}
+import { Course, CourseModule, CourseLesson } from '@/types/admin';
 
 export const EnhancedCourseManagement = () => {
   const { courses, loading, createCourse, updateCourse, deleteCourse, fetchCourseModules, createModule, createLesson } = useCourses();
