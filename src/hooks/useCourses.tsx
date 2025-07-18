@@ -211,6 +211,7 @@ export const useCourses = () => {
           course_id,
           title,
           description,
+          image_url,
           order_index,
           is_active,
           created_at,

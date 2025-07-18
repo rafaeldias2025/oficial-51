@@ -35,6 +35,7 @@ export const CourseManagement = () => {
   const [moduleForm, setModuleForm] = useState({
     title: '',
     description: '',
+    image_url: '',
     order_index: 0,
     is_active: true
   });
@@ -113,6 +114,7 @@ export const CourseManagement = () => {
       setModuleForm({
         title: '',
         description: '',
+        image_url: '',
         order_index: 0,
         is_active: true
       });
@@ -234,6 +236,19 @@ export const CourseManagement = () => {
                   />
                 </div>
                 <div>
+                  <Label htmlFor="module-image">URL da Imagem do Módulo</Label>
+                  <Input
+                    id="module-image"
+                    placeholder="https://exemplo.com/imagem.jpg (opcional)"
+                    value={moduleForm.image_url}
+                    onChange={(e) => setModuleForm(prev => ({ ...prev, image_url: e.target.value }))}
+                    className="bg-netflix-hover border-netflix-border"
+                  />
+                  <p className="text-xs text-netflix-text-secondary mt-1">
+                    💡 Use a aba "Mídia" para upload de imagens
+                  </p>
+                </div>
+                <div>
                   <Label htmlFor="module-order">Ordem</Label>
                   <Input
                     id="module-order"
@@ -255,23 +270,36 @@ export const CourseManagement = () => {
           {courseModules.map((module) => (
             <Card key={module.id} className="bg-netflix-card border-netflix-border">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-netflix-text">{module.title}</CardTitle>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      setSelectedModule(module);
-                      setIsLessonModalOpen(true);
-                    }}
-                    className="gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Adicionar Aula
-                  </Button>
+                <div className="flex items-start gap-4">
+                  {module.image_url && (
+                    <div className="w-16 h-16 bg-netflix-hover rounded-lg overflow-hidden flex-shrink-0">
+                      <img 
+                        src={module.image_url} 
+                        alt={module.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-netflix-text">{module.title}</CardTitle>
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          setSelectedModule(module);
+                          setIsLessonModalOpen(true);
+                        }}
+                        className="gap-2"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Adicionar Aula
+                      </Button>
+                    </div>
+                    {module.description && (
+                      <p className="text-netflix-text-secondary mt-2">{module.description}</p>
+                    )}
+                  </div>
                 </div>
-                {module.description && (
-                  <p className="text-netflix-text-secondary">{module.description}</p>
-                )}
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
