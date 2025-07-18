@@ -21,6 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useCourses } from '@/hooks/useCourses';
 import { supabase } from '@/integrations/supabase/client';
 import { Course, CourseModule, CourseLesson } from '@/types/admin';
+import { ModuleEditor } from './ModuleEditor';
 
 export const EnhancedCourseManagement = () => {
   const { courses, loading, createCourse, updateCourse, deleteCourse, fetchCourseModules, createModule, createLesson } = useCourses();
@@ -32,6 +33,7 @@ export const EnhancedCourseManagement = () => {
   const [selectedLesson, setSelectedLesson] = useState<CourseLesson | null>(null);
   const [courseModules, setCourseModules] = useState<CourseModule[]>([]);
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
+  const [showModuleEditor, setShowModuleEditor] = useState(false);
   
   // Estados para modais
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
@@ -55,7 +57,8 @@ export const EnhancedCourseManagement = () => {
     description: '',
     image_url: '',
     order_index: 0,
-    is_active: true
+    is_active: true,
+    course_id: ''
   });
 
   const [lessonForm, setLessonForm] = useState({
@@ -177,7 +180,8 @@ export const EnhancedCourseManagement = () => {
       description: module.description || '',
       image_url: module.image_url || '',
       order_index: module.order_index,
-      is_active: module.is_active
+      is_active: module.is_active,
+      course_id: module.course_id
     });
     setIsEditMode(true);
     setIsModuleModalOpen(true);
@@ -227,7 +231,8 @@ export const EnhancedCourseManagement = () => {
       description: '',
       image_url: '',
       order_index: 0,
-      is_active: true
+      is_active: true,
+      course_id: ''
     });
     setLessonForm({
       title: '',
@@ -543,6 +548,19 @@ export const EnhancedCourseManagement = () => {
     );
   }
 
+  // Visualização detalhada do curso - usar ModuleEditor
+  if (selectedCourse && showModuleEditor) {
+    return (
+      <ModuleEditor 
+        course={selectedCourse} 
+        onBack={() => {
+          setShowModuleEditor(false);
+          setSelectedCourse(null);
+        }} 
+      />
+    );
+  }
+
   // Visualização detalhada do curso
   if (selectedCourse) {
     return (
@@ -569,13 +587,13 @@ export const EnhancedCourseManagement = () => {
               <BarChart3 className="w-4 h-4" />
               Analytics
             </Button>
-            <Button variant="outline" className="gap-2">
-              <Upload className="w-4 h-4" />
-              Upload de vídeos
-            </Button>
-            <Button variant="outline" className="gap-2">
-              <Monitor className="w-4 h-4" />
-              Minimizar
+            <Button 
+              variant="outline" 
+              className="gap-2"
+              onClick={() => setShowModuleEditor(true)}
+            >
+              <Edit className="w-4 h-4" />
+              Editar Módulos
             </Button>
             <Button onClick={() => setIsModuleModalOpen(true)} className="gap-2 bg-purple-600 hover:bg-purple-700">
               Adicionar
