@@ -201,7 +201,7 @@ export const useCourses = () => {
     }
   }, [user, isAdmin]);
 
-  // ✅ PERFORMANCE: Optimized query for course modules with join
+  // ✅ PERFORMANCE: Optimized query for course modules with left join
   const fetchCourseModules = useCallback(async (courseId: string): Promise<CourseModule[]> => {
     try {
       const { data, error } = await supabase
@@ -215,7 +215,7 @@ export const useCourses = () => {
           is_active,
           created_at,
           updated_at,
-          course_lessons!inner (
+          course_lessons (
             id,
             module_id,
             title,
@@ -230,7 +230,6 @@ export const useCourses = () => {
         `)
         .eq('course_id', courseId)
         .eq('is_active', true)
-        .eq('course_lessons.is_active', true)
         .order('order_index', { ascending: true });
 
       if (error) throw error;
@@ -244,7 +243,9 @@ export const useCourses = () => {
         is_active: module.is_active,
         created_at: module.created_at,
         updated_at: module.updated_at,
-        lessons: (module.course_lessons || []).sort((a: any, b: any) => a.order_index - b.order_index)
+        lessons: (module.course_lessons || [])
+          .filter((lesson: any) => lesson.is_active)
+          .sort((a: any, b: any) => a.order_index - b.order_index)
       })) || [];
     } catch (err: any) {
       console.error('Erro ao buscar módulos:', err);
