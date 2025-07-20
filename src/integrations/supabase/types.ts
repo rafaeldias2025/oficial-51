@@ -7,412 +7,159 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+  // Allows to automatically instanciate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
   }
   public: {
     Tables: {
-      additional_features_config: {
+      achievements: {
         Row: {
-          course_id: string | null
+          condition_type: string
+          condition_value: Json
           created_at: string | null
-          enable_badges: boolean | null
-          enable_certificates: boolean | null
-          enable_dark_mode: boolean | null
-          enable_playlists: boolean | null
-          enable_visual_progress: boolean | null
+          description: string
+          icon: string
           id: string
-          updated_at: string | null
+          title: string
         }
         Insert: {
-          course_id?: string | null
+          condition_type: string
+          condition_value?: Json
           created_at?: string | null
-          enable_badges?: boolean | null
-          enable_certificates?: boolean | null
-          enable_dark_mode?: boolean | null
-          enable_playlists?: boolean | null
-          enable_visual_progress?: boolean | null
+          description: string
+          icon: string
           id?: string
-          updated_at?: string | null
+          title: string
         }
         Update: {
-          course_id?: string | null
+          condition_type?: string
+          condition_value?: Json
           created_at?: string | null
-          enable_badges?: boolean | null
-          enable_certificates?: boolean | null
-          enable_dark_mode?: boolean | null
-          enable_playlists?: boolean | null
-          enable_visual_progress?: boolean | null
+          description?: string
+          icon?: string
           id?: string
-          updated_at?: string | null
+          title?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "additional_features_config_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: true
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      admin_analytics_config: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          enable_analytics: boolean | null
-          enable_export: boolean | null
-          enable_reports: boolean | null
-          id: string
-          updated_at: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          enable_analytics?: boolean | null
-          enable_export?: boolean | null
-          enable_reports?: boolean | null
-          id?: string
-          updated_at?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          enable_analytics?: boolean | null
-          enable_export?: boolean | null
-          enable_reports?: boolean | null
-          id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "admin_analytics_config_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: true
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      admin_logs: {
-        Row: {
-          action: string
-          admin_id: string | null
-          created_at: string | null
-          id: string
-          ip_address: string | null
-          new_data: Json | null
-          old_data: Json | null
-          target_id: string
-          target_table: string
-        }
-        Insert: {
-          action: string
-          admin_id?: string | null
-          created_at?: string | null
-          id?: string
-          ip_address?: string | null
-          new_data?: Json | null
-          old_data?: Json | null
-          target_id: string
-          target_table: string
-        }
-        Update: {
-          action?: string
-          admin_id?: string | null
-          created_at?: string | null
-          id?: string
-          ip_address?: string | null
-          new_data?: Json | null
-          old_data?: Json | null
-          target_id?: string
-          target_table?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "admin_logs_admin_id_fkey"
-            columns: ["admin_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       challenges: {
         Row: {
-          challenge_type: string | null
+          category: string
           created_at: string | null
-          description: string | null
-          duration_days: number | null
+          description: string
+          duration_days: number
+          icon: string | null
           id: string
           is_active: boolean | null
-          points: number | null
+          level: string
+          points: number
           title: string
           updated_at: string | null
         }
         Insert: {
-          challenge_type?: string | null
+          category: string
           created_at?: string | null
-          description?: string | null
-          duration_days?: number | null
+          description: string
+          duration_days: number
+          icon?: string | null
           id?: string
           is_active?: boolean | null
-          points?: number | null
+          level: string
+          points: number
           title: string
           updated_at?: string | null
         }
         Update: {
-          challenge_type?: string | null
+          category?: string
           created_at?: string | null
-          description?: string | null
-          duration_days?: number | null
+          description?: string
+          duration_days?: number
+          icon?: string | null
           id?: string
           is_active?: boolean | null
-          points?: number | null
+          level?: string
+          points?: number
           title?: string
           updated_at?: string | null
         }
         Relationships: []
       }
-      course_analytics: {
+      comments: {
         Row: {
-          average_rating: number | null
-          course_id: string | null
+          content: string
           created_at: string | null
           id: string
-          total_completions: number | null
-          total_enrollments: number | null
-          total_revenue: number | null
-          total_reviews: number | null
-          updated_at: string | null
+          is_private: boolean | null
+          target_id: string
+          target_type: string
+          user_id: string
         }
         Insert: {
-          average_rating?: number | null
-          course_id?: string | null
+          content: string
           created_at?: string | null
           id?: string
-          total_completions?: number | null
-          total_enrollments?: number | null
-          total_revenue?: number | null
-          total_reviews?: number | null
-          updated_at?: string | null
+          is_private?: boolean | null
+          target_id: string
+          target_type: string
+          user_id: string
         }
         Update: {
-          average_rating?: number | null
-          course_id?: string | null
+          content?: string
           created_at?: string | null
           id?: string
-          total_completions?: number | null
-          total_enrollments?: number | null
-          total_revenue?: number | null
-          total_reviews?: number | null
-          updated_at?: string | null
+          is_private?: boolean | null
+          target_id?: string
+          target_type?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "course_analytics_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: true
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_comments: {
-        Row: {
-          comment: string
-          course_id: string | null
-          created_at: string | null
-          id: string
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          comment: string
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          comment?: string
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_comments_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_comments_user_id_fkey"
+            foreignKeyName: "comments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_favorites: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          id: string
-          user_id: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          user_id?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_favorites_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_favorites_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_hero_config: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          hero_image_url: string | null
-          hero_subtitle: string | null
-          hero_title: string | null
-          hero_type: string | null
-          hero_video_url: string | null
-          id: string
-          is_active: boolean | null
-          updated_at: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          hero_image_url?: string | null
-          hero_subtitle?: string | null
-          hero_title?: string | null
-          hero_type?: string | null
-          hero_video_url?: string | null
-          id?: string
-          is_active?: boolean | null
-          updated_at?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          hero_image_url?: string | null
-          hero_subtitle?: string | null
-          hero_title?: string | null
-          hero_type?: string | null
-          hero_video_url?: string | null
-          id?: string
-          is_active?: boolean | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_hero_config_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: true
-            referencedRelation: "courses"
             referencedColumns: ["id"]
           },
         ]
       }
       course_lessons: {
         Row: {
-          content_text: string | null
           created_at: string | null
           description: string | null
-          document_url: string | null
           duration_minutes: number | null
           id: string
-          image_url: string | null
           is_active: boolean | null
-          metadata: Json | null
-          module_id: string | null
-          order_index: number | null
+          module_id: string
+          order_index: number
           title: string
           updated_at: string | null
-          video_url: string | null
+          video_url: string
         }
         Insert: {
-          content_text?: string | null
           created_at?: string | null
           description?: string | null
-          document_url?: string | null
           duration_minutes?: number | null
           id?: string
-          image_url?: string | null
           is_active?: boolean | null
-          metadata?: Json | null
-          module_id?: string | null
-          order_index?: number | null
+          module_id: string
+          order_index?: number
           title: string
           updated_at?: string | null
-          video_url?: string | null
+          video_url: string
         }
         Update: {
-          content_text?: string | null
           created_at?: string | null
           description?: string | null
-          document_url?: string | null
           duration_minutes?: number | null
           id?: string
-          image_url?: string | null
           is_active?: boolean | null
-          metadata?: Json | null
-          module_id?: string | null
-          order_index?: number | null
+          module_id?: string
+          order_index?: number
           title?: string
           updated_at?: string | null
-          video_url?: string | null
+          video_url?: string
         }
         Relationships: [
           {
@@ -426,35 +173,35 @@ export type Database = {
       }
       course_modules: {
         Row: {
-          course_id: string | null
+          course_id: string
           created_at: string | null
           description: string | null
-          estimated_duration: number | null
           id: string
+          image_url: string | null
           is_active: boolean | null
-          order_index: number | null
+          order_index: number
           title: string
           updated_at: string | null
         }
         Insert: {
-          course_id?: string | null
+          course_id: string
           created_at?: string | null
           description?: string | null
-          estimated_duration?: number | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
-          order_index?: number | null
+          order_index?: number
           title: string
           updated_at?: string | null
         }
         Update: {
-          course_id?: string | null
+          course_id?: string
           created_at?: string | null
           description?: string | null
-          estimated_duration?: number | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
-          order_index?: number | null
+          order_index?: number
           title?: string
           updated_at?: string | null
         }
@@ -468,203 +215,16 @@ export type Database = {
           },
         ]
       }
-      course_notifications: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          id: string
-          is_read: boolean | null
-          message: string
-          notification_type: string
-          user_id: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          is_read?: boolean | null
-          message: string
-          notification_type: string
-          user_id?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          is_read?: boolean | null
-          message?: string
-          notification_type?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_notifications_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_notifications_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_ratings: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          id: string
-          rating: number | null
-          review: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          rating?: number | null
-          review?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          rating?: number | null
-          review?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_ratings_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_ratings_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_recommendations: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          id: string
-          reason: string | null
-          score: number | null
-          user_id: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          reason?: string | null
-          score?: number | null
-          user_id?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          reason?: string | null
-          score?: number | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_recommendations_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_recommendations_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_themes: {
-        Row: {
-          background_color: string | null
-          course_id: string | null
-          created_at: string | null
-          id: string
-          is_dark_mode: boolean | null
-          primary_color: string | null
-          secondary_color: string | null
-          text_color: string | null
-          theme_name: string
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          background_color?: string | null
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          is_dark_mode?: boolean | null
-          primary_color?: string | null
-          secondary_color?: string | null
-          text_color?: string | null
-          theme_name: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          background_color?: string | null
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          is_dark_mode?: boolean | null
-          primary_color?: string | null
-          secondary_color?: string | null
-          text_color?: string | null
-          theme_name?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_themes_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       courses: {
         Row: {
           category: string | null
           created_at: string | null
           created_by: string | null
           description: string | null
-          difficulty_level: string | null
-          duration_hours: number | null
           id: string
           image_url: string | null
-          instructor_name: string | null
           is_active: boolean | null
-          is_premium: boolean | null
           price: number | null
-          tags: Json | null
           title: string
           updated_at: string | null
         }
@@ -673,15 +233,10 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           description?: string | null
-          difficulty_level?: string | null
-          duration_hours?: number | null
           id?: string
           image_url?: string | null
-          instructor_name?: string | null
           is_active?: boolean | null
-          is_premium?: boolean | null
           price?: number | null
-          tags?: Json | null
           title: string
           updated_at?: string | null
         }
@@ -690,362 +245,591 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           description?: string | null
-          difficulty_level?: string | null
-          duration_hours?: number | null
           id?: string
           image_url?: string | null
-          instructor_name?: string | null
           is_active?: boolean | null
-          is_premium?: boolean | null
           price?: number | null
-          tags?: Json | null
           title?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "courses_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dados_fisicos_usuario: {
         Row: {
-          altura_cm: number | null
+          altura_cm: number
           categoria_imc: string | null
-          circunferencia_abdominal_cm: number | null
-          created_at: string | null
-          data_medicao: string | null
-          data_nascimento: string | null
+          circunferencia_abdominal_cm: number
+          created_at: string
+          data_nascimento: string
           id: string
           imc: number | null
-          nome_completo: string | null
-          peso_atual_kg: number | null
+          meta_peso_kg: number | null
+          nome_completo: string
+          nome_usuario: string | null
+          peso_atual_kg: number
           risco_cardiometabolico: string | null
-          updated_at: string | null
-          user_id: string | null
+          sexo: string
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          altura_cm?: number | null
+          altura_cm: number
           categoria_imc?: string | null
-          circunferencia_abdominal_cm?: number | null
-          created_at?: string | null
-          data_medicao?: string | null
-          data_nascimento?: string | null
+          circunferencia_abdominal_cm: number
+          created_at?: string
+          data_nascimento: string
           id?: string
           imc?: number | null
-          nome_completo?: string | null
-          peso_atual_kg?: number | null
+          meta_peso_kg?: number | null
+          nome_completo: string
+          nome_usuario?: string | null
+          peso_atual_kg: number
           risco_cardiometabolico?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          sexo: string
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          altura_cm?: number | null
+          altura_cm?: number
           categoria_imc?: string | null
-          circunferencia_abdominal_cm?: number | null
-          created_at?: string | null
-          data_medicao?: string | null
-          data_nascimento?: string | null
+          circunferencia_abdominal_cm?: number
+          created_at?: string
+          data_nascimento?: string
           id?: string
           imc?: number | null
-          nome_completo?: string | null
-          peso_atual_kg?: number | null
+          meta_peso_kg?: number | null
+          nome_completo?: string
+          nome_usuario?: string | null
+          peso_atual_kg?: number
           risco_cardiometabolico?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          sexo?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
       dados_saude_usuario: {
         Row: {
-          colesterol_total: number | null
-          created_at: string | null
-          data_medicao: string | null
-          frequencia_cardiaca: number | null
-          glicemia_mg_dl: number | null
-          hdl: number | null
+          altura_cm: number
+          circunferencia_abdominal_cm: number
+          created_at: string
+          data_atualizacao: string
           id: string
-          ldl: number | null
-          peso_atual_kg: number | null
-          pressao_diastolica: number | null
-          pressao_sistolica: number | null
+          imc: number | null
+          meta_peso_kg: number
+          nome_usuario: string | null
+          peso_atual_kg: number
           progresso_percentual: number | null
-          triglicerideos: number | null
-          updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
-          colesterol_total?: number | null
-          created_at?: string | null
-          data_medicao?: string | null
-          frequencia_cardiaca?: number | null
-          glicemia_mg_dl?: number | null
-          hdl?: number | null
+          altura_cm: number
+          circunferencia_abdominal_cm: number
+          created_at?: string
+          data_atualizacao?: string
           id?: string
-          ldl?: number | null
-          peso_atual_kg?: number | null
-          pressao_diastolica?: number | null
-          pressao_sistolica?: number | null
+          imc?: number | null
+          meta_peso_kg: number
+          nome_usuario?: string | null
+          peso_atual_kg: number
           progresso_percentual?: number | null
-          triglicerideos?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
-          colesterol_total?: number | null
-          created_at?: string | null
-          data_medicao?: string | null
-          frequencia_cardiaca?: number | null
-          glicemia_mg_dl?: number | null
-          hdl?: number | null
+          altura_cm?: number
+          circunferencia_abdominal_cm?: number
+          created_at?: string
+          data_atualizacao?: string
           id?: string
-          ldl?: number | null
-          peso_atual_kg?: number | null
-          pressao_diastolica?: number | null
-          pressao_sistolica?: number | null
+          imc?: number | null
+          meta_peso_kg?: number
+          nome_usuario?: string | null
+          peso_atual_kg?: number
           progresso_percentual?: number | null
-          triglicerideos?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
       daily_missions: {
         Row: {
           completed: boolean | null
+          completed_at: string | null
           created_at: string | null
           id: string
-          mission_date: string | null
-          mission_id: string | null
+          mission_date: string
+          mission_id: string
+          nome_usuario: string | null
           points_earned: number | null
-          updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           completed?: boolean | null
+          completed_at?: string | null
           created_at?: string | null
           id?: string
-          mission_date?: string | null
-          mission_id?: string | null
+          mission_date: string
+          mission_id: string
+          nome_usuario?: string | null
           points_earned?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           completed?: boolean | null
+          completed_at?: string | null
           created_at?: string | null
           id?: string
-          mission_date?: string | null
-          mission_id?: string | null
+          mission_date?: string
+          mission_id?: string
+          nome_usuario?: string | null
           points_earned?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
       diary_entries: {
         Row: {
-          content: string | null
+          content: string
           created_at: string | null
-          entry_date: string | null
           id: string
-          mood: number | null
+          mood_score: number | null
+          nome_usuario: string | null
+          private_comment: string | null
+          title: string | null
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
-          content?: string | null
+          content: string
           created_at?: string | null
-          entry_date?: string | null
           id?: string
-          mood?: number | null
+          mood_score?: number | null
+          nome_usuario?: string | null
+          private_comment?: string | null
+          title?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
-          content?: string | null
+          content?: string
           created_at?: string | null
-          entry_date?: string | null
           id?: string
-          mood?: number | null
+          mood_score?: number | null
+          nome_usuario?: string | null
+          private_comment?: string | null
+          title?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "diary_entries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      favorites: {
+        Row: {
+          created_at: string | null
+          id: string
+          nome_usuario: string | null
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          nome_usuario?: string | null
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          nome_usuario?: string | null
+          target_id?: string
+          target_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       goals: {
         Row: {
+          automatic_plan: boolean | null
           created_at: string | null
-          data_fim: string | null
-          data_inicio: string | null
-          descricao: string | null
           id: string
-          prioridade: string | null
-          status: string | null
-          tipo_meta: string | null
-          titulo: string
-          unidade: string | null
+          name: string
+          nome_usuario: string | null
+          notes: string | null
+          other_type: string | null
+          progress: number | null
+          start_date: string
+          target_date: string
+          type: string
           updated_at: string | null
-          user_id: string | null
-          valor_atual: number | null
-          valor_meta: number | null
+          user_id: string
+          weekly_reminders: boolean | null
         }
         Insert: {
+          automatic_plan?: boolean | null
           created_at?: string | null
-          data_fim?: string | null
-          data_inicio?: string | null
-          descricao?: string | null
           id?: string
-          prioridade?: string | null
-          status?: string | null
-          tipo_meta?: string | null
-          titulo: string
-          unidade?: string | null
+          name: string
+          nome_usuario?: string | null
+          notes?: string | null
+          other_type?: string | null
+          progress?: number | null
+          start_date: string
+          target_date: string
+          type: string
           updated_at?: string | null
-          user_id?: string | null
-          valor_atual?: number | null
-          valor_meta?: number | null
+          user_id: string
+          weekly_reminders?: boolean | null
         }
         Update: {
+          automatic_plan?: boolean | null
           created_at?: string | null
-          data_fim?: string | null
-          data_inicio?: string | null
-          descricao?: string | null
           id?: string
-          prioridade?: string | null
-          status?: string | null
-          tipo_meta?: string | null
-          titulo?: string
-          unidade?: string | null
+          name?: string
+          nome_usuario?: string | null
+          notes?: string | null
+          other_type?: string | null
+          progress?: number | null
+          start_date?: string
+          target_date?: string
+          type?: string
           updated_at?: string | null
-          user_id?: string | null
-          valor_atual?: number | null
-          valor_meta?: number | null
+          user_id?: string
+          weekly_reminders?: boolean | null
         }
         Relationships: []
       }
       google_fit_data: {
         Row: {
-          created_at: string | null
-          data_medicao: string | null
-          fonte_dados: string | null
+          created_at: string
+          data_type: string
           id: string
-          sincronizado: boolean | null
-          tipo_dado: string | null
-          unidade: string | null
-          updated_at: string | null
-          user_id: string | null
-          valor: number | null
+          metadata: Json | null
+          source: string | null
+          timestamp: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+          value: number
         }
         Insert: {
-          created_at?: string | null
-          data_medicao?: string | null
-          fonte_dados?: string | null
+          created_at?: string
+          data_type: string
           id?: string
-          sincronizado?: boolean | null
-          tipo_dado?: string | null
-          unidade?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          valor?: number | null
+          metadata?: Json | null
+          source?: string | null
+          timestamp: string
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+          value: number
         }
         Update: {
-          created_at?: string | null
-          data_medicao?: string | null
-          fonte_dados?: string | null
+          created_at?: string
+          data_type?: string
           id?: string
-          sincronizado?: boolean | null
-          tipo_dado?: string | null
-          unidade?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          valor?: number | null
+          metadata?: Json | null
+          source?: string | null
+          timestamp?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          value?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "google_fit_data_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       historico_medidas: {
         Row: {
-          circunferencia_abdominal_cm: number | null
-          circunferencia_braco_cm: number | null
-          circunferencia_perna_cm: number | null
-          created_at: string | null
-          data_medicao: string | null
+          altura_cm: number
+          circunferencia_abdominal_cm: number
+          created_at: string
+          data_medicao: string
           id: string
-          peso_kg: number | null
-          updated_at: string | null
-          user_id: string | null
+          imc: number
+          nome_usuario: string | null
+          peso_kg: number
+          user_id: string
         }
         Insert: {
-          circunferencia_abdominal_cm?: number | null
-          circunferencia_braco_cm?: number | null
-          circunferencia_perna_cm?: number | null
-          created_at?: string | null
-          data_medicao?: string | null
+          altura_cm: number
+          circunferencia_abdominal_cm: number
+          created_at?: string
+          data_medicao?: string
           id?: string
-          peso_kg?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          imc: number
+          nome_usuario?: string | null
+          peso_kg: number
+          user_id: string
         }
         Update: {
-          circunferencia_abdominal_cm?: number | null
-          circunferencia_braco_cm?: number | null
-          circunferencia_perna_cm?: number | null
-          created_at?: string | null
-          data_medicao?: string | null
+          altura_cm?: number
+          circunferencia_abdominal_cm?: number
+          created_at?: string
+          data_medicao?: string
           id?: string
-          peso_kg?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          imc?: number
+          nome_usuario?: string | null
+          peso_kg?: number
+          user_id?: string
         }
         Relationships: []
       }
+      informacoes_fisicas: {
+        Row: {
+          altura_cm: number
+          circunferencia_abdominal_cm: number
+          created_at: string | null
+          data_nascimento: string
+          id: string
+          imc: number | null
+          meta_peso_kg: number | null
+          nome_usuario: string | null
+          peso_atual_kg: number
+          sexo: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          altura_cm: number
+          circunferencia_abdominal_cm: number
+          created_at?: string | null
+          data_nascimento: string
+          id?: string
+          imc?: number | null
+          meta_peso_kg?: number | null
+          nome_usuario?: string | null
+          peso_atual_kg: number
+          sexo: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          altura_cm?: number
+          circunferencia_abdominal_cm?: number
+          created_at?: string | null
+          data_nascimento?: string
+          id?: string
+          imc?: number | null
+          meta_peso_kg?: number | null
+          nome_usuario?: string | null
+          peso_atual_kg?: number
+          sexo?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      interactions: {
+        Row: {
+          created_at: string | null
+          id: string
+          interaction_type: Database["public"]["Enums"]["interaction_type"]
+          metadata: Json | null
+          nome_usuario: string | null
+          target_id: string | null
+          target_table: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          interaction_type: Database["public"]["Enums"]["interaction_type"]
+          metadata?: Json | null
+          nome_usuario?: string | null
+          target_id?: string | null
+          target_table?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          interaction_type?: Database["public"]["Enums"]["interaction_type"]
+          metadata?: Json | null
+          nome_usuario?: string | null
+          target_id?: string | null
+          target_table?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      memory_game_scores: {
+        Row: {
+          completed: boolean
+          created_at: string
+          id: string
+          level: number
+          mistakes_count: number
+          moves_count: number
+          pairs_found: number
+          score: number
+          time_taken: number
+          total_pairs: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          level: number
+          mistakes_count?: number
+          moves_count?: number
+          pairs_found?: number
+          score?: number
+          time_taken: number
+          total_pairs?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          level?: number
+          mistakes_count?: number
+          moves_count?: number
+          pairs_found?: number
+          score?: number
+          time_taken?: number
+          total_pairs?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_memory_game_scores_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       missao_dia: {
         Row: {
-          concluida: boolean | null
-          created_at: string | null
-          data_conclusao: string | null
-          data_missao: string | null
-          descricao: string | null
+          agua_litros: string | null
+          atividade_fisica: boolean | null
+          concluido: boolean | null
+          created_at: string
+          data: string
+          energia_ao_acordar: number | null
+          estresse_nivel: number | null
+          fome_emocional: boolean | null
+          gratidao: string | null
+          habito_saudavel: string | null
           humor: string | null
           id: string
           inspira: string | null
-          liquido_ao_acordar: boolean | null
-          pontos_recompensa: number | null
-          prioridades: string[] | null
-          tipo_missao: string | null
-          titulo: string | null
-          updated_at: string | null
-          user_id: string | null
+          intencao_para_amanha: string | null
+          liquido_ao_acordar: string | null
+          mensagem_dia: string | null
+          momento_feliz: string | null
+          nome_usuario: string | null
+          nota_dia: number | null
+          pequena_vitoria: string | null
+          pratica_conexao: string | null
+          prioridades: Json | null
+          sono_horas: number | null
+          tarefa_bem_feita: string | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          concluida?: boolean | null
-          created_at?: string | null
-          data_conclusao?: string | null
-          data_missao?: string | null
-          descricao?: string | null
+          agua_litros?: string | null
+          atividade_fisica?: boolean | null
+          concluido?: boolean | null
+          created_at?: string
+          data: string
+          energia_ao_acordar?: number | null
+          estresse_nivel?: number | null
+          fome_emocional?: boolean | null
+          gratidao?: string | null
+          habito_saudavel?: string | null
           humor?: string | null
           id?: string
           inspira?: string | null
-          liquido_ao_acordar?: boolean | null
-          pontos_recompensa?: number | null
-          prioridades?: string[] | null
-          tipo_missao?: string | null
-          titulo?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          intencao_para_amanha?: string | null
+          liquido_ao_acordar?: string | null
+          mensagem_dia?: string | null
+          momento_feliz?: string | null
+          nome_usuario?: string | null
+          nota_dia?: number | null
+          pequena_vitoria?: string | null
+          pratica_conexao?: string | null
+          prioridades?: Json | null
+          sono_horas?: number | null
+          tarefa_bem_feita?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          concluida?: boolean | null
-          created_at?: string | null
-          data_conclusao?: string | null
-          data_missao?: string | null
-          descricao?: string | null
+          agua_litros?: string | null
+          atividade_fisica?: boolean | null
+          concluido?: boolean | null
+          created_at?: string
+          data?: string
+          energia_ao_acordar?: number | null
+          estresse_nivel?: number | null
+          fome_emocional?: boolean | null
+          gratidao?: string | null
+          habito_saudavel?: string | null
           humor?: string | null
           id?: string
           inspira?: string | null
-          liquido_ao_acordar?: boolean | null
-          pontos_recompensa?: number | null
-          prioridades?: string[] | null
-          tipo_missao?: string | null
-          titulo?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          intencao_para_amanha?: string | null
+          liquido_ao_acordar?: string | null
+          mensagem_dia?: string | null
+          momento_feliz?: string | null
+          nome_usuario?: string | null
+          nota_dia?: number | null
+          pequena_vitoria?: string | null
+          pratica_conexao?: string | null
+          prioridades?: Json | null
+          sono_horas?: number | null
+          tarefa_bem_feita?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -1053,364 +837,393 @@ export type Database = {
         Row: {
           autocuidado: boolean | null
           bebeu_agua: boolean | null
-          created_at: string | null
-          data: string | null
+          created_at: string
+          data: string
           dormiu_bem: boolean | null
           humor: string | null
           id: string
-          observacoes: string | null
-          pontos_conquistados: number | null
-          updated_at: string | null
-          user_id: string | null
+          nome_usuario: string | null
+          user_id: string
         }
         Insert: {
           autocuidado?: boolean | null
           bebeu_agua?: boolean | null
-          created_at?: string | null
-          data?: string | null
+          created_at?: string
+          data: string
           dormiu_bem?: boolean | null
           humor?: string | null
           id?: string
-          observacoes?: string | null
-          pontos_conquistados?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          nome_usuario?: string | null
+          user_id: string
         }
         Update: {
           autocuidado?: boolean | null
           bebeu_agua?: boolean | null
-          created_at?: string | null
-          data?: string | null
+          created_at?: string
+          data?: string
           dormiu_bem?: boolean | null
           humor?: string | null
           id?: string
-          observacoes?: string | null
-          pontos_conquistados?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          nome_usuario?: string | null
+          user_id?: string
         }
         Relationships: []
       }
-      module_display_config: {
+      perfil_comportamental: {
         Row: {
-          course_id: string | null
-          created_at: string | null
-          display_mode: string | null
+          apoio_familiar: string | null
+          created_at: string
+          gratidao_hoje: string | null
           id: string
-          show_module_activation: boolean | null
-          updated_at: string | null
+          motivacao_principal: string | null
+          motivo_desistencia: string | null
+          motivo_desistencia_outro: string | null
+          nivel_autocuidado: number | null
+          nivel_estresse: number | null
+          nome_usuario: string | null
+          sentimento_hoje: string | null
+          tentativa_emagrecimento: string | null
+          tentativa_emagrecimento_outro: string | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          display_mode?: string | null
+          apoio_familiar?: string | null
+          created_at?: string
+          gratidao_hoje?: string | null
           id?: string
-          show_module_activation?: boolean | null
-          updated_at?: string | null
+          motivacao_principal?: string | null
+          motivo_desistencia?: string | null
+          motivo_desistencia_outro?: string | null
+          nivel_autocuidado?: number | null
+          nivel_estresse?: number | null
+          nome_usuario?: string | null
+          sentimento_hoje?: string | null
+          tentativa_emagrecimento?: string | null
+          tentativa_emagrecimento_outro?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          course_id?: string | null
-          created_at?: string | null
-          display_mode?: string | null
+          apoio_familiar?: string | null
+          created_at?: string
+          gratidao_hoje?: string | null
           id?: string
-          show_module_activation?: boolean | null
-          updated_at?: string | null
+          motivacao_principal?: string | null
+          motivo_desistencia?: string | null
+          motivo_desistencia_outro?: string | null
+          nivel_autocuidado?: number | null
+          nivel_estresse?: number | null
+          nome_usuario?: string | null
+          sentimento_hoje?: string | null
+          tentativa_emagrecimento?: string | null
+          tentativa_emagrecimento_outro?: string | null
+          updated_at?: string
+          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "module_display_config_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: true
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       pesagens: {
         Row: {
-          created_at: string | null
-          data_medicao: string | null
-          data_pesagem: string | null
-          dispositivo_id: string | null
-          fonte_dados: string | null
-          hora_pesagem: string | null
+          agua_corporal_pct: number | null
+          circunferencia_abdominal_cm: number | null
+          created_at: string
+          data_medicao: string
+          gordura_corporal_pct: number | null
+          gordura_visceral: number | null
           id: string
-          observacoes: string | null
+          idade_metabolica: number | null
+          imc: number | null
+          massa_muscular_kg: number | null
+          massa_ossea_kg: number | null
+          nome_usuario: string | null
+          origem_medicao: string
           peso_kg: number
-          sincronizado_com_google_fit: boolean | null
-          updated_at: string | null
-          user_id: string | null
+          taxa_metabolica_basal: number | null
+          tipo_corpo: string | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          created_at?: string | null
-          data_medicao?: string | null
-          data_pesagem?: string | null
-          dispositivo_id?: string | null
-          fonte_dados?: string | null
-          hora_pesagem?: string | null
+          agua_corporal_pct?: number | null
+          circunferencia_abdominal_cm?: number | null
+          created_at?: string
+          data_medicao?: string
+          gordura_corporal_pct?: number | null
+          gordura_visceral?: number | null
           id?: string
-          observacoes?: string | null
+          idade_metabolica?: number | null
+          imc?: number | null
+          massa_muscular_kg?: number | null
+          massa_ossea_kg?: number | null
+          nome_usuario?: string | null
+          origem_medicao?: string
           peso_kg: number
-          sincronizado_com_google_fit?: boolean | null
-          updated_at?: string | null
-          user_id?: string | null
+          taxa_metabolica_basal?: number | null
+          tipo_corpo?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          created_at?: string | null
-          data_medicao?: string | null
-          data_pesagem?: string | null
-          dispositivo_id?: string | null
-          fonte_dados?: string | null
-          hora_pesagem?: string | null
+          agua_corporal_pct?: number | null
+          circunferencia_abdominal_cm?: number | null
+          created_at?: string
+          data_medicao?: string
+          gordura_corporal_pct?: number | null
+          gordura_visceral?: number | null
           id?: string
-          observacoes?: string | null
+          idade_metabolica?: number | null
+          imc?: number | null
+          massa_muscular_kg?: number | null
+          massa_ossea_kg?: number | null
+          nome_usuario?: string | null
+          origem_medicao?: string
           peso_kg?: number
-          sincronizado_com_google_fit?: boolean | null
-          updated_at?: string | null
-          user_id?: string | null
+          taxa_metabolica_basal?: number | null
+          tipo_corpo?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
-      playlist_courses: {
+      pontuacao_diaria: {
         Row: {
-          added_at: string | null
-          course_id: string | null
+          categoria_dia: string | null
+          created_at: string
+          data: string
           id: string
-          playlist_id: string | null
+          nome_usuario: string | null
+          pontos_agua: number | null
+          pontos_atividade_fisica: number | null
+          pontos_avaliacao_dia: number | null
+          pontos_conexao_interna: number | null
+          pontos_energia_acordar: number | null
+          pontos_estresse: number | null
+          pontos_fome_emocional: number | null
+          pontos_gratidao: number | null
+          pontos_intencao_amanha: number | null
+          pontos_liquido_manha: number | null
+          pontos_pequena_vitoria: number | null
+          pontos_sono: number | null
+          total_pontos_dia: number | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          added_at?: string | null
-          course_id?: string | null
+          categoria_dia?: string | null
+          created_at?: string
+          data?: string
           id?: string
-          playlist_id?: string | null
+          nome_usuario?: string | null
+          pontos_agua?: number | null
+          pontos_atividade_fisica?: number | null
+          pontos_avaliacao_dia?: number | null
+          pontos_conexao_interna?: number | null
+          pontos_energia_acordar?: number | null
+          pontos_estresse?: number | null
+          pontos_fome_emocional?: number | null
+          pontos_gratidao?: number | null
+          pontos_intencao_amanha?: number | null
+          pontos_liquido_manha?: number | null
+          pontos_pequena_vitoria?: number | null
+          pontos_sono?: number | null
+          total_pontos_dia?: number | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          added_at?: string | null
-          course_id?: string | null
+          categoria_dia?: string | null
+          created_at?: string
+          data?: string
           id?: string
-          playlist_id?: string | null
+          nome_usuario?: string | null
+          pontos_agua?: number | null
+          pontos_atividade_fisica?: number | null
+          pontos_avaliacao_dia?: number | null
+          pontos_conexao_interna?: number | null
+          pontos_energia_acordar?: number | null
+          pontos_estresse?: number | null
+          pontos_fome_emocional?: number | null
+          pontos_gratidao?: number | null
+          pontos_intencao_amanha?: number | null
+          pontos_liquido_manha?: number | null
+          pontos_pequena_vitoria?: number | null
+          pontos_sono?: number | null
+          total_pontos_dia?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "playlist_courses_course_id_fkey"
-            columns: ["course_id"]
+            foreignKeyName: "fk_pontuacao_diaria_user_profiles"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "playlist_courses_playlist_id_fkey"
-            columns: ["playlist_id"]
-            isOneToOne: false
-            referencedRelation: "user_playlists"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
       }
-      pontuacao_diaria: {
-        Row: {
-          created_at: string | null
-          data_pontuacao: string | null
-          id: string
-          meta_diaria: number | null
-          pontos_alimentacao: number | null
-          pontos_avaliacao_dia: number | null
-          pontos_estresse: number | null
-          pontos_exercicio: number | null
-          pontos_fome_emocional: number | null
-          pontos_gerais: number | null
-          pontos_hidratacao: number | null
-          pontos_sono: number | null
-          total_pontos_dia: number | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          data_pontuacao?: string | null
-          id?: string
-          meta_diaria?: number | null
-          pontos_alimentacao?: number | null
-          pontos_avaliacao_dia?: number | null
-          pontos_estresse?: number | null
-          pontos_exercicio?: number | null
-          pontos_fome_emocional?: number | null
-          pontos_gerais?: number | null
-          pontos_hidratacao?: number | null
-          pontos_sono?: number | null
-          total_pontos_dia?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          data_pontuacao?: string | null
-          id?: string
-          meta_diaria?: number | null
-          pontos_alimentacao?: number | null
-          pontos_avaliacao_dia?: number | null
-          pontos_estresse?: number | null
-          pontos_exercicio?: number | null
-          pontos_fome_emocional?: number | null
-          pontos_gerais?: number | null
-          pontos_hidratacao?: number | null
-          pontos_sono?: number | null
-          total_pontos_dia?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
+          altura_cm: number | null
           avatar_url: string | null
+          celular: string | null
           created_at: string | null
-          email: string | null
+          data_nascimento: string | null
+          email: string
           full_name: string | null
           id: string
+          role: Database["public"]["Enums"]["user_role"]
+          sexo: string | null
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
+          altura_cm?: number | null
           avatar_url?: string | null
+          celular?: string | null
           created_at?: string | null
-          email?: string | null
-          full_name?: string | null
-          id: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email?: string | null
+          data_nascimento?: string | null
+          email: string
           full_name?: string | null
           id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          sexo?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
+        }
+        Update: {
+          altura_cm?: number | null
+          avatar_url?: string | null
+          celular?: string | null
+          created_at?: string | null
+          data_nascimento?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          sexo?: string | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
       sessions: {
         Row: {
-          calorias_estimadas: number | null
-          concluida: boolean | null
+          assigned_to: string | null
+          available_tools: string[] | null
+          category: string | null
+          content: string | null
           created_at: string | null
-          data_sessao: string | null
-          descricao: string | null
-          duracao_minutos: number | null
-          hora_fim: string | null
-          hora_inicio: string | null
+          created_by: string | null
+          description: string | null
+          estimated_time: number | null
           id: string
-          intensidade: string | null
-          observacoes: string | null
-          tipo_sessao: string | null
-          titulo: string
+          is_public: boolean | null
+          notification_type: string | null
+          pdf_url: string | null
+          prerequisites: string | null
+          scheduled_date: string | null
+          send_type: string | null
+          title: string
           updated_at: string | null
-          user_id: string | null
+          video_url: string | null
+          wheel_tools: string[] | null
         }
         Insert: {
-          calorias_estimadas?: number | null
-          concluida?: boolean | null
+          assigned_to?: string | null
+          available_tools?: string[] | null
+          category?: string | null
+          content?: string | null
           created_at?: string | null
-          data_sessao?: string | null
-          descricao?: string | null
-          duracao_minutos?: number | null
-          hora_fim?: string | null
-          hora_inicio?: string | null
+          created_by?: string | null
+          description?: string | null
+          estimated_time?: number | null
           id?: string
-          intensidade?: string | null
-          observacoes?: string | null
-          tipo_sessao?: string | null
-          titulo: string
+          is_public?: boolean | null
+          notification_type?: string | null
+          pdf_url?: string | null
+          prerequisites?: string | null
+          scheduled_date?: string | null
+          send_type?: string | null
+          title: string
           updated_at?: string | null
-          user_id?: string | null
+          video_url?: string | null
+          wheel_tools?: string[] | null
         }
         Update: {
-          calorias_estimadas?: number | null
-          concluida?: boolean | null
+          assigned_to?: string | null
+          available_tools?: string[] | null
+          category?: string | null
+          content?: string | null
           created_at?: string | null
-          data_sessao?: string | null
-          descricao?: string | null
-          duracao_minutos?: number | null
-          hora_fim?: string | null
-          hora_inicio?: string | null
+          created_by?: string | null
+          description?: string | null
+          estimated_time?: number | null
           id?: string
-          intensidade?: string | null
-          observacoes?: string | null
-          tipo_sessao?: string | null
-          titulo?: string
+          is_public?: boolean | null
+          notification_type?: string | null
+          pdf_url?: string | null
+          prerequisites?: string | null
+          scheduled_date?: string | null
+          send_type?: string | null
+          title?: string
           updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      social_features_config: {
-        Row: {
-          course_id: string | null
-          created_at: string | null
-          enable_comments: boolean | null
-          enable_favorites: boolean | null
-          enable_ratings: boolean | null
-          enable_recommendations: boolean | null
-          id: string
-          updated_at: string | null
-        }
-        Insert: {
-          course_id?: string | null
-          created_at?: string | null
-          enable_comments?: boolean | null
-          enable_favorites?: boolean | null
-          enable_ratings?: boolean | null
-          enable_recommendations?: boolean | null
-          id?: string
-          updated_at?: string | null
-        }
-        Update: {
-          course_id?: string | null
-          created_at?: string | null
-          enable_comments?: boolean | null
-          enable_favorites?: boolean | null
-          enable_ratings?: boolean | null
-          enable_recommendations?: boolean | null
-          id?: string
-          updated_at?: string | null
+          video_url?: string | null
+          wheel_tools?: string[] | null
         }
         Relationships: [
           {
-            foreignKeyName: "social_features_config_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: true
-            referencedRelation: "courses"
+            foreignKeyName: "sessions_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
       }
-      user_badges: {
+      test_responses: {
         Row: {
-          badge_description: string | null
-          badge_name: string
-          earned_at: string | null
+          completed_at: string | null
           id: string
-          user_id: string | null
+          nome_usuario: string | null
+          responses: Json
+          test_id: string
+          user_id: string
         }
         Insert: {
-          badge_description?: string | null
-          badge_name: string
-          earned_at?: string | null
+          completed_at?: string | null
           id?: string
-          user_id?: string | null
+          nome_usuario?: string | null
+          responses: Json
+          test_id: string
+          user_id: string
         }
         Update: {
-          badge_description?: string | null
-          badge_name?: string
-          earned_at?: string | null
+          completed_at?: string | null
           id?: string
-          user_id?: string | null
+          nome_usuario?: string | null
+          responses?: Json
+          test_id?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_badges_user_id_fkey"
+            foreignKeyName: "test_responses_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_responses_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -1418,111 +1231,153 @@ export type Database = {
           },
         ]
       }
-      user_certificates: {
+      tests: {
         Row: {
-          certificate_url: string | null
-          course_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
           id: string
-          issued_at: string | null
-          user_id: string | null
+          is_public: boolean | null
+          questions: Json
+          title: string
         }
         Insert: {
-          certificate_url?: string | null
-          course_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
           id?: string
-          issued_at?: string | null
-          user_id?: string | null
+          is_public?: boolean | null
+          questions: Json
+          title: string
         }
         Update: {
-          certificate_url?: string | null
-          course_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
           id?: string
-          issued_at?: string | null
-          user_id?: string | null
+          is_public?: boolean | null
+          questions?: Json
+          title?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_certificates_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_certificates_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "tests_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          id: string
+          nome_usuario: string | null
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          id?: string
+          nome_usuario?: string | null
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          id?: string
+          nome_usuario?: string | null
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
             referencedColumns: ["id"]
           },
         ]
       }
       user_challenges: {
         Row: {
-          challenge_id: string | null
-          created_at: string | null
+          challenge_id: string
+          completed_at: string | null
           id: string
           is_completed: boolean | null
+          nome_usuario: string | null
           progress: number | null
           started_at: string | null
-          target_value: number | null
-          updated_at: string | null
-          user_id: string | null
+          target_value: number
+          user_id: string
         }
         Insert: {
-          challenge_id?: string | null
-          created_at?: string | null
+          challenge_id: string
+          completed_at?: string | null
           id?: string
           is_completed?: boolean | null
+          nome_usuario?: string | null
           progress?: number | null
           started_at?: string | null
-          target_value?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          target_value: number
+          user_id: string
         }
         Update: {
-          challenge_id?: string | null
-          created_at?: string | null
+          challenge_id?: string
+          completed_at?: string | null
           id?: string
           is_completed?: boolean | null
+          nome_usuario?: string | null
           progress?: number | null
           started_at?: string | null
-          target_value?: number | null
-          updated_at?: string | null
-          user_id?: string | null
+          target_value?: number
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_challenges_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_course_progress: {
         Row: {
+          completed: boolean | null
           completed_at: string | null
-          completed_lessons: number | null
-          course_id: string | null
+          course_id: string
+          created_at: string | null
           id: string
-          progress_percentage: number | null
-          started_at: string | null
-          total_lessons: number | null
-          user_id: string | null
+          lesson_id: string
+          nome_usuario: string | null
+          updated_at: string | null
+          user_id: string
         }
         Insert: {
+          completed?: boolean | null
           completed_at?: string | null
-          completed_lessons?: number | null
-          course_id?: string | null
+          course_id: string
+          created_at?: string | null
           id?: string
-          progress_percentage?: number | null
-          started_at?: string | null
-          total_lessons?: number | null
-          user_id?: string | null
+          lesson_id: string
+          nome_usuario?: string | null
+          updated_at?: string | null
+          user_id: string
         }
         Update: {
+          completed?: boolean | null
           completed_at?: string | null
-          completed_lessons?: number | null
-          course_id?: string | null
+          course_id?: string
+          created_at?: string | null
           id?: string
-          progress_percentage?: number | null
-          started_at?: string | null
-          total_lessons?: number | null
-          user_id?: string | null
+          lesson_id?: string
+          nome_usuario?: string | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -1530,6 +1385,13 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_course_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "course_lessons"
             referencedColumns: ["id"]
           },
           {
@@ -1543,267 +1405,196 @@ export type Database = {
       }
       user_google_credentials: {
         Row: {
-          access_token: string | null
+          access_token: string
           created_at: string | null
+          email: string
           expires_at: string | null
           id: string
           refresh_token: string | null
-          scope: string | null
-          token_type: string | null
           updated_at: string | null
-          user_id: string | null
         }
         Insert: {
-          access_token?: string | null
+          access_token: string
           created_at?: string | null
+          email: string
           expires_at?: string | null
           id?: string
           refresh_token?: string | null
-          scope?: string | null
-          token_type?: string | null
           updated_at?: string | null
-          user_id?: string | null
         }
         Update: {
-          access_token?: string | null
+          access_token?: string
           created_at?: string | null
+          email?: string
           expires_at?: string | null
           id?: string
           refresh_token?: string | null
-          scope?: string | null
-          token_type?: string | null
           updated_at?: string | null
-          user_id?: string | null
         }
         Relationships: []
-      }
-      user_lesson_progress: {
-        Row: {
-          completed_at: string | null
-          id: string
-          is_completed: boolean | null
-          lesson_id: string | null
-          user_id: string | null
-          watched_duration: number | null
-        }
-        Insert: {
-          completed_at?: string | null
-          id?: string
-          is_completed?: boolean | null
-          lesson_id?: string | null
-          user_id?: string | null
-          watched_duration?: number | null
-        }
-        Update: {
-          completed_at?: string | null
-          id?: string
-          is_completed?: boolean | null
-          lesson_id?: string | null
-          user_id?: string | null
-          watched_duration?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_lesson_progress_lesson_id_fkey"
-            columns: ["lesson_id"]
-            isOneToOne: false
-            referencedRelation: "course_lessons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_lesson_progress_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_playlists: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          id: string
-          is_public: boolean | null
-          name: string
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          is_public?: boolean | null
-          name: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          is_public?: boolean | null
-          name?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_playlists_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       user_points: {
         Row: {
+          best_streak: number | null
+          completed_challenges: number | null
           created_at: string | null
-          historico_pontos: Json | null
+          current_streak: number | null
+          daily_points: number | null
           id: string
-          nivel_atual: number | null
-          pontos_para_proximo_nivel: number | null
-          pontos_totais: number | null
+          last_activity_date: string | null
+          monthly_points: number | null
+          nome_usuario: string | null
+          total_points: number | null
           updated_at: string | null
-          user_id: string | null
+          user_id: string
+          weekly_points: number | null
         }
         Insert: {
+          best_streak?: number | null
+          completed_challenges?: number | null
           created_at?: string | null
-          historico_pontos?: Json | null
+          current_streak?: number | null
+          daily_points?: number | null
           id?: string
-          nivel_atual?: number | null
-          pontos_para_proximo_nivel?: number | null
-          pontos_totais?: number | null
+          last_activity_date?: string | null
+          monthly_points?: number | null
+          nome_usuario?: string | null
+          total_points?: number | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
+          weekly_points?: number | null
         }
         Update: {
+          best_streak?: number | null
+          completed_challenges?: number | null
           created_at?: string | null
-          historico_pontos?: Json | null
+          current_streak?: number | null
+          daily_points?: number | null
           id?: string
-          nivel_atual?: number | null
-          pontos_para_proximo_nivel?: number | null
-          pontos_totais?: number | null
+          last_activity_date?: string | null
+          monthly_points?: number | null
+          nome_usuario?: string | null
+          total_points?: number | null
           updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      user_progress: {
-        Row: {
-          completed: boolean | null
-          completed_at: string | null
-          course_id: string | null
-          created_at: string | null
-          id: string
-          lesson_id: string | null
-          progress_percentage: number | null
-          started_at: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          completed?: boolean | null
-          completed_at?: string | null
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          lesson_id?: string | null
-          progress_percentage?: number | null
-          started_at?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          completed?: boolean | null
-          completed_at?: string | null
-          course_id?: string | null
-          created_at?: string | null
-          id?: string
-          lesson_id?: string | null
-          progress_percentage?: number | null
-          started_at?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
+          weekly_points?: number | null
         }
         Relationships: []
       }
       weekly_evaluations: {
         Row: {
-          atingiu_meta: boolean | null
           created_at: string | null
           id: string
-          meta_semanal: number | null
-          observacoes: string | null
-          peso_final: number | null
-          peso_inicial: number | null
-          semana_fim: string | null
-          semana_inicio: string | null
+          learning_data: Json
+          next_week_goals: string | null
+          nome_usuario: string | null
+          performance_ratings: Json
           updated_at: string | null
-          user_id: string | null
-          variacao_peso: number | null
+          user_id: string
+          week_start_date: string
         }
         Insert: {
-          atingiu_meta?: boolean | null
           created_at?: string | null
           id?: string
-          meta_semanal?: number | null
-          observacoes?: string | null
-          peso_final?: number | null
-          peso_inicial?: number | null
-          semana_fim?: string | null
-          semana_inicio?: string | null
+          learning_data?: Json
+          next_week_goals?: string | null
+          nome_usuario?: string | null
+          performance_ratings?: Json
           updated_at?: string | null
-          user_id?: string | null
-          variacao_peso?: number | null
+          user_id: string
+          week_start_date: string
         }
         Update: {
-          atingiu_meta?: boolean | null
           created_at?: string | null
           id?: string
-          meta_semanal?: number | null
-          observacoes?: string | null
-          peso_final?: number | null
-          peso_inicial?: number | null
-          semana_fim?: string | null
-          semana_inicio?: string | null
+          learning_data?: Json
+          next_week_goals?: string | null
+          nome_usuario?: string | null
+          performance_ratings?: Json
           updated_at?: string | null
-          user_id?: string | null
-          variacao_peso?: number | null
+          user_id?: string
+          week_start_date?: string
         }
         Relationships: []
       }
       weight_goals: {
         Row: {
-          created_at: string | null
-          data_fim: string | null
-          data_inicio: string | null
+          created_at: string
+          data_inicio: string
+          data_limite: string
           id: string
-          meta_peso_kg: number | null
-          status: string | null
-          updated_at: string | null
-          user_id: string | null
+          nome_usuario: string | null
+          observacoes: string | null
+          peso_inicial: number
+          peso_meta: number
+          status: string
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          created_at?: string | null
-          data_fim?: string | null
-          data_inicio?: string | null
+          created_at?: string
+          data_inicio: string
+          data_limite: string
           id?: string
-          meta_peso_kg?: number | null
-          status?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          nome_usuario?: string | null
+          observacoes?: string | null
+          peso_inicial: number
+          peso_meta: number
+          status?: string
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          created_at?: string | null
-          data_fim?: string | null
-          data_inicio?: string | null
+          created_at?: string
+          data_inicio?: string
+          data_limite?: string
           id?: string
-          meta_peso_kg?: number | null
-          status?: string | null
-          updated_at?: string | null
-          user_id?: string | null
+          nome_usuario?: string | null
+          observacoes?: string | null
+          peso_inicial?: number
+          peso_meta?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wheel_responses: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          nome_usuario: string | null
+          reflection_answers: Json | null
+          responses: Json
+          session_id: string
+          updated_at: string
+          user_id: string
+          wheel_type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          nome_usuario?: string | null
+          reflection_answers?: Json | null
+          responses?: Json
+          session_id: string
+          updated_at?: string
+          user_id: string
+          wheel_type: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          nome_usuario?: string | null
+          reflection_answers?: Json | null
+          responses?: Json
+          session_id?: string
+          updated_at?: string
+          user_id?: string
+          wheel_type?: string
         }
         Relationships: []
       }
@@ -1813,52 +1604,85 @@ export type Database = {
     }
     Functions: {
       calcular_categoria_imc: {
-        Args: { imc: number }
+        Args: { imc_valor: number }
         Returns: string
       }
-      calcular_imc: {
-        Args: { peso_kg: number; altura_cm: number }
+      calcular_pontos_missao_detalhado: {
+        Args: { missao_data: Database["public"]["Tables"]["missao_dia"]["Row"] }
         Returns: number
       }
       calcular_risco_cardiometabolico: {
-        Args: { imc: number; circunferencia_abdominal: number; genero: string }
+        Args: { circunferencia: number; sexo: string }
         Returns: string
       }
       check_physical_data_complete: {
         Args: { user_uuid: string }
         Returns: boolean
       }
-      create_complete_user_registration: {
-        Args: { user_email: string; user_name: string; user_password: string }
-        Returns: string
-      }
-      execute_user_health_check: {
-        Args: { user_uuid: string }
-        Returns: Json
-      }
-      inserir_pesagem_automatica: {
+      create_complete_user_profile: {
         Args: {
           p_user_id: string
-          p_peso_kg: number
-          p_dispositivo_id?: string
+          p_full_name: string
+          p_celular: string
+          p_data_nascimento: string
+          p_sexo: string
+          p_altura_cm: number
         }
+        Returns: Json
+      }
+      create_complete_user_registration: {
+        Args: {
+          p_user_id: string
+          p_full_name: string
+          p_email: string
+          p_data_nascimento: string
+          p_sexo: string
+          p_altura_cm: number
+          p_peso_atual_kg: number
+          p_circunferencia_abdominal_cm: number
+          p_celular?: string
+          p_meta_peso_kg?: number
+        }
+        Returns: Json
+      }
+      execute_user_health_check: {
+        Args: { p_profile_id: string }
+        Returns: Json
+      }
+      get_user_name: {
+        Args: { user_uuid: string }
         Returns: string
+      }
+      get_user_role: {
+        Args: { user_uuid: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
+      is_admin: {
+        Args: { user_uuid: string }
+        Returns: boolean
       }
       run_data_integrity_monitor: {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      sincronizar_com_google_fit: {
-        Args: { p_user_id: string }
-        Returns: boolean
+      track_interaction: {
+        Args: {
+          p_user_id: string
+          p_type: Database["public"]["Enums"]["interaction_type"]
+          p_target_id?: string
+          p_target_table?: string
+          p_metadata?: Json
+        }
+        Returns: string
       }
       update_user_points: {
-        Args: { points_to_add: number; user_uuid: string }
+        Args: { p_user_id: string; p_points: number; p_activity_type?: string }
         Returns: undefined
       }
     }
     Enums: {
-      [_ in never]: never
+      interaction_type: "diary" | "session" | "test" | "comment" | "favorite"
+      user_role: "admin" | "client" | "visitor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1984,11 +1808,10 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
-    Enums: {},
+    Enums: {
+      interaction_type: ["diary", "session", "test", "comment", "favorite"],
+      user_role: ["admin", "client", "visitor"],
+    },
   },
 } as const
-
