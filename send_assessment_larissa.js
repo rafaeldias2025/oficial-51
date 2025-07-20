@@ -15,7 +15,7 @@ async function sendAssessmentToLarissa() {
     const { data: larissa, error: userError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
       
     if (userError) {
@@ -106,7 +106,7 @@ async function sendAssessmentToLarissa() {
     console.log(`   - Painel do usuário: http://localhost:8081/dashboard`);
     
     console.log('\n📧 Informações para Larissa:');
-    console.log('   - Email: larissabarbosa@gmail.com');
+    console.log('   - Email: larissa@institutodossonhos.com');
     console.log('   - Senha: 10203040');
     console.log('   - Avaliação: Roda da Saúde Galileu');
     console.log('   - Data limite: 7 dias');

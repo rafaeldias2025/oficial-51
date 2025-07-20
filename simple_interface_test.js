@@ -212,7 +212,7 @@ async function simpleInterfaceTest() {
     console.log('   7. Buscar e selecionar usuário');
     console.log('   8. Clicar "Enviar avaliação"');
     console.log('   9. Abrir http://localhost:8082/dashboard');
-    console.log('   10. Fazer login: larissabarbosa@gmail.com / 10203040');
+    console.log('   10. Fazer login: larissa@institutodossonhos.com / 10203040');
     console.log('   11. Clicar em "Avaliações" no menu lateral');
     console.log('   12. Verificar se avaliação aparece na aba "Pendentes"');
     console.log('   13. Clicar "Iniciar Avaliação"');

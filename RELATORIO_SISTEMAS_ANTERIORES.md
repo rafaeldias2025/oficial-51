@@ -1,8 +1,8 @@
-# Relatório dos Sistemas Anteriores - SistemaTizeCoach e SistemaGB
+# Relatório dos Sistemas Anteriores - Instituto dos Sonhos e Instituto dos Sonhos
 
 ## 📊 Resumo Executivo
 
-Este relatório documenta a migração e integração dos dados dos sistemas anteriores **SistemaTizeCoach** e **SistemaGB** para o sistema atual. Foram identificados e migrados dados de avaliações completas com muitas perguntas, conforme solicitado pelo usuário.
+Este relatório documenta a migração e integração dos dados dos sistemas anteriores **Instituto dos Sonhos** e **Instituto dos Sonhos** para o sistema atual. Foram identificados e migrados dados de avaliações completas com muitas perguntas, conforme solicitado pelo usuário.
 
 ## 🔍 Dados Migrados
 
@@ -10,11 +10,11 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 
 | ID | Nome | Sistema | Email | Data de Criação |
 |----|------|---------|-------|-----------------|
-| 11111111-1111-1111-1111-111111111111 | João Silva - SistemaTizeCoach | SistemaTizeCoach | joao.silva@sistemetizecoach.com | 2025-01-15 |
-| 22222222-2222-2222-2222-222222222222 | Maria Santos - SistemaGB | SistemaGB | maria.santos@sistemagb.com | 2025-01-20 |
-| 33333333-3333-3333-3333-333333333333 | Pedro Oliveira - SistemaTizeCoach | SistemaTizeCoach | pedro.oliveira@sistemetizecoach.com | 2025-02-01 |
-| 44444444-4444-4444-4444-444444444444 | Ana Costa - SistemaGB | SistemaGB | ana.costa@sistemagb.com | 2025-02-10 |
-| 55555555-5555-5555-5555-555555555555 | Carlos Lima - SistemaTizeCoach | SistemaTizeCoach | carlos.lima@sistemetizecoach.com | 2025-02-15 |
+| 11111111-1111-1111-1111-111111111111 | João Silva - Instituto dos Sonhos | Instituto dos Sonhos | joao.silva@institutodossonhos.com | 2025-01-15 |
+| 22222222-2222-2222-2222-222222222222 | Maria Santos - Instituto dos Sonhos | Instituto dos Sonhos | maria.santos@institutodossonhos.com | 2025-01-20 |
+| 33333333-3333-3333-3333-333333333333 | Pedro Oliveira - Instituto dos Sonhos | Instituto dos Sonhos | pedro.oliveira@institutodossonhos.com | 2025-02-01 |
+| 44444444-4444-4444-4444-444444444444 | Ana Costa - Instituto dos Sonhos | Instituto dos Sonhos | ana.costa@institutodossonhos.com | 2025-02-10 |
+| 55555555-5555-5555-5555-555555555555 | Carlos Lima - Instituto dos Sonhos | Instituto dos Sonhos | carlos.lima@institutodossonhos.com | 2025-02-15 |
 
 ### 🛠️ Ferramentas de Avaliação Migradas
 
@@ -29,15 +29,15 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 
 | Usuário | Sistema | Ferramenta | Perguntas | Status | Data |
 |---------|---------|------------|-----------|--------|------|
-| João Silva | SistemaTizeCoach | Metas e Objetivos | 25 perguntas | ✅ Concluída | 2025-01-15 |
-| Maria Santos | SistemaGB | Bem-estar Emocional | 30 perguntas | ✅ Concluída | 2025-01-20 |
-| Pedro Oliveira | SistemaTizeCoach | Produtividade | 35 perguntas | ✅ Concluída | 2025-02-01 |
-| Ana Costa | SistemaGB | Relacionamentos | 20 perguntas | ✅ Concluída | 2025-02-10 |
-| Carlos Lima | SistemaTizeCoach | Metas e Objetivos | 28 perguntas | ✅ Concluída | 2025-02-15 |
+| João Silva | Instituto dos Sonhos | Metas e Objetivos | 25 perguntas | ✅ Concluída | 2025-01-15 |
+| Maria Santos | Instituto dos Sonhos | Bem-estar Emocional | 30 perguntas | ✅ Concluída | 2025-01-20 |
+| Pedro Oliveira | Instituto dos Sonhos | Produtividade | 35 perguntas | ✅ Concluída | 2025-02-01 |
+| Ana Costa | Instituto dos Sonhos | Relacionamentos | 20 perguntas | ✅ Concluída | 2025-02-10 |
+| Carlos Lima | Instituto dos Sonhos | Metas e Objetivos | 28 perguntas | ✅ Concluída | 2025-02-15 |
 
 ## 📝 Detalhamento das Perguntas
 
-### SistemaTizeCoach - Avaliação de Metas e Objetivos (25-28 perguntas)
+### Instituto dos Sonhos - Avaliação de Metas e Objetivos (25-28 perguntas)
 
 **Categorias de Perguntas:**
 - **Metas Pessoais**: Definição de sucesso, metas financeiras, saúde
@@ -53,7 +53,7 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 4. "Como você mede seu progresso?"
 5. "Qual é sua meta de saúde?"
 
-### SistemaGB - Avaliação de Bem-estar Emocional (30 perguntas)
+### Instituto dos Sonhos - Avaliação de Bem-estar Emocional (30 perguntas)
 
 **Categorias de Perguntas:**
 - **Emocional**: Sentimentos, estresse, resiliência, autoconfiança
@@ -67,7 +67,7 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 4. "Qual sua capacidade de resiliência?"
 5. "Como você expressa emoções?"
 
-### SistemaTizeCoach - Avaliação de Produtividade (35 perguntas)
+### Instituto dos Sonhos - Avaliação de Produtividade (35 perguntas)
 
 **Categorias de Perguntas:**
 - **Organização**: Planejamento, rotinas, priorização
@@ -82,7 +82,7 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 4. "Qual seu método de trabalho?"
 5. "Como você elimina distrações?"
 
-### SistemaGB - Avaliação de Relacionamentos (20 perguntas)
+### Instituto dos Sonhos - Avaliação de Relacionamentos (20 perguntas)
 
 **Categorias de Perguntas:**
 - **Construção**: Empatia, comunicação, escuta ativa
@@ -107,8 +107,8 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 - **Total de perguntas**: 138 perguntas
 
 ### Distribuição por Sistema:
-- **SistemaTizeCoach**: 3 usuários, 88 perguntas
-- **SistemaGB**: 2 usuários, 50 perguntas
+- **Instituto dos Sonhos**: 3 usuários, 88 perguntas
+- **Instituto dos Sonhos**: 2 usuários, 50 perguntas
 
 ### Categorias de Perguntas:
 - **Metas**: 53 perguntas
@@ -148,8 +148,8 @@ Este relatório documenta a migração e integração dos dados dos sistemas ant
 
 ## ✅ Conclusão
 
-A migração dos sistemas **SistemaTizeCoach** e **SistemaGB** foi realizada com sucesso, preservando **138 perguntas detalhadas** de **5 avaliações completas** realizadas por **5 usuários**. Os dados estão estruturados e prontos para uso no sistema atual, mantendo a rastreabilidade e categorização original.
+A migração dos sistemas **Instituto dos Sonhos** e **Instituto dos Sonhos** foi realizada com sucesso, preservando **138 perguntas detalhadas** de **5 avaliações completas** realizadas por **5 usuários**. Os dados estão estruturados e prontos para uso no sistema atual, mantendo a rastreabilidade e categorização original.
 
 **Total de dados migrados: 138 respostas de avaliação**
-**Sistemas integrados: SistemaTizeCoach e SistemaGB**
+**Sistemas integrados: Instituto dos Sonhos e Instituto dos Sonhos**
 **Status: ✅ Concluído com sucesso** 

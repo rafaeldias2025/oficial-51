@@ -83,7 +83,7 @@ async function adminCompleteFlow() {
     });
     
     // PASSO 9: Admin seleciona Larissa
-    const larissa = users.find(user => user.email === 'larissabarbosa@gmail.com');
+    const larissa = users.find(user => user.email === 'larissa@institutodossonhos.com');
     console.log('\n📋 PASSO 9: Admin seleciona Larissa');
     console.log(`   ✅ Usuário selecionado: ${larissa.full_name}`);
     console.log(`   ✅ Email: ${larissa.email}`);
@@ -154,7 +154,7 @@ async function adminCompleteFlow() {
     
     console.log('\n💡 PRÓXIMO PASSO: Larissa responde avaliação');
     console.log('   - URL: http://localhost:8082/dashboard');
-    console.log('   - Login: larissabarbosa@gmail.com');
+    console.log('   - Login: larissa@institutodossonhos.com');
     console.log('   - Senha: 10203040');
     
   } catch (error) {

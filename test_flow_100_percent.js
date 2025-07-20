@@ -163,7 +163,7 @@ async function testFlow100Percent() {
     // PASSO 12: Simular Larissa acessando dashboard
     console.log('\n📋 PASSO 12: Larissa acessa dashboard');
     console.log('   ✅ URL: http://localhost:8082/dashboard');
-    console.log('   ✅ Login: larissabarbosa@gmail.com');
+    console.log('   ✅ Login: larissa@institutodossonhos.com');
     console.log('   ✅ Senha: 10203040');
     console.log('   ✅ Larissa vê dashboard pessoal');
     

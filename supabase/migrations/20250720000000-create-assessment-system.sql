@@ -194,7 +194,7 @@ VALUES
     '{"max_score": 10, "categories": ["Mental", "Emocional", "Cardiovascular", "Visual", "Auditiva", "Respiratória", "Vocal", "Pulmonar", "Digestiva", "Hepática", "Renal", "Muscular", "Óssea", "Imunológica", "Endócrina", "Neurológica"]}'::JSONB
   ),
   (
-    'SistemaGB',
+    'Instituto dos Sonhos',
     'Avaliação completa de bem-estar e qualidade de vida',
     'Bem-estar',
     20,

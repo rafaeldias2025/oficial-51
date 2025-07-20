@@ -69,10 +69,10 @@ async function createAssessmentTools() {
       console.log('✅ Roda da Saúde Galileu criada:', rodaSaudeData[0].id);
     }
     
-    // 2. Criar "SistemaGB"
-    console.log('\n📊 Criando "SistemaGB"...');
-    const sistemaGB = {
-      name: 'SistemaGB',
+    // 2. Criar "Instituto dos Sonhos"
+    console.log('\n📊 Criando "Instituto dos Sonhos"...');
+    const institutoDossonhos = {
+      name: 'Instituto dos Sonhos',
       description: 'Avaliação do sistema gastrointestinal e bem-estar digestivo',
       category: 'digestive_health',
       questions: [
@@ -111,15 +111,15 @@ async function createAssessmentTools() {
       created_by: '00000000-0000-0000-0000-000000000001' // Admin ID
     };
     
-    const { data: sistemaGBData, error: sistemaGBError } = await supabase
-      .from('coaching_tools')
-      .insert([sistemaGB])
+        const { data: institutoDossonhosData, error: institutoDossonhosError } = await supabase
+      .from('assessment_tools')
+      .insert([institutoDossonhos])
       .select();
       
-    if (sistemaGBError) {
-      console.error('❌ Erro ao criar SistemaGB:', sistemaGBError);
+    if (institutoDossonhosError) {
+      console.error('❌ Erro ao criar Instituto dos Sonhos:', institutoDossonhosError);
     } else {
-      console.log('✅ SistemaGB criado:', sistemaGBData[0].id);
+      console.log('✅ Instituto dos Sonhos criado:', institutoDossonhosData[0].id);
     }
     
     // 3. Criar "Avaliação de Metas"

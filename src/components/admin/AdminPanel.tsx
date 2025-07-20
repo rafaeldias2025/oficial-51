@@ -25,9 +25,10 @@ import { CourseManager } from './CourseManager';
 import { JourneyManager } from './JourneyManager';
 import { QuizManager } from './QuizManager';
 import { AnamneseManager } from './AnamneseManager';
+import { ProvaManager } from './ProvaManager';
 // SessionManager temporariamente desabilitado
 
-type AdminTab = 'dashboard' | 'courses' | 'modules' | 'lessons' | 'journeys' | 'quizzes' | 'anamnese' | 'sessions' | 'analytics' | 'users' | 'settings';
+type AdminTab = 'dashboard' | 'courses' | 'prova' | 'modules' | 'lessons' | 'journeys' | 'quizzes' | 'anamnese' | 'sessions' | 'analytics' | 'users' | 'settings';
 
 interface AdminStats {
   totalCourses: number;
@@ -61,6 +62,12 @@ export const AdminPanel: React.FC = () => {
       label: 'Cursos',
       icon: BookOpen,
       description: 'Gerenciar cursos'
+    },
+    {
+      id: 'prova' as AdminTab,
+      label: 'PROVA',
+      icon: Award,
+      description: 'Sistema de provas'
     },
     {
       id: 'modules' as AdminTab,
@@ -124,6 +131,8 @@ export const AdminPanel: React.FC = () => {
         return <DashboardOverview stats={stats} />;
       case 'courses':
         return <CourseManager />;
+      case 'prova':
+        return <ProvaManager />;
       case 'modules':
         return <ModuleManager />;
       case 'lessons':

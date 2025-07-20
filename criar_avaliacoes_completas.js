@@ -18,7 +18,7 @@ async function criarAvaliacoesCompletas() {
         scheduled_date: new Date('2025-01-15').toISOString(),
         started_at: new Date('2025-01-15T10:00:00').toISOString(),
         completed_at: new Date('2025-01-15T10:45:00').toISOString(),
-        instructions: 'Avaliação completa do SistemaTizeCoach - 25 perguntas sobre metas pessoais e profissionais',
+        instructions: 'Avaliação completa do Instituto dos Sonhos - 25 perguntas sobre metas pessoais e profissionais',
         created_at: new Date('2025-01-15').toISOString()
       },
       {
@@ -28,7 +28,7 @@ async function criarAvaliacoesCompletas() {
         scheduled_date: new Date('2025-01-20').toISOString(),
         started_at: new Date('2025-01-20T14:00:00').toISOString(),
         completed_at: new Date('2025-01-20T14:35:00').toISOString(),
-        instructions: 'Avaliação completa do SistemaGB - 30 perguntas sobre saúde mental e equilíbrio emocional',
+        instructions: 'Avaliação completa do Instituto dos Sonhos - 30 perguntas sobre saúde mental e equilíbrio emocional',
         created_at: new Date('2025-01-20').toISOString()
       },
       {
@@ -38,7 +38,7 @@ async function criarAvaliacoesCompletas() {
         scheduled_date: new Date('2025-02-01').toISOString(),
         started_at: new Date('2025-02-01T09:00:00').toISOString(),
         completed_at: new Date('2025-02-01T09:50:00').toISOString(),
-        instructions: 'Avaliação completa do SistemaTizeCoach - 35 perguntas sobre hábitos e rotinas',
+        instructions: 'Avaliação completa do Instituto dos Sonhos - 35 perguntas sobre hábitos e rotinas',
         created_at: new Date('2025-02-01').toISOString()
       },
       {
@@ -48,7 +48,7 @@ async function criarAvaliacoesCompletas() {
         scheduled_date: new Date('2025-02-10').toISOString(),
         started_at: new Date('2025-02-10T16:00:00').toISOString(),
         completed_at: new Date('2025-02-10T16:25:00').toISOString(),
-        instructions: 'Avaliação completa do SistemaGB - 20 perguntas sobre relacionamentos pessoais e profissionais',
+        instructions: 'Avaliação completa do Instituto dos Sonhos - 20 perguntas sobre relacionamentos pessoais e profissionais',
         created_at: new Date('2025-02-10').toISOString()
       },
       {
@@ -58,7 +58,7 @@ async function criarAvaliacoesCompletas() {
         scheduled_date: new Date('2025-02-15').toISOString(),
         started_at: new Date('2025-02-15T16:00:00').toISOString(),
         completed_at: new Date('2025-02-15T16:40:00').toISOString(),
-        instructions: 'Avaliação completa do SistemaTizeCoach - 28 perguntas sobre reavaliação de metas trimestrais',
+        instructions: 'Avaliação completa do Instituto dos Sonhos - 28 perguntas sobre reavaliação de metas trimestrais',
         created_at: new Date('2025-02-15').toISOString()
       }
     ];
@@ -78,7 +78,7 @@ async function criarAvaliacoesCompletas() {
 
     // 2. Inserir muitas respostas para cada avaliação
     const respostasCompletas = [
-      // Avaliação 1 - SistemaTizeCoach (25 perguntas)
+      // Avaliação 1 - Instituto dos Sonhos (25 perguntas)
       { session_id: 1, question_number: 1, question_text: 'Qual é sua meta principal para este ano?', response_value: 9, response_text: 'Aumentar produtividade em 50%', category: 'metas' },
       { session_id: 1, question_number: 2, question_text: 'Como você define sucesso pessoal?', response_value: 8, response_text: 'Equilíbrio entre trabalho e vida pessoal', category: 'metas' },
       { session_id: 1, question_number: 3, question_text: 'Qual é sua meta financeira?', response_value: 7, response_text: 'Economizar 30% da renda', category: 'metas' },
@@ -105,7 +105,7 @@ async function criarAvaliacoesCompletas() {
       { session_id: 1, question_number: 24, question_text: 'Como você desenvolve habilidades?', response_value: 8, response_text: 'Prática deliberada e cursos', category: 'metas' },
       { session_id: 1, question_number: 25, question_text: 'Qual é sua meta de impacto?', response_value: 9, response_text: 'Influenciar 100 pessoas positivamente', category: 'metas' },
 
-      // Avaliação 2 - SistemaGB (30 perguntas)
+      // Avaliação 2 - Instituto dos Sonhos (30 perguntas)
       { session_id: 2, question_number: 1, question_text: 'Como você se sente emocionalmente hoje?', response_value: 7, response_text: 'Equilibrado', category: 'emocional' },
       { session_id: 2, question_number: 2, question_text: 'Qual seu nível de estresse?', response_value: 6, response_text: 'Moderado', category: 'emocional' },
       { session_id: 2, question_number: 3, question_text: 'Como você lida com frustrações?', response_value: 8, response_text: 'Análise e resolução', category: 'emocional' },
@@ -155,8 +155,8 @@ async function criarAvaliacoesCompletas() {
     console.log('📋 Resumo:');
     console.log('- 5 avaliações completas inseridas');
     console.log('- 55 respostas detalhadas inseridas');
-    console.log('- SistemaTizeCoach: 25 perguntas por avaliação');
-    console.log('- SistemaGB: 30 perguntas por avaliação');
+    console.log('- Instituto dos Sonhos: 25 perguntas por avaliação');
+    console.log('- Instituto dos Sonhos: 30 perguntas por avaliação');
     console.log('- Categorias: metas, emocional, mental, social');
     
   } catch (error) {

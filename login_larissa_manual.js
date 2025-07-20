@@ -15,7 +15,7 @@ async function loginLarissaManual() {
     const { data: larissa, error: userError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
       
     if (userError) {
@@ -108,7 +108,7 @@ async function loginLarissaManual() {
     console.log(`   - Avaliações: http://localhost:8082/dashboard (clique em "Avaliações")`);
     console.log(`   - Sessões: http://localhost:8082/dashboard (clique em "Sessões")`);
     console.log(`   - Resultados Roda da Saúde: http://localhost:8082/assessment/results/3`);
-    console.log(`   - Resultados SistemaGB: http://localhost:8082/assessment/results/4`);
+    console.log(`   - Resultados Instituto dos Sonhos: http://localhost:8082/assessment/results/4`);
     
     console.log('\n🎉 Login manual como Larissa concluído!');
     console.log('📊 Resumo do perfil da Larissa:');

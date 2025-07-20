@@ -8,14 +8,14 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function completeSystemGBAssessment() {
   try {
-    console.log('🤖 Completando avaliação SistemaGB automaticamente...');
+    console.log('🤖 Completando avaliação Instituto dos Sonhos automaticamente...');
     
     // 1. Verificar usuário Larissa
     console.log('\n👤 Verificando usuário Larissa...');
     const { data: larissa, error: userError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
       
     if (userError) {
@@ -25,8 +25,8 @@ async function completeSystemGBAssessment() {
     
     console.log('✅ Usuário encontrado:', larissa.full_name);
     
-    // 2. Verificar ferramenta SistemaGB
-    console.log('\n🔧 Verificando ferramenta SistemaGB...');
+    // 2. Verificar ferramenta Instituto dos Sonhos
+    console.log('\n🔧 Verificando ferramenta Instituto dos Sonhos...');
     const { data: systemGB, error: toolError } = await supabase
       .from('coaching_tools')
       .select('*')
@@ -57,13 +57,13 @@ async function completeSystemGBAssessment() {
     
     console.log('✅ Assignment encontrado, status:', assignment.status);
     
-    // 4. Gerar respostas realistas para SistemaGB
-    console.log('\n📝 Gerando respostas realistas para SistemaGB...');
+    // 4. Gerar respostas realistas para Instituto dos Sonhos
+    console.log('\n📝 Gerando respostas realistas para Instituto dos Sonhos...');
     
     const questions = systemGB.question_data;
     const answers = {};
     
-    // Respostas realistas para SistemaGB (bem-estar e qualidade de vida)
+    // Respostas realistas para Instituto dos Sonhos (bem-estar e qualidade de vida)
     const realisticAnswers = {
       "Fisiológico": 7,      // Boa saúde física
       "Emocional": 6,        // Estável emocionalmente
@@ -188,11 +188,11 @@ async function completeSystemGBAssessment() {
     
     // 10. Gerar links
     console.log('\n🔗 Links gerados:');
-    console.log(`   - Resultados SistemaGB: http://localhost:8082/assessment/results/${result.id}`);
+    console.log(`   - Resultados Instituto dos Sonhos: http://localhost:8082/assessment/results/${result.id}`);
     console.log(`   - Dashboard Larissa: http://localhost:8082/dashboard`);
     
-    console.log('\n🎉 Avaliação SistemaGB completada automaticamente com sucesso!');
-    console.log('📊 Resumo da avaliação SistemaGB da Larissa:');
+    console.log('\n🎉 Avaliação Instituto dos Sonhos completada automaticamente com sucesso!');
+    console.log('📊 Resumo da avaliação Instituto dos Sonhos da Larissa:');
     console.log(`   - Ferramenta: ${systemGB.name}`);
     console.log(`   - Pontuação geral: ${averageScore.toFixed(1)}/10`);
     console.log(`   - Status: Concluída`);

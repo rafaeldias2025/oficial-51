@@ -14,7 +14,7 @@ async function larissaCompleteFlow() {
     // PASSO 1: Larissa acessa dashboard
     console.log('\n📋 PASSO 1: Larissa acessa dashboard');
     console.log('   ✅ URL: http://localhost:8082/dashboard');
-    console.log('   ✅ Login: larissabarbosa@gmail.com');
+    console.log('   ✅ Login: larissa@institutodossonhos.com');
     console.log('   ✅ Senha: 10203040');
     console.log('   ✅ Vê mensagem: "Olá, larissabarbosa! 👋"');
     

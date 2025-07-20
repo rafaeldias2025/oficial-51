@@ -14,7 +14,7 @@ export const TestSessionManager = () => {
           <p>Dados das ferramentas de coaching criadas:</p>
           <ul className="list-disc list-inside mt-4">
             <li>Roda da Saúde Galileu - 16 perguntas</li>
-            <li>SistemaGB - 20 perguntas</li>
+            <li>Relacionamentos - 20 perguntas</li>
             <li>SistemizeCoach - 30 perguntas</li>
           </ul>
           <p className="mt-4">Sessão criada para o usuário de teste com a Roda da Saúde Galileu.</p>

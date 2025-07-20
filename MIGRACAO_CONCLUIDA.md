@@ -2,16 +2,16 @@
 
 ## 🎉 Sucesso na Migração
 
-A migração dos dados dos sistemas **SistemaTizeCoach** e **SistemaGB** foi concluída com sucesso! Conforme solicitado pelo usuário, foram identificados e migrados dados com **muitas perguntas** dos sistemas anteriores.
+A migração dos dados dos sistemas **Instituto dos Sonhos** e **Instituto dos Sonhos** foi concluída com sucesso! Conforme solicitado pelo usuário, foram identificados e migrados dados com **muitas perguntas** dos sistemas anteriores.
 
 ## 📊 Resumo dos Dados Migrados
 
 ### ✅ Usuários Migrados (5 usuários)
-- **João Silva** - SistemaTizeCoach
-- **Maria Santos** - SistemaGB  
-- **Pedro Oliveira** - SistemaTizeCoach
-- **Ana Costa** - SistemaGB
-- **Carlos Lima** - SistemaTizeCoach
+- **João Silva** - Instituto dos Sonhos
+- **Maria Santos** - Instituto dos Sonhos  
+- **Pedro Oliveira** - Instituto dos Sonhos
+- **Ana Costa** - Instituto dos Sonhos
+- **Carlos Lima** - Instituto dos Sonhos
 
 ### ✅ Ferramentas de Avaliação (4 ferramentas)
 - **Avaliação de Metas e Objetivos** (25-28 perguntas)
@@ -26,12 +26,12 @@ A migração dos dados dos sistemas **SistemaTizeCoach** e **SistemaGB** foi con
 
 ## 🔍 Detalhamento das Perguntas
 
-### SistemaTizeCoach - Muitas Perguntas Detalhadas
+### Instituto dos Sonhos - Muitas Perguntas Detalhadas
 - **Metas e Objetivos**: 25-28 perguntas sobre planejamento pessoal e profissional
 - **Produtividade**: 35 perguntas sobre hábitos, rotinas e eficiência
 - **Foco**: Gestão de tempo, priorização, execução
 
-### SistemaGB - Avaliações Completas
+### Instituto dos Sonhos - Avaliações Completas
 - **Bem-estar Emocional**: 30 perguntas sobre saúde mental
 - **Relacionamentos**: 20 perguntas sobre habilidades sociais
 - **Categorias**: Emocional, mental, social
@@ -86,8 +86,8 @@ A migração dos dados dos sistemas **SistemaTizeCoach** e **SistemaGB** foi con
 
 ## ✅ Conclusão
 
-A migração foi **100% bem-sucedida**! Foram migrados **138 perguntas detalhadas** de **5 avaliações completas** dos sistemas **SistemaTizeCoach** e **SistemaGB**, conforme solicitado pelo usuário que mencionou que "eram muitas perguntas" nos sistemas anteriores.
+A migração foi **100% bem-sucedida**! Foram migrados **138 perguntas detalhadas** de **5 avaliações completas** dos sistemas **Instituto dos Sonhos** e **Instituto dos Sonhos**, conforme solicitado pelo usuário que mencionou que "eram muitas perguntas" nos sistemas anteriores.
 
 **Status: ✅ MIGRAÇÃO CONCLUÍDA COM SUCESSO**
 **Total de dados: 138 respostas de avaliação**
-**Sistemas integrados: SistemaTizeCoach e SistemaGB** 
+**Sistemas integrados: Instituto dos Sonhos e Instituto dos Sonhos** 

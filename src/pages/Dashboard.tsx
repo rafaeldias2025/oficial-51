@@ -22,7 +22,10 @@ import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { WelcomeHeader } from "@/components/WelcomeHeader";
 import { ClientSessions } from "@/components/sessions/ClientSessions";
 import { RequiredDataModal } from "@/components/RequiredDataModal";
+<<<<<<< HEAD
 // PaidCourses e UserAssessments temporariamente desabilitados
+=======
+>>>>>>> f3f84d6 (Atualização geral do projeto)
 import { AdvancedHealthDashboard } from "@/components/dashboard/AdvancedHealthDashboard";
 import { HealthLayout } from "@/components/layout/HealthLayout";
 
@@ -100,7 +103,11 @@ const Dashboard = () => {
       case 'inicio':
         return <MissaoDia isVisitor={false} />;
       case 'cursos-pagos':
+<<<<<<< HEAD
         return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Cursos Premium</h2><p>Funcionalidade temporariamente desabilitada</p></div>;
+=======
+        return <div className="p-4">Cursos pagos em desenvolvimento</div>;
+>>>>>>> f3f84d6 (Atualização geral do projeto)
       case 'sessoes':
         return <ClientSessions />;
       case 'ranking':

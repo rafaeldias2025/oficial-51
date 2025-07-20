@@ -19,7 +19,7 @@ async function createLarissaUser() {
       .from('auth.users')
       .insert({
         id: userId,
-        email: 'larissabarbosa@gmail.com',
+        email: 'larissa@institutodossonhos.com',
         encrypted_password: '$2a$10$example.hash.for.password.10203040',
         email_confirmed_at: new Date().toISOString(),
         created_at: new Date().toISOString(),
@@ -41,7 +41,7 @@ async function createLarissaUser() {
       .from('profiles')
       .insert({
         id: userId,
-        email: 'larissabarbosa@gmail.com',
+        email: 'larissa@institutodossonhos.com',
         full_name: 'Larissa Barbosa',
         avatar_url: null,
         created_at: new Date().toISOString(),
@@ -62,7 +62,7 @@ async function createLarissaUser() {
     const { data: checkUser, error: checkError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
       
     if (checkError) {
@@ -78,7 +78,7 @@ async function createLarissaUser() {
     
     console.log('\n🎉 Usuário Larissa Barbosa criado com sucesso!');
     console.log('🔑 Credenciais de login:');
-    console.log('   - Email: larissabarbosa@gmail.com');
+    console.log('   - Email: larissa@institutodossonhos.com');
     console.log('   - Senha: 10203040');
     
   } catch (error) {

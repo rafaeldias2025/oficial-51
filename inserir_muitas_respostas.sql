@@ -1,7 +1,7 @@
 -- Inserir muitas respostas para as avaliações dos sistemas anteriores
--- SistemaTizeCoach e SistemaGB com muitas perguntas
+-- Instituto dos Sonhos e Instituto dos Sonhos com muitas perguntas
 
--- Avaliação 1 - SistemaTizeCoach (25 perguntas)
+-- Avaliação 1 - Instituto dos Sonhos (25 perguntas)
 INSERT INTO session_responses (session_id, question_number, question_text, response_value, response_text, category, created_at) VALUES
 (3, 1, 'Qual é sua meta principal para este ano?', 9, 'Aumentar produtividade em 50%', 'metas', '2025-01-15 10:45:00'),
 (3, 2, 'Como você define sucesso pessoal?', 8, 'Equilíbrio entre trabalho e vida pessoal', 'metas', '2025-01-15 10:45:00'),
@@ -29,7 +29,7 @@ INSERT INTO session_responses (session_id, question_number, question_text, respo
 (3, 24, 'Como você desenvolve habilidades?', 8, 'Prática deliberada e cursos', 'metas', '2025-01-15 10:45:00'),
 (3, 25, 'Qual é sua meta de impacto?', 9, 'Influenciar 100 pessoas positivamente', 'metas', '2025-01-15 10:45:00');
 
--- Avaliação 2 - SistemaGB (30 perguntas)
+-- Avaliação 2 - Instituto dos Sonhos (30 perguntas)
 INSERT INTO session_responses (session_id, question_number, question_text, response_value, response_text, category, created_at) VALUES
 (4, 1, 'Como você se sente emocionalmente hoje?', 7, 'Equilibrado', 'emocional', '2025-01-20 14:35:00'),
 (4, 2, 'Qual seu nível de estresse?', 6, 'Moderado', 'emocional', '2025-01-20 14:35:00'),
@@ -62,7 +62,7 @@ INSERT INTO session_responses (session_id, question_number, question_text, respo
 (4, 29, 'Como você lida com críticas?', 6, 'Construtivamente', 'social', '2025-01-20 14:35:00'),
 (4, 30, 'Qual sua capacidade de influência?', 7, 'Moderada', 'social', '2025-01-20 14:35:00');
 
--- Avaliação 3 - SistemaTizeCoach (35 perguntas)
+-- Avaliação 3 - Instituto dos Sonhos (35 perguntas)
 INSERT INTO session_responses (session_id, question_number, question_text, response_value, response_text, category, created_at) VALUES
 (5, 1, 'Como você organiza seu dia?', 9, 'Planejamento detalhado', 'produtividade', '2025-02-01 09:50:00'),
 (5, 2, 'Qual sua rotina matinal?', 8, 'Acordar cedo e exercícios', 'produtividade', '2025-02-01 09:50:00'),
@@ -100,7 +100,7 @@ INSERT INTO session_responses (session_id, question_number, question_text, respo
 (5, 34, 'Qual sua capacidade de delegação?', 7, 'Delegação efetiva', 'produtividade', '2025-02-01 09:50:00'),
 (5, 35, 'Como você avalia performance?', 9, 'Avaliação objetiva', 'produtividade', '2025-02-01 09:50:00');
 
--- Avaliação 4 - SistemaGB (20 perguntas)
+-- Avaliação 4 - Instituto dos Sonhos (20 perguntas)
 INSERT INTO session_responses (session_id, question_number, question_text, response_value, response_text, category, created_at) VALUES
 (6, 1, 'Como você constrói relacionamentos?', 8, 'Genuinamente e com interesse', 'relacionamentos', '2025-02-10 16:25:00'),
 (6, 2, 'Qual sua capacidade de empatia?', 9, 'Alta empatia', 'relacionamentos', '2025-02-10 16:25:00'),
@@ -123,7 +123,7 @@ INSERT INTO session_responses (session_id, question_number, question_text, respo
 (6, 19, 'Como você celebra sucessos?', 8, 'Celebração genuína', 'relacionamentos', '2025-02-10 16:25:00'),
 (6, 20, 'Qual sua capacidade de perdão?', 9, 'Capacidade de perdoar', 'relacionamentos', '2025-02-10 16:25:00');
 
--- Avaliação 5 - SistemaTizeCoach (28 perguntas)
+-- Avaliação 5 - Instituto dos Sonhos (28 perguntas)
 INSERT INTO session_responses (session_id, question_number, question_text, response_value, response_text, category, created_at) VALUES
 (7, 1, 'Como você revisa suas metas trimestrais?', 9, 'Análise detalhada e ajustes', 'metas', '2025-02-15 16:40:00'),
 (7, 2, 'Qual seu progresso nas metas principais?', 8, '85% das metas alcançadas', 'metas', '2025-02-15 16:40:00'),

@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "mcp-sample-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/Users/institutodossonhos/Documents/VSCODE-OFICIAL-CLAUDE/MPC/build/index.js"]
+    }
+  }
+}

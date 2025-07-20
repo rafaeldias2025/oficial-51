@@ -15,7 +15,7 @@ async function sendNewAssessmentToLarissa() {
     const { data: larissa, error: userError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
       
     if (userError) {
@@ -42,15 +42,15 @@ async function sendNewAssessmentToLarissa() {
       console.log(`   - ID ${tool.id}: ${tool.name} (${tool.total_questions} perguntas)`);
     });
     
-    // 3. Enviar SistemaGB (ID 2) para Larissa
-    console.log('\n📋 Enviando SistemaGB para Larissa...');
+    // 3. Enviar Instituto dos Sonhos (ID 2) para Larissa
+    console.log('\n📋 Enviando Instituto dos Sonhos para Larissa...');
     const { data: assignment, error: assignmentError } = await supabase
       .from('assessment_assignments')
       .insert({
         user_id: larissa.id,
-        tool_id: 2, // SistemaGB
+        tool_id: 2, // Instituto dos Sonhos
         status: 'pending',
-        instructions: 'Olá Larissa! Esta é sua nova avaliação do SistemaGB. Por favor, responda todas as perguntas com atenção para obter um diagnóstico completo do seu bem-estar e qualidade de vida.',
+        instructions: 'Olá Larissa! Esta é sua nova avaliação do Instituto dos Sonhos. Por favor, responda todas as perguntas com atenção para obter um diagnóstico completo do seu bem-estar e qualidade de vida.',
         due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 dias
       })
       .select('*')
@@ -63,12 +63,12 @@ async function sendNewAssessmentToLarissa() {
     
     console.log('✅ Avaliação enviada com sucesso!');
     console.log(`   - ID do assignment: ${assignment.id}`);
-    console.log(`   - Ferramenta: SistemaGB`);
+    console.log(`   - Ferramenta: Instituto dos Sonhos`);
     console.log(`   - Status: ${assignment.status}`);
     console.log(`   - Data limite: ${assignment.due_date}`);
     
-    // 4. Verificar ferramenta SistemaGB
-    console.log('\n📊 Verificando detalhes da ferramenta SistemaGB...');
+    // 4. Verificar ferramenta Instituto dos Sonhos
+    console.log('\n📊 Verificando detalhes da ferramenta Instituto dos Sonhos...');
     const { data: systemGB, error: toolError } = await supabase
       .from('coaching_tools')
       .select('*')

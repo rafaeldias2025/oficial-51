@@ -15,7 +15,7 @@ async function completeAssessmentAutomatically() {
     const { data: larissa, error: userError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
       
     if (userError) {

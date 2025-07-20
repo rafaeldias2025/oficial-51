@@ -16,7 +16,7 @@ async function enviar4Avaliacoes() {
       .from('profiles')
       .select('id, full_name, email')
       .in('email', [
-        'larissabarbosa@gmail.com',
+        'larissa@institutodossonhos.com',
         'medodo20@gmail.com', 
         'lucasnascimento@gmail.com',
         'mariass@gmail.com'

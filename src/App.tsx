@@ -31,7 +31,10 @@ const HealthMetrics = lazy(() => import('@/pages/HealthMetrics'));
 const TesteIntegracaoSaude = lazy(() => import('@/pages/TesteIntegracaoSaude').then(module => ({ default: module.TesteIntegracaoSaude })));
 const PlataformaSonhos = lazy(() => import('@/pages/PlataformaSonhos'));
 const ToolsPage = lazy(() => import('@/pages/ToolsPage').then(module => ({ default: module.ToolsPage })));
+<<<<<<< HEAD
 // AssessmentPage e AssessmentResultsPage temporariamente desabilitados
+=======
+>>>>>>> f3f84d6 (Atualização geral do projeto)
 const SimpleAssessmentPage = lazy(() => import('@/pages/SimpleAssessmentPage'));
 const ResponseAnalysisDemo = lazy(() => import('@/pages/ResponseAnalysisDemo').then(module => ({ default: module.ResponseAnalysisDemo })));
 // ToolManagementDemo e UserSessionsDemo temporariamente desabilitados
@@ -347,7 +350,20 @@ const AppContent = () => {
                 <ToolsPage />
               </Suspense>
             } />
+<<<<<<< HEAD
             {/* Assessment routes temporariamente desabilitadas */}
+=======
+            <Route path="/assessment/:toolId" element={
+              <Suspense fallback={<PageFallback page="Avaliação" />}>
+                <SimpleAssessmentPage />
+              </Suspense>
+            } />
+            <Route path="/assessment/results/:resultId" element={
+              <Suspense fallback={<PageFallback page="Resultados da Avaliação" />}>
+                <SimpleAssessmentPage />
+              </Suspense>
+            } />
+>>>>>>> f3f84d6 (Atualização geral do projeto)
             <Route path="/assessment/simple/:toolId" element={
               <Suspense fallback={<PageFallback page="Avaliação Simples" />}>
                 <SimpleAssessmentPage />
