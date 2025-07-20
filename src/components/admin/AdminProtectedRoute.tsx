@@ -19,6 +19,7 @@ export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ childr
   const adminEmails = [
     'admin@instituto.com',
     'admin@sonhos.com',
+    'admin@example.com',
     'rafael@admin.com',
     'rafael@institutodossonhos.com',
     'institutodossonhos@gmail.com',

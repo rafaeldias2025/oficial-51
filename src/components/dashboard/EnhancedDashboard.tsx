@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   AreaChart, Area, ComposedChart, Bar, RadialBarChart, RadialBar, PieChart, Pie, Cell,
@@ -52,18 +53,18 @@ const MetricCard: React.FC<MetricCardProps> = ({
   };
 
   return (
-    <Card className="bg-netflix-card border-netflix-border hover:border-instituto-orange/50 transition-all duration-300">
+    <Card className="bg-card border-border hover:border-primary/50 transition-all duration-300">
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className={`p-2 rounded-full bg-${color}-100 text-${color}-600`}>
+            <div className={`p-2 rounded-full bg-primary/10 text-primary`}>
               {icon}
             </div>
             <div>
-              <p className="text-sm text-netflix-text-muted">{title}</p>
-              <p className="text-2xl font-bold text-netflix-text">{value}</p>
+              <p className="text-sm text-muted-foreground">{title}</p>
+              <p className="text-2xl font-bold text-foreground">{value}</p>
               {target && (
-                <p className="text-xs text-netflix-text-muted">Meta: {target}</p>
+                <p className="text-xs text-muted-foreground">Meta: {target}</p>
               )}
             </div>
           </div>
@@ -71,14 +72,14 @@ const MetricCard: React.FC<MetricCardProps> = ({
             {change && (
               <div className="flex items-center space-x-1">
                 {getTrendIcon()}
-                <span className="text-sm text-netflix-text-muted">{change}</span>
+                <span className="text-sm text-muted-foreground">{change}</span>
               </div>
             )}
             {progress && (
               <div className="mt-2 w-16 h-16">
                 <RadialBarChart width={64} height={64} cx={32} cy={32} 
                   innerRadius={20} outerRadius={30} data={[{ value: progress }]}>
-                  <RadialBar dataKey="value" fill={`var(--${color}-500)`} />
+                  <RadialBar dataKey="value" fill="hsl(var(--primary))" />
                 </RadialBarChart>
               </div>
             )}
@@ -92,23 +93,23 @@ const MetricCard: React.FC<MetricCardProps> = ({
 // Componente de gráfico de composição corporal memoizado
 const BodyCompositionChart: React.FC<{ data: ChartDataPoint[] }> = React.memo(({ data }) => {
   return (
-    <Card className="bg-netflix-card border-netflix-border">
+    <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-netflix-text flex items-center gap-2">
-          <Activity className="h-5 w-5 text-instituto-orange" />
+        <CardTitle className="text-foreground flex items-center gap-2">
+          <Activity className="h-5 w-5 text-primary" />
           Evolução de Peso
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--netflix-border))" />
-            <XAxis dataKey="data" tick={{ fill: 'hsl(var(--netflix-text))' }} />
-            <YAxis tick={{ fill: 'hsl(var(--netflix-text))' }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <XAxis dataKey="data" tick={{ fill: 'hsl(var(--foreground))' }} />
+            <YAxis tick={{ fill: 'hsl(var(--foreground))' }} />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: 'hsl(var(--netflix-card))', 
-                border: '1px solid hsl(var(--netflix-border))',
+                backgroundColor: 'hsl(var(--card))', 
+                border: '1px solid hsl(var(--border))',
                 borderRadius: '8px'
               }}
             />
@@ -129,24 +130,24 @@ const BodyCompositionChart: React.FC<{ data: ChartDataPoint[] }> = React.memo(({
 // Gráfico combinado Peso + IMC
 const WeightIMCChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
   return (
-    <Card className="bg-netflix-card border-netflix-border">
+    <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-netflix-text flex items-center gap-2">
-          <Scale className="h-5 w-5 text-instituto-orange" />
+        <CardTitle className="text-foreground flex items-center gap-2">
+          <Scale className="h-5 w-5 text-primary" />
           Evolução Peso + IMC
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <ComposedChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--netflix-border))" />
-            <XAxis dataKey="data" tick={{ fill: 'hsl(var(--netflix-text))' }} />
-            <YAxis yAxisId="left" tick={{ fill: 'hsl(var(--netflix-text))' }} />
-            <YAxis yAxisId="right" orientation="right" tick={{ fill: 'hsl(var(--netflix-text))' }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <XAxis dataKey="data" tick={{ fill: 'hsl(var(--foreground))' }} />
+            <YAxis yAxisId="left" tick={{ fill: 'hsl(var(--foreground))' }} />
+            <YAxis yAxisId="right" orientation="right" tick={{ fill: 'hsl(var(--foreground))' }} />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: 'hsl(var(--netflix-card))', 
-                border: '1px solid hsl(var(--netflix-border))',
+                backgroundColor: 'hsl(var(--card))', 
+                border: '1px solid hsl(var(--border))',
                 borderRadius: '8px'
               }}
             />
@@ -178,10 +179,10 @@ const CircularIndicators: React.FC<{ data: any }> = ({ data }) => {
   ], [data]);
 
   return (
-    <Card className="bg-netflix-card border-netflix-border">
+    <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-netflix-text flex items-center gap-2">
-          <Target className="h-5 w-5 text-instituto-orange" />
+        <CardTitle className="text-foreground flex items-center gap-2">
+          <Target className="h-5 w-5 text-primary" />
           Indicadores
         </CardTitle>
       </CardHeader>
@@ -496,6 +497,99 @@ export const EnhancedDashboard: React.FC = () => {
           </Button>
         ))}
       </div>
+
+        {/* Métricas de Atividade */}
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <Calendar className="h-5 w-5 text-netflix-red" />
+              Atividade Semanal
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-netflix-text-muted">Dias ativos</span>
+                <span className="text-2xl font-bold text-netflix-text">5/7</span>
+              </div>
+              <Progress value={71} className="h-2" />
+              <div className="grid grid-cols-7 gap-1 mt-4">
+                {[true, true, false, true, true, true, false].map((active, index) => (
+                  <div
+                    key={index}
+                    className={`h-8 rounded ${
+                      active ? 'bg-netflix-red' : 'bg-netflix-hover'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Métricas de Progresso */}
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <Target className="h-5 w-5 text-netflix-red" />
+              Metas Mensais
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-netflix-text-muted">Progresso geral</span>
+                <span className="text-2xl font-bold text-netflix-text">87%</span>
+              </div>
+              <Progress value={87} className="h-2" />
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-netflix-text-muted">Exercícios</span>
+                  <span className="text-sm font-semibold text-netflix-text">92%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-netflix-text-muted">Hidratação</span>
+                  <span className="text-sm font-semibold text-netflix-text">78%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-netflix-text-muted">Sono</span>
+                  <span className="text-sm font-semibold text-netflix-text">85%</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Métricas de Tendências */}
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <TrendingUp className="h-5 w-5 text-netflix-red" />
+              Tendências
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-netflix-text-muted">Melhoria geral</span>
+                <div className="flex items-center gap-1">
+                  <TrendingUp className="h-4 w-4 text-netflix-red" />
+                  <span className="text-lg font-bold text-netflix-text">+15%</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 bg-netflix-red/10 rounded-lg">
+                  <p className="text-sm text-netflix-text-muted">Energia</p>
+                  <p className="text-lg font-semibold text-netflix-text">+12%</p>
+                </div>
+                <div className="text-center p-3 bg-netflix-red/10 rounded-lg">
+                  <p className="text-sm text-netflix-text-muted">Bem-estar</p>
+                  <p className="text-lg font-semibold text-netflix-text">+18%</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
     </div>
   );
 };

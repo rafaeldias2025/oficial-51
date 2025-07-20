@@ -43,10 +43,18 @@ export const UsersList: React.FC = () => {
       // Buscar profiles
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, user_id, email, full_name, role, created_at')
+        .select('id, user_id, email, full_name, created_at')
         .order('created_at', { ascending: false });
 
-      if (profilesError) throw profilesError;
+      if (profilesError) {
+        console.error('Erro ao buscar profiles:', profilesError);
+        return;
+      }
+
+      if (!profiles) {
+        setUsers([]);
+        return;
+      }
 
       // Buscar dados físicos para cada perfil
       const usersWithData = await Promise.all(
@@ -59,6 +67,7 @@ export const UsersList: React.FC = () => {
 
           return {
             ...profile,
+            role: 'client', // Default role
             nome_completo_dados: dadosFisicos?.nome_completo || null
           };
         })
@@ -94,25 +103,6 @@ export const UsersList: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Card className="bg-netflix-card border-netflix-border">
-        <CardHeader>
-          <CardTitle className="text-netflix-text flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Lista de Usuários
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-instituto-orange mx-auto mb-4"></div>
-            <p className="text-netflix-text-muted">Carregando usuários...</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card className="bg-netflix-card border-netflix-border">
       <CardHeader>
@@ -136,6 +126,13 @@ export const UsersList: React.FC = () => {
         </div>
       </CardHeader>
       <CardContent>
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-netflix-red mx-auto mb-4"></div>
+            <p className="text-netflix-text-muted">Carregando usuários...</p>
+          </div>
+        )}
         {filteredUsers.length === 0 ? (
           <div className="text-center py-12">
             <Users className="h-16 w-16 text-netflix-text-muted mx-auto mb-4" />
@@ -151,12 +148,12 @@ export const UsersList: React.FC = () => {
             {filteredUsers.map((user, index) => (
               <div 
                 key={user.id}
-                className="flex items-center justify-between p-4 bg-netflix-hover rounded-lg border border-netflix-border hover:border-instituto-orange/50 transition-all duration-300 animate-fade-in-up"
+                className="flex items-center justify-between p-4 bg-netflix-hover rounded-lg border border-netflix-border hover:border-netflix-red/50 transition-all duration-300 animate-fade-in-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-instituto-orange/20 rounded-full flex items-center justify-center">
-                    <UserCheck className="h-6 w-6 text-instituto-orange" />
+                  <div className="w-12 h-12 bg-netflix-red/20 rounded-full flex items-center justify-center">
+                    <UserCheck className="h-6 w-6 text-netflix-red" />
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -198,7 +195,7 @@ export const UsersList: React.FC = () => {
                     <Button 
                       size="sm" 
                       variant="ghost" 
-                      className="h-8 w-8 p-0 text-instituto-orange hover:bg-instituto-orange/10"
+                      className="h-8 w-8 p-0 text-netflix-red hover:bg-netflix-red/10"
                       title="Editar usuário"
                     >
                       <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

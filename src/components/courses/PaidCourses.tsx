@@ -1,96 +1,169 @@
-import React from 'react';
-import { EnhancedCourseGrid } from './EnhancedCourseGrid';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Play, Star, Crown, Users, Clock, Award } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useCourses } from '@/hooks/useCourses';
-import { Course } from '@/hooks/useCourses';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Crown, Grid, Sparkles } from 'lucide-react';
+import { EnhancedCourseGrid } from './EnhancedCourseGrid';
+import { PremiumCourseSystem } from './PremiumCourseSystem';
 
 export const PaidCourses = () => {
-  const { courses, loading } = useCourses();
-  const navigate = useNavigate();
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<'grid' | 'premium'>('grid');
 
-  const handleCourseClick = (course: Course) => {
-    navigate(`/course/${course.id}`);
+  const handleCourseSelect = (courseId: string) => {
+    setSelectedCourseId(courseId);
+    setActiveView('premium');
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-netflix-bg via-background to-netflix-bg flex items-center justify-center">
-        <div className="text-xl text-muted-foreground">Carregando cursos...</div>
-      </div>
-    );
-  }
+  const handleBackToGrid = () => {
+    setSelectedCourseId(null);
+    setActiveView('grid');
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-netflix-bg via-background to-netflix-bg">
-      {/* Hero Section */}
-      <div className="relative py-16 px-6">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
-        <div className="container mx-auto relative z-10">
-          <div className="text-center space-y-6">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Crown className="w-8 h-8 text-primary" />
-              <h1 className="text-4xl md:text-5xl font-bold text-gradient">
-                Cursos Premium
-              </h1>
-            </div>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Transforme sua vida com nossos cursos exclusivos. Acesso ilimitado a conteúdo premium 
-              desenvolvido por especialistas em transformação pessoal.
-            </p>
-            
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
-              <Card className="glass-card border-primary/20">
-                <CardContent className="p-6 text-center">
-                  <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <div className="text-2xl font-bold text-primary">5.000+</div>
-                  <div className="text-sm text-muted-foreground">Alunos Transformados</div>
-                </CardContent>
-              </Card>
-              
-              <Card className="glass-card border-primary/20">
-                <CardContent className="p-6 text-center">
-                  <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <div className="text-2xl font-bold text-primary">50+</div>
-                  <div className="text-sm text-muted-foreground">Horas de Conteúdo</div>
-                </CardContent>
-              </Card>
-              
-              <Card className="glass-card border-primary/20">
-                <CardContent className="p-6 text-center">
-                  <Award className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <div className="text-2xl font-bold text-primary">98%</div>
-                  <div className="text-sm text-muted-foreground">Taxa de Sucesso</div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
-              <Link to="/courses">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg">
-                  <Play className="mr-2 h-5 w-5" />
-                  Explorar Todos os Cursos
-                </Button>
-              </Link>
-              
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Star className="w-4 h-4 text-yellow-500" />
-                <span>4.9/5 • Avaliação dos alunos</span>
+    <div className="space-y-6">
+      {/* Cabeçalho */}
+      <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Crown className="h-8 w-8 text-primary" />
+              <div>
+                <CardTitle className="text-2xl text-foreground">Cursos Premium</CardTitle>
+                <p className="text-muted-foreground">
+                  Experiência completa com recursos avançados e funcionalidades exclusivas
+                </p>
               </div>
             </div>
+            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+              <Sparkles className="h-4 w-4 mr-1" />
+              Premium
+            </Badge>
           </div>
-        </div>
+        </CardHeader>
+      </Card>
+
+      {/* Navegação de Visualização */}
+      <Tabs value={activeView} onValueChange={(value) => setActiveView(value as 'grid' | 'premium')}>
+        <div className="flex items-center justify-between">
+          <TabsList className="grid w-fit grid-cols-2">
+            <TabsTrigger value="grid" className="flex items-center space-x-2">
+              <Grid className="h-4 w-4" />
+              <span>Grade de Cursos</span>
+            </TabsTrigger>
+            <TabsTrigger value="premium" className="flex items-center space-x-2">
+              <Crown className="h-4 w-4" />
+              <span>Sistema Premium</span>
+            </TabsTrigger>
+          </TabsList>
+
+          {selectedCourseId && activeView === 'premium' && (
+            <Button
+              variant="outline"
+              onClick={handleBackToGrid}
+              className="flex items-center space-x-2"
+            >
+              <Grid className="h-4 w-4" />
+              <span>Voltar à Grade</span>
+            </Button>
+          )}
       </div>
 
-      {/* Enhanced Course Grid */}
-      <div className="container mx-auto px-6 pb-16">
-        <EnhancedCourseGrid 
-          courses={courses} 
-          onCourseClick={handleCourseClick}
-        />
-      </div>
+        {/* Grade de Cursos */}
+        <TabsContent value="grid" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Grid className="h-5 w-5" />
+                <span>Todos os Cursos Premium</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EnhancedCourseGrid
+                onCourseSelect={handleCourseSelect}
+                selectedCourseId={selectedCourseId}
+              />
+              </CardContent>
+            </Card>
+
+          {/* Informações sobre o Sistema Premium */}
+          <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-foreground">
+                <Crown className="h-5 w-5" />
+                <span>Por que escolher Premium?</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="space-y-2">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Crown className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-medium text-foreground">Hero Dinâmico</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Heroes personalizáveis com imagens ou vídeos de apresentação
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                    <Grid className="h-5 w-5 text-accent" />
+                  </div>
+                  <h3 className="font-medium text-foreground">Módulos Escaláveis</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Sistema flexível de organização de conteúdo por módulos
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-success" />
+                  </div>
+                  <h3 className="font-medium text-foreground">Gamificação</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Badges, certificados e sistema de conquistas
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
+                    <Crown className="h-5 w-5 text-warning" />
+          </div>
+                  <h3 className="font-medium text-foreground">Interação Social</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Comentários, favoritos, avaliações e recomendações
+                  </p>
+        </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Sistema Premium */}
+        <TabsContent value="premium" className="space-y-6">
+          {selectedCourseId ? (
+            <PremiumCourseSystem courseId={selectedCourseId} />
+          ) : (
+            <Card className="p-12">
+              <div className="text-center space-y-4">
+                <Crown className="h-16 w-16 text-muted-foreground mx-auto" />
+                <h3 className="text-2xl font-semibold text-muted-foreground">
+                  Selecione um Curso Premium
+                </h3>
+                <p className="text-muted-foreground max-w-md mx-auto">
+                  Volte à aba "Grade de Cursos" e clique em qualquer curso para acessar o sistema premium com todas as funcionalidades avançadas.
+                </p>
+                <Button 
+                  onClick={() => setActiveView('grid')}
+                  className="mt-4"
+                >
+                  <Grid className="h-4 w-4 mr-2" />
+                  Ver Grade de Cursos
+                </Button>
+              </div>
+          </Card>
+        )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

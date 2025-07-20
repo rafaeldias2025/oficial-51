@@ -1,89 +1,89 @@
-/* SISTEMA DE CORES DEFINITIVO - JORNADA DOS SONHOS */
+/* SISTEMA DE CORES NETFLIX - INSTITUTO DOS SONHOS */
 
 :root {
   /* === CORES PRIMÁRIAS === */
-  --primary: #2563eb;        /* Azul principal */
-  --primary-hover: #1d4ed8;  /* Azul hover */
-  --primary-light: #dbeafe; /* Azul claro */
-  --primary-dark: #1e40af;  /* Azul escuro */
-  --primary-foreground: #ffffff;
+  --primary: 229 9 20;        /* Vermelho Netflix */
+  --primary-hover: 220 38 38;  /* Vermelho escuro */
+  --primary-light: 254 242 242; /* Vermelho claro */
+  --primary-dark: 185 28 28;   /* Vermelho muito escuro */
+  --primary-foreground: 255 255 255;
   
   /* === CORES SECUNDÁRIAS === */
-  --secondary: #10b981;      /* Verde */
-  --secondary-hover: #059669;
-  --secondary-light: #d1fae5;
-  --secondary-foreground: #ffffff;
+  --secondary: 51 51 51;       /* Cinza médio */
+  --secondary-hover: 75 85 99; /* Cinza escuro */
+  --secondary-light: 107 114 128; /* Cinza claro */
+  --secondary-foreground: 255 255 255;
   
   /* === CORES DE ACENTO === */
-  --accent: #f59e0b;         /* Laranja vibrante */
-  --accent-hover: #d97706;
-  --accent-light: #fed7aa;
-  --accent-foreground: #ffffff;
+  --accent: 229 9 20;          /* Vermelho Netflix */
+  --accent-hover: 220 38 38;   /* Vermelho escuro */
+  --accent-light: 254 242 242; /* Vermelho claro */
+  --accent-foreground: 255 255 255;
   
   /* === CORES DE FUNDO === */
-  --bg-primary: #ffffff;     /* Branco */
-  --bg-secondary: #f8fafc;   /* Cinza muito claro */
-  --bg-tertiary: #f1f5f9;    /* Cinza claro */
-  --bg-quaternary: #e2e8f0;  /* Cinza médio */
+  --bg-primary: 0 0 0;         /* Preto Netflix */
+  --bg-secondary: 20 20 20;    /* Cinza muito escuro */
+  --bg-tertiary: 51 51 51;     /* Cinza médio */
+  --bg-quaternary: 75 85 99;   /* Cinza escuro */
   
   /* === CORES DE TEXTO === */
-  --text-primary: #0f172a;   /* Preto */
-  --text-secondary: #475569; /* Cinza escuro */
-  --text-muted: #94a3b8;     /* Cinza médio */
-  --text-light: #cbd5e1;     /* Cinza claro */
+  --text-primary: 255 255 255;  /* Branco */
+  --text-secondary: 156 163 175; /* Cinza claro */
+  --text-muted: 107 114 128;    /* Cinza médio */
+  --text-light: 75 85 99;       /* Cinza escuro */
   
   /* === CORES DE STATUS === */
-  --success: #10b981;        /* Verde sucesso */
-  --success-light: #d1fae5;
-  --warning: #f59e0b;        /* Amarelo aviso */
-  --warning-light: #fed7aa;
-  --error: #ef4444;          /* Vermelho erro */
-  --error-light: #fecaca;
-  --info: #3b82f6;           /* Azul info */
-  --info-light: #dbeafe;
+  --success: 34 197 94;         /* Verde sucesso */
+  --success-light: 240 253 244;
+  --warning: 245 158 11;        /* Âmbar aviso */
+  --warning-light: 254 243 199;
+  --error: 239 68 68;           /* Vermelho erro */
+  --error-light: 254 242 242;
+  --info: 59 130 246;           /* Azul info */
+  --info-light: 239 246 255;
   
   /* === CORES DE MÉTRICAS === */
-  --metric-steps: #3b82f6;     /* Azul para passos */
-  --metric-steps-light: #dbeafe;
-  --metric-steps-border: #93c5fd;
+  --metric-steps: 59 130 246;     /* Azul para passos */
+  --metric-steps-light: 239 246 255;
+  --metric-steps-border: 147 197 253;
   
-  --metric-heart: #ef4444;     /* Vermelho para coração */
-  --metric-heart-light: #fecaca;
-  --metric-heart-border: #fca5a5;
+  --metric-heart: 239 68 68;      /* Vermelho para coração */
+  --metric-heart-light: 254 242 242;
+  --metric-heart-border: 252 165 165;
   
-  --metric-calories: #f59e0b;  /* Laranja para calorias */
-  --metric-calories-light: #fed7aa;
-  --metric-calories-border: #fcd34d;
+  --metric-calories: 245 158 11;  /* Âmbar para calorias */
+  --metric-calories-light: 254 243 199;
+  --metric-calories-border: 252 211 77;
   
-  --metric-sleep: #8b5cf6;     /* Roxo para sono */
-  --metric-sleep-light: #e9d5ff;
-  --metric-sleep-border: #c4b5fd;
+  --metric-sleep: 139 92 246;     /* Roxo para sono */
+  --metric-sleep-light: 237 233 254;
+  --metric-sleep-border: 196 181 253;
   
-  --metric-active: #10b981;    /* Verde para ativo */
-  --metric-active-light: #d1fae5;
-  --metric-active-border: #86efac;
+  --metric-active: 34 197 94;     /* Verde para ativo */
+  --metric-active-light: 240 253 244;
+  --metric-active-border: 134 239 172;
   
-  --metric-distance: #6366f1;  /* Índigo para distância */
-  --metric-distance-light: #e0e7ff;
-  --metric-distance-border: #a5b4fc;
+  --metric-distance: 229 9 20;    /* Vermelho Netflix para distância */
+  --metric-distance-light: 254 242 242;
+  --metric-distance-border: 252 165 165;
   
   /* === BORDAS E SOMBRAS === */
-  --border: #e2e8f0;
-  --border-primary: #e2e8f0;
-  --border-light: #f1f5f9;
-  --border-medium: #cbd5e1;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --border: 51 51 51;
+  --border-primary: 51 51 51;
+  --border-light: 75 85 99;
+  --border-medium: 107 114 128;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
   
-  /* === GRADIENTES === */
-  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-  --gradient-secondary: linear-gradient(135deg, #10b981 0%, #047857 100%);
-  --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  --gradient-warm: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  /* === GRADIENTES NETFLIX === */
+  --gradient-primary: linear-gradient(135deg, #E50914 0%, #DC2626 100%);
+  --gradient-secondary: linear-gradient(135deg, #333333 0%, #4B5563 100%);
+  --gradient-bg: linear-gradient(135deg, #000000 0%, #141414 100%);
+  --gradient-warm: linear-gradient(135deg, #E50914 0%, #DC2626 100%);
+  --gradient-success: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
   
   /* === TRANSIÇÕES === */
   --transition-fast: 150ms ease-in-out;

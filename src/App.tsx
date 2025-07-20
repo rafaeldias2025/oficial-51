@@ -8,23 +8,40 @@ import { ErrorDisplay, useErrorHandler } from '@/hooks/useErrorHandler';
 import { initAnalytics, trackPageView } from '@/lib/analytics';
 import { MainLayout } from '@/components/layout/MainLayout';
 import '@/styles/health-dashboard.css';
+import '@/styles/homepage-auth-improvements.css';
+import { NetflixThemeTest } from '@/components/NetflixThemeTest';
 
 // Lazy loading das páginas principais
 const Index = lazy(() => import('@/pages/Index'));
+const HomePage = lazy(() => import('@/pages/HomePage'));
 const Auth = lazy(() => import('@/pages/Auth'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const EnhancedCourses = lazy(() => import('@/pages/EnhancedCourses'));
 const CoursePage = lazy(() => import('@/pages/CoursePage'));
 const LessonPlayerPage = lazy(() => import('@/pages/LessonPlayerPage'));
+const LessonEditPage = lazy(() => import('@/pages/LessonEditPage'));
+const ModuleEditPage = lazy(() => import('@/pages/ModuleEditPage'));
+const LessonCreatePage = lazy(() => import('@/pages/LessonCreatePage'));
+const TestCourses = lazy(() => import('@/pages/TestCourses'));
 const FullSession = lazy(() => import('@/pages/FullSession'));
 const SampleSession = lazy(() => import('@/pages/SampleSession'));
 const PublicRanking = lazy(() => import('@/pages/PublicRanking'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const HealthMetrics = lazy(() => import('@/pages/HealthMetrics'));
 const TesteIntegracaoSaude = lazy(() => import('@/pages/TesteIntegracaoSaude').then(module => ({ default: module.TesteIntegracaoSaude })));
+const PlataformaSonhos = lazy(() => import('@/pages/PlataformaSonhos'));
+const ToolsPage = lazy(() => import('@/pages/ToolsPage').then(module => ({ default: module.ToolsPage })));
+const AssessmentPage = lazy(() => import('@/pages/AssessmentPage'));
+const AssessmentResultsPage = lazy(() => import('@/pages/AssessmentResultsPage'));
+const SimpleAssessmentPage = lazy(() => import('@/pages/SimpleAssessmentPage'));
+const ResponseAnalysisDemo = lazy(() => import('@/pages/ResponseAnalysisDemo').then(module => ({ default: module.ResponseAnalysisDemo })));
+const ToolManagementDemo = lazy(() => import('@/pages/ToolManagementDemo').then(module => ({ default: module.ToolManagementDemo })));
+const UserSessionsDemo = lazy(() => import('@/pages/UserSessionsDemo').then(module => ({ default: module.UserSessionsDemo })));
+const SessionResultsDemo = lazy(() => import('@/pages/SessionResultsDemo').then(module => ({ default: module.SessionResultsDemo })));
 
 // Lazy loading do painel administrativo
 const AdminTestRoute = lazy(() => import('@/components/admin/AdminTestRoute').then(module => ({ default: module.AdminTestRoute })));
+const AdminDashboard = lazy(() => import('@/pages/AdminDashboard').then(module => ({ default: module.AdminDashboard })));
 const AdminUserCreator = lazy(() => import('@/components/admin/AdminUserCreator').then(module => ({ default: module.AdminUserCreator })));
 
 // Configuração otimizada do cliente de query
@@ -51,7 +68,7 @@ const queryClient = new QueryClient({
 
 // Componente de loading otimizado
 const LoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-brand-50 to-background">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-gray-900 to-background">
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -60,14 +77,14 @@ const LoadingSpinner = () => (
     >
       <div className="flex flex-col items-center gap-6">
         <div className="relative">
-          <div className="w-16 h-16 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-          <div className="absolute inset-0 w-16 h-16 border-4 border-brand-300/30 rounded-full animate-pulse"></div>
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="absolute inset-0 w-16 h-16 border-4 border-primary/30 rounded-full animate-pulse"></div>
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Instituto dos Sonhos
           </h3>
-          <p className="text-brand-600 text-sm">Carregando sua experiência...</p>
+          <p className="text-primary text-sm">Carregando sua experiência...</p>
         </div>
       </div>
     </motion.div>
@@ -78,7 +95,7 @@ const LoadingSpinner = () => (
 
 // Componente de fallback para páginas específicas
 const PageFallback = ({ page }: { page: string }) => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-brand-50 to-background">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-gray-900 to-background">
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -86,8 +103,8 @@ const PageFallback = ({ page }: { page: string }) => (
       className="text-center"
     >
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-3 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-brand-600 text-sm">Carregando {page}...</p>
+        <div className="w-12 h-12 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-primary text-sm">Carregando {page}...</p>
       </div>
     </motion.div>
   </div>
@@ -116,23 +133,23 @@ class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-gray-900 to-background">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             className="text-center max-w-md mx-auto p-8"
           >
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-6">
-              <h2 className="text-xl font-bold text-red-400 mb-4">
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h2 className="text-xl font-bold text-destructive mb-4">
                 Ops! Algo deu errado
               </h2>
-              <p className="text-red-200 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Ocorreu um erro inesperado. Por favor, recarregue a página.
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors"
+                className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-6 py-3 rounded transition-colors"
               >
                 Recarregar página
               </button>
@@ -229,7 +246,7 @@ const AppContent = () => {
           <Routes>
             <Route path="/" element={
               <Suspense fallback={<PageFallback page="Página Inicial" />}>
-                <Index />
+                <HomePage />
               </Suspense>
             } />
             <Route path="/auth" element={
@@ -242,9 +259,19 @@ const AppContent = () => {
                 <Dashboard />
               </Suspense>
             } />
+            <Route path="/plataforma" element={
+              <Suspense fallback={<PageFallback page="Plataforma dos Sonhos" />}>
+                <PlataformaSonhos />
+              </Suspense>
+            } />
             <Route path="/admin" element={
               <Suspense fallback={<PageFallback page="Painel Administrativo" />}>
-                <AdminTestRoute />
+                <AdminDashboard />
+              </Suspense>
+            } />
+            <Route path="/admin/dashboard" element={
+              <Suspense fallback={<PageFallback page="Dashboard Administrativo" />}>
+                <AdminDashboard />
               </Suspense>
             } />
             <Route path="/create-admin" element={
@@ -272,11 +299,7 @@ const AppContent = () => {
                 <HealthMetrics />
               </Suspense>
             } />
-            <Route path="/courses" element={
-              <Suspense fallback={<PageFallback page="Cursos" />}>
-                <EnhancedCourses />
-              </Suspense>
-            } />
+            {/* Rota de cursos removida - agora acessível apenas através do dashboard */}
             <Route path="/courses/:courseId" element={
               <Suspense fallback={<PageFallback page="Curso" />}>
                 <CoursePage />
@@ -287,9 +310,70 @@ const AppContent = () => {
                 <LessonPlayerPage />
               </Suspense>
             } />
+            <Route path="/admin/courses/:courseId/lessons/:lessonId/edit" element={
+              <Suspense fallback={<PageFallback page="Editar Aula" />}>
+                <LessonEditPage />
+              </Suspense>
+            } />
+            <Route path="/admin/courses/:courseId/modules/:moduleId/edit" element={
+              <Suspense fallback={<PageFallback page="Editar Módulo" />}>
+                <ModuleEditPage />
+              </Suspense>
+            } />
+            <Route path="/admin/courses/:courseId/modules/:moduleId/lessons/new" element={
+              <Suspense fallback={<PageFallback page="Nova Aula" />}>
+                <LessonCreatePage />
+              </Suspense>
+            } />
+            <Route path="/test-courses" element={
+              <Suspense fallback={<PageFallback page="Teste Cursos" />}>
+                <TestCourses />
+              </Suspense>
+            } />
             <Route path="/teste-integracao-saude" element={
               <Suspense fallback={<PageFallback page="Teste Integração Saúde" />}>
                 <TesteIntegracaoSaude />
+              </Suspense>
+            } />
+            <Route path="/teste-netflix" element={<NetflixThemeTest />} />
+            <Route path="/tools" element={
+              <Suspense fallback={<PageFallback page="Ferramentas" />}>
+                <ToolsPage />
+              </Suspense>
+            } />
+            <Route path="/assessment/:toolId" element={
+              <Suspense fallback={<PageFallback page="Avaliação" />}>
+                <AssessmentPage />
+              </Suspense>
+            } />
+            <Route path="/assessment/results/:resultId" element={
+              <Suspense fallback={<PageFallback page="Resultados da Avaliação" />}>
+                <AssessmentResultsPage />
+              </Suspense>
+            } />
+            <Route path="/assessment/simple/:toolId" element={
+              <Suspense fallback={<PageFallback page="Avaliação Simples" />}>
+                <SimpleAssessmentPage />
+              </Suspense>
+            } />
+            <Route path="/response-analysis" element={
+              <Suspense fallback={<PageFallback page="Análise de Respostas" />}>
+                <ResponseAnalysisDemo />
+              </Suspense>
+            } />
+            <Route path="/tool-management" element={
+              <Suspense fallback={<PageFallback page="Gerenciamento de Ferramentas" />}>
+                <ToolManagementDemo />
+              </Suspense>
+            } />
+            <Route path="/user-sessions" element={
+              <Suspense fallback={<PageFallback page="Sessões de Usuário" />}>
+                <UserSessionsDemo />
+              </Suspense>
+            } />
+            <Route path="/session-results" element={
+              <Suspense fallback={<PageFallback page="Resultados da Sessão" />}>
+                <SessionResultsDemo />
               </Suspense>
             } />
             {/* Rota removida - página não existe mais */}

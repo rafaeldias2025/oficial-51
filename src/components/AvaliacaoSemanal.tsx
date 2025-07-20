@@ -16,8 +16,8 @@ interface RatingRowProps {
 }
 
 const RatingRow: React.FC<RatingRowProps> = ({ label, value, onChange }) => (
-    <div className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50">
-        <Label className="text-sm md:text-base">{label}</Label>
+    <div className="flex items-center justify-between p-2 rounded-md hover:bg-muted">
+        <Label className="text-sm md:text-base text-foreground">{label}</Label>
         <div className="flex gap-1 md:gap-2">
             {[1, 2, 3, 4, 5].map(v => (
                 <Button 
@@ -25,7 +25,7 @@ const RatingRow: React.FC<RatingRowProps> = ({ label, value, onChange }) => (
                     type="button"
                     variant={value === v ? "default" : "outline"}
                     size="sm"
-                    className={`h-8 w-8 rounded-full ${value === v ? 'bg-blue-600' : ''}`}
+                    className={`h-8 w-8 rounded-full ${value === v ? 'bg-primary' : ''}`}
                     onClick={() => onChange(v)}
                 >
                     {v}
@@ -67,7 +67,7 @@ function AvaliacaoSemanal() {
     const weekLabel = `${format(currentWeek, 'dd/MM/yyyy')} - ${format(addWeeks(currentWeek, 1), 'dd/MM/yyyy')}`;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
+        <div className="min-h-screen bg-gradient-to-br from-background via-muted to-background p-6">
             <div className="max-w-4xl mx-auto">
                 <Card className="mb-6">
                     <CardHeader className="text-center">
@@ -75,14 +75,14 @@ function AvaliacaoSemanal() {
 
                             <div></div>
                         </div>
-                        <CardTitle className="text-2xl md:text-3xl font-bold">Avaliação Semanal</CardTitle>
-                        <CardDescription>Reflita sobre sua semana para impulsionar seu progresso.</CardDescription>
+                        <CardTitle className="text-2xl md:text-3xl font-bold text-foreground">Avaliação Semanal</CardTitle>
+                        <CardDescription className="text-muted-foreground">Reflita sobre sua semana para impulsionar seu progresso.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex items-center justify-between">
                         <Button variant="outline" onClick={() => setCurrentWeek(prev => subWeeks(prev, 1))}>
                             <ArrowLeft className="h-4 w-4 mr-2" /> Anterior
                         </Button>
-                        <div className="font-semibold text-center">{weekLabel}</div>
+                        <div className="font-semibold text-center text-foreground">{weekLabel}</div>
                         <Button variant="outline" onClick={() => setCurrentWeek(prev => addWeeks(prev, 1))}>
                             Próxima <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
@@ -167,7 +167,7 @@ function AvaliacaoSemanal() {
                     </Card>
 
                     <div className="flex justify-end">
-                        <Button type="submit" size="lg" className="bg-gradient-to-r from-blue-600 to-green-600 text-white">
+                        <Button type="submit" size="lg" className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
                             <Save className="h-5 w-5 mr-2" />
                             Salvar Avaliação
                         </Button>

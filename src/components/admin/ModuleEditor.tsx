@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, Edit, Trash2, ArrowLeft, Play, Clock, Eye, ChevronDown, 
-  ChevronRight, Image as ImageIcon, Upload, Copy, Settings, BookOpen
+  ChevronRight, Image as ImageIcon, Upload, Copy, Settings, BookOpen, FileText
 } from 'lucide-react';
 import { CourseModule, CourseLesson, Course } from '@/types/admin';
 import { useModuleManagement } from '@/hooks/useModuleManagement';
@@ -51,7 +51,9 @@ export const ModuleEditor: React.FC<ModuleEditorProps> = ({ course, onBack }) =>
     video_url: '',
     duration_minutes: 0,
     order_index: 0,
-    is_active: true
+    is_active: true,
+    document_url: '',
+    image_url: ''
   });
 
   useEffect(() => {
@@ -84,7 +86,9 @@ export const ModuleEditor: React.FC<ModuleEditorProps> = ({ course, onBack }) =>
       video_url: '',
       duration_minutes: 0,
       order_index: 0,
-      is_active: true
+      is_active: true,
+      document_url: '',
+      image_url: ''
     });
     setIsEditMode(false);
     setEditingItem(null);
@@ -156,7 +160,9 @@ export const ModuleEditor: React.FC<ModuleEditorProps> = ({ course, onBack }) =>
       video_url: lesson.video_url || '',
       duration_minutes: lesson.duration_minutes || 0,
       order_index: lesson.order_index,
-      is_active: lesson.is_active
+      is_active: lesson.is_active,
+      document_url: lesson.document_url || '',
+      image_url: lesson.image_url || ''
     });
     setIsEditMode(true);
     setIsLessonModalOpen(true);
@@ -256,13 +262,11 @@ export const ModuleEditor: React.FC<ModuleEditorProps> = ({ course, onBack }) =>
                     variant="outline"
                     size="sm"
                     onClick={() => {
-                      setSelectedModule(module);
-                      resetForms();
-                      setIsLessonModalOpen(true);
+                      window.location.href = `/admin/courses/${course.id}/modules/${module.id}/lessons/new`;
                     }}
                   >
                     <Plus className="w-4 h-4 mr-1" />
-                    Adicionar Aula
+                    Adicionar Aula Avançada
                   </Button>
                   
                   <Button
@@ -345,13 +349,11 @@ export const ModuleEditor: React.FC<ModuleEditorProps> = ({ course, onBack }) =>
                         variant="outline"
                         className="mt-3"
                         onClick={() => {
-                          setSelectedModule(module);
-                          resetForms();
-                          setIsLessonModalOpen(true);
+                          window.location.href = `/admin/courses/${course.id}/modules/${module.id}/lessons/new`;
                         }}
                       >
                         <Plus className="w-4 h-4 mr-2" />
-                        Adicionar Primeira Aula
+                        Adicionar Primeira Aula Avançada
                       </Button>
                     </div>
                   )}
@@ -446,87 +448,7 @@ export const ModuleEditor: React.FC<ModuleEditorProps> = ({ course, onBack }) =>
         </DialogContent>
       </Dialog>
 
-      {/* Modal para Aula */}
-      <Dialog open={isLessonModalOpen} onOpenChange={setIsLessonModalOpen}>
-        <DialogContent className="bg-netflix-black border-netflix-gray-light">
-          <DialogHeader>
-            <DialogTitle className="text-netflix-text">
-              {isEditMode ? 'Editar Aula' : 'Nova Aula'}
-              {selectedModule && (
-                <p className="text-sm text-netflix-text-secondary font-normal">
-                  {selectedModule.title}
-                </p>
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="lesson-title" className="text-netflix-text">Título</Label>
-              <Input
-                id="lesson-title"
-                value={lessonForm.title}
-                onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })}
-                className="bg-netflix-surface border-netflix-gray-light text-netflix-text"
-                placeholder="Ex: Introdução aos conceitos"
-              />
-            </div>
 
-            <div>
-              <Label htmlFor="lesson-description" className="text-netflix-text">Descrição</Label>
-              <Textarea
-                id="lesson-description"
-                value={lessonForm.description}
-                onChange={(e) => setLessonForm({ ...lessonForm, description: e.target.value })}
-                className="bg-netflix-surface border-netflix-gray-light text-netflix-text"
-                placeholder="Descreva o conteúdo desta aula"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="lesson-video" className="text-netflix-text">URL do Vídeo</Label>
-              <Input
-                id="lesson-video"
-                value={lessonForm.video_url}
-                onChange={(e) => setLessonForm({ ...lessonForm, video_url: e.target.value })}
-                className="bg-netflix-surface border-netflix-gray-light text-netflix-text"
-                placeholder="https://youtube.com/watch?v=..."
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="lesson-duration" className="text-netflix-text">Duração (minutos)</Label>
-              <Input
-                id="lesson-duration"
-                type="number"
-                value={lessonForm.duration_minutes}
-                onChange={(e) => setLessonForm({ ...lessonForm, duration_minutes: parseInt(e.target.value) || 0 })}
-                className="bg-netflix-surface border-netflix-gray-light text-netflix-text"
-                placeholder="Ex: 30"
-              />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="lesson-active"
-                checked={lessonForm.is_active}
-                onCheckedChange={(checked) => setLessonForm({ ...lessonForm, is_active: checked })}
-              />
-              <Label htmlFor="lesson-active" className="text-netflix-text">Aula ativa</Label>
-            </div>
-
-            <div className="flex justify-end gap-3">
-              <Button variant="outline" onClick={() => setIsLessonModalOpen(false)}>
-                Cancelar
-              </Button>
-              <Button onClick={handleCreateLesson}>
-                {isEditMode ? 'Atualizar' : 'Criar'} Aula
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

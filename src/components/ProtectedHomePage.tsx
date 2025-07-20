@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { usePhysicalDataComplete } from '@/hooks/usePhysicalDataComplete';
 import { useDadosSaude } from '@/hooks/useDadosSaude';
-import { HealthLayout } from '@/components/layout/HealthLayout';
-import HomePage from '@/components/HomePage';
+import { NewHomePage } from './NewHomePage';
 
 const ProtectedHomePage = () => {
   const navigate = useNavigate();
@@ -52,15 +51,8 @@ const ProtectedHomePage = () => {
     }
   }, [user, isComplete, isLoading, navigate, dadosSaude, hasRefetched]);
 
-  // Mostrar a HomePage com HealthLayout para todos os usuários (logados ou não)
-  return (
-    <HealthLayout 
-      showHealthStats={!!user && !!dadosSaude} 
-      enableQuickAccess={!!user}
-    >
-      <HomePage />
-    </HealthLayout>
-  );
+  // Mostrar a nova página principal
+  return <NewHomePage />;
 };
 
 export default ProtectedHomePage;

@@ -88,14 +88,14 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
   ];
 
   return (
-    <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
+    <header className="lg:hidden bg-card border-b border-border px-4 py-3">
       <div className="flex items-center justify-between">
         {/* Menu Toggle Button */}
         <Button
           variant="ghost"
           size="sm"
           onClick={onMenuToggle}
-          className="p-2"
+          className="p-2 text-foreground hover:bg-muted"
           aria-label="Abrir menu"
         >
           <Menu className="h-5 w-5" />
@@ -103,10 +103,10 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
 
         {/* App Title */}
         <div className="flex-1 text-center">
-          <h1 className="text-lg font-semibold text-gray-900">
+          <h1 className="text-lg font-semibold text-foreground">
             Instituto TV30
           </h1>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             {navigationItems.find(item => item.id === activeSection)?.description || 'Dashboard'}
           </p>
         </div>
@@ -118,17 +118,17 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
               src={userProfile?.avatar_url || undefined}
               alt={getDisplayName(userProfile, user)}
             />
-            <AvatarFallback className="text-xs bg-instituto-orange text-white">
+            <AvatarFallback className="text-xs bg-primary text-primary-foreground">
               {getUserInitials(userProfile, user)}
             </AvatarFallback>
           </Avatar>
           
           <div className="hidden sm:block">
-            <p className="text-sm font-medium text-gray-900 truncate max-w-24">
+            <p className="text-sm font-medium text-foreground truncate max-w-24">
               {getDisplayName(userProfile, user)}
             </p>
             {userProfile?.role && (
-              <p className="text-xs text-gray-500 capitalize">
+              <p className="text-xs text-muted-foreground capitalize">
                 {userProfile.role === 'admin' ? 'Admin' : 'Usuário'}
               </p>
             )}
@@ -151,8 +151,8 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
               className={`
                 flex-shrink-0 flex items-center gap-2 px-3 py-2 text-xs
                 ${isActive 
-                  ? 'bg-instituto-orange text-white' 
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }
               `}
               aria-label={`Navegar para ${item.label}`}

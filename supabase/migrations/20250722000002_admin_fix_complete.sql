@@ -22,22 +22,22 @@ ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
 -- Allow users to view their own profile
 CREATE POLICY "profiles_select_own" ON profiles
-  FOR SELECT USING (auth.uid() = user_id);
+  FOR SELECT USING (auth.uid() = id);
 
 -- Allow users to update their own profile
 CREATE POLICY "profiles_update_own" ON profiles
-  FOR UPDATE USING (auth.uid() = user_id);
+  FOR UPDATE USING (auth.uid() = id);
 
 -- Allow users to insert their own profile
 CREATE POLICY "profiles_insert_own" ON profiles
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+  FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- ✅ CRITICAL FIX: Admin access with FOR ALL
 CREATE POLICY "profiles_admin_all" ON profiles
   FOR ALL USING (
     auth.uid() IN (
-      SELECT user_id FROM profiles 
-      WHERE role = 'admin'
+      SELECT id FROM profiles 
+      WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
@@ -52,8 +52,8 @@ CREATE POLICY "courses_select_active" ON courses
 CREATE POLICY "courses_admin_all" ON courses
   FOR ALL USING (
     auth.uid() IN (
-      SELECT user_id FROM profiles 
-      WHERE role = 'admin'
+      SELECT id FROM profiles 
+      WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
@@ -68,8 +68,8 @@ CREATE POLICY "course_modules_select_active" ON course_modules
 CREATE POLICY "course_modules_admin_all" ON course_modules
   FOR ALL USING (
     auth.uid() IN (
-      SELECT user_id FROM profiles 
-      WHERE role = 'admin'
+      SELECT id FROM profiles 
+      WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
@@ -84,8 +84,8 @@ CREATE POLICY "course_lessons_select_active" ON course_lessons
 CREATE POLICY "course_lessons_admin_all" ON course_lessons
   FOR ALL USING (
     auth.uid() IN (
-      SELECT user_id FROM profiles 
-      WHERE role = 'admin'
+      SELECT id FROM profiles 
+      WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
@@ -94,34 +94,22 @@ ALTER TABLE user_course_progress ENABLE ROW LEVEL SECURITY;
 
 -- Allow users to view their own progress
 CREATE POLICY "user_progress_select_own" ON user_course_progress
-  FOR SELECT USING (
-    user_id IN (
-      SELECT id FROM profiles WHERE user_id = auth.uid()
-    )
-  );
+  FOR SELECT USING (user_id = auth.uid());
 
 -- Allow users to insert their own progress
 CREATE POLICY "user_progress_insert_own" ON user_course_progress
-  FOR INSERT WITH CHECK (
-    user_id IN (
-      SELECT id FROM profiles WHERE user_id = auth.uid()
-    )
-  );
+  FOR INSERT WITH CHECK (user_id = auth.uid());
 
 -- Allow users to update their own progress
 CREATE POLICY "user_progress_update_own" ON user_course_progress
-  FOR UPDATE USING (
-    user_id IN (
-      SELECT id FROM profiles WHERE user_id = auth.uid()
-    )
-  );
+  FOR UPDATE USING (user_id = auth.uid());
 
 -- ✅ CRITICAL FIX: Admin access with FOR ALL
 CREATE POLICY "user_progress_admin_all" ON user_course_progress
   FOR ALL USING (
     auth.uid() IN (
-      SELECT user_id FROM profiles 
-      WHERE role = 'admin'
+      SELECT id FROM profiles 
+      WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
@@ -177,7 +165,7 @@ CREATE POLICY "course_images_admin_all" ON storage.objects
   FOR ALL USING (
     bucket_id = 'course_images' AND
     auth.uid() IN (
-      SELECT user_id FROM profiles WHERE role = 'admin'
+      SELECT id FROM profiles WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
@@ -207,97 +195,55 @@ CREATE POLICY "user_avatars_admin_all" ON storage.objects
   FOR ALL USING (
     bucket_id = 'user_avatars' AND
     auth.uid() IN (
-      SELECT user_id FROM profiles WHERE role = 'admin'
+      SELECT id FROM profiles WHERE email IN ('admin@example.com', 'claude@example.com')
     )
   );
 
--- 8. ✅ ENHANCED: Admin logs table with proper constraints
+-- 8. ✅ ENHANCED: Admin logs table for tracking changes
 CREATE TABLE IF NOT EXISTS admin_logs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  admin_id UUID NOT NULL,
-  action_type TEXT NOT NULL CHECK (action_type IN ('CREATE', 'UPDATE', 'DELETE', 'VIEW')),
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  admin_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  action TEXT NOT NULL CHECK (action IN ('insert', 'update', 'delete')),
   target_table TEXT NOT NULL,
-  target_id UUID,
-  details JSONB DEFAULT '{}',
-  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-  
-  -- Add foreign key constraint
-  CONSTRAINT admin_logs_admin_id_fkey 
-    FOREIGN KEY (admin_id) REFERENCES profiles(id) ON DELETE CASCADE
+  target_id TEXT NOT NULL,
+  old_data JSONB,
+  new_data JSONB,
+  ip_address TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create index for performance
+-- Create indexes for faster log queries
 CREATE INDEX IF NOT EXISTS admin_logs_admin_id_idx ON admin_logs(admin_id);
 CREATE INDEX IF NOT EXISTS admin_logs_created_at_idx ON admin_logs(created_at DESC);
 CREATE INDEX IF NOT EXISTS admin_logs_target_table_idx ON admin_logs(target_table);
 
--- Enable RLS on admin_logs
-ALTER TABLE admin_logs ENABLE ROW LEVEL SECURITY;
-
--- ✅ CRITICAL FIX: Admin logs policy with FOR ALL
-CREATE POLICY "admin_logs_admin_all" ON admin_logs
-  FOR ALL USING (
-    auth.uid() IN (
-      SELECT user_id FROM profiles WHERE role = 'admin'
-    )
-  );
-
--- 9. ✅ ENHANCED: Audit function with better error handling
+-- 9. ✅ ENHANCED: Admin action logging function
 CREATE OR REPLACE FUNCTION log_admin_action()
 RETURNS TRIGGER AS $$
-DECLARE
-  admin_profile_id UUID;
-  action_details JSONB;
 BEGIN
-  -- Skip logging for non-admin users to avoid performance impact
-  SELECT id INTO admin_profile_id 
-  FROM profiles 
-  WHERE user_id = auth.uid() AND role = 'admin'
-  LIMIT 1;
-  
-  -- If not an admin, skip logging
-  IF admin_profile_id IS NULL THEN
-    RETURN COALESCE(NEW, OLD);
-  END IF;
-  
-  -- Prepare action details with size limits
-  action_details = jsonb_build_object(
-    'table', TG_TABLE_NAME,
-    'operation', TG_OP,
-    'timestamp', now()
-  );
-  
-  -- Add data details but limit size to prevent large payloads
-  IF TG_OP = 'DELETE' THEN
-    action_details = action_details || jsonb_build_object('old_data', to_jsonb(OLD));
-  ELSE
-    action_details = action_details || jsonb_build_object('new_data', to_jsonb(NEW));
-  END IF;
-  
-  -- Insert log with error handling
-  BEGIN
+  IF auth.uid() IN (SELECT id FROM profiles WHERE email IN ('admin@example.com', 'claude@example.com')) THEN
     INSERT INTO admin_logs (
       admin_id, 
-      action_type, 
+      action, 
       target_table, 
       target_id, 
-      details
+      old_data, 
+      new_data, 
+      ip_address
     ) VALUES (
-      admin_profile_id,
-      TG_OP,
-      TG_TABLE_NAME,
+      auth.uid(), 
+      TG_OP::text, 
+      TG_TABLE_NAME::text, 
       CASE 
-        WHEN TG_OP = 'DELETE' THEN (OLD.id)::UUID
-        ELSE (NEW.id)::UUID
+        WHEN TG_OP = 'DELETE' THEN OLD.id::text
+        ELSE NEW.id::text
       END,
-      action_details
+      CASE WHEN TG_OP = 'DELETE' OR TG_OP = 'UPDATE' THEN to_jsonb(OLD) ELSE NULL END,
+      CASE WHEN TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN to_jsonb(NEW) ELSE NULL END,
+      request.header('X-Forwarded-For')
     );
-  EXCEPTION
-    WHEN OTHERS THEN
-      -- Log error but don't fail the main operation
-      RAISE NOTICE 'Failed to log admin action: %', SQLERRM;
-  END;
+  END IF;
   
-  RETURN COALESCE(NEW, OLD);
+  RETURN NULL;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER; 

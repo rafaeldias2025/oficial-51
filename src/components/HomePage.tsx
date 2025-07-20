@@ -250,7 +250,7 @@ const HomePage = () => {
                   Cursos
                 </Button>
               </Link>
-              {user && ['admin@instituto.com', 'admin@sonhos.com', 'rafael@admin.com'].includes(user.email || '') && <Link to="/admin?tab=usuarios">
+              {user && ['admin@instituto.com', 'admin@sonhos.com', 'admin@example.com', 'rafael@admin.com'].includes(user.email || '') && <Link to="/admin?tab=usuarios">
                   <Button variant="ghost" className="text-amber-600 hover:text-amber-500 hover:bg-amber-50 animate-pulse">
                     <Shield className="mr-2 h-4 w-4" />
                     Gerenciar Usuários
@@ -728,7 +728,7 @@ const HomePage = () => {
                 </Button>
               </Link>
               
-              {user && ['admin@instituto.com', 'admin@sonhos.com', 'rafael@admin.com'].includes(user.email || '') && <Link to="/admin?tab=usuarios">
+              {user && ['admin@instituto.com', 'admin@sonhos.com', 'admin@example.com', 'rafael@admin.com'].includes(user.email || '') && <Link to="/admin?tab=usuarios">
                   <Button variant="outline" size="lg" className="border-amber-400 text-amber-400 hover:bg-amber-400/20 px-12 py-6 text-xl font-bold backdrop-blur-sm animate-pulse">
                     <Shield className="mr-2 h-6 w-6" />
                     GERENCIAR USUÁRIOS

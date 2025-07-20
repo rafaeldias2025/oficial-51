@@ -6,13 +6,13 @@ import { format, subDays, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { TrendingUp, TrendingDown, Calendar, Target } from 'lucide-react';
+import { TrendingUp, TrendingDown, Calendar, Target, CheckCircle, Star } from 'lucide-react';
 
 interface DadosPontuacao {
-  data: string;
-  pontos: number;
-  categoria: string;
   dataFormatada: string;
+  pontos: number;
+  data: string;
+  categoria?: string;
 }
 
 interface EstatisticasEvolucao {
@@ -37,39 +37,30 @@ export const GraficoEvolucaoMissao = () => {
   }, [user, periodo]);
 
   const fetchDadosEvolucao = async () => {
-    if (!user) return;
-
-    setLoading(true);
     try {
-      const profile = await supabase.from('profiles').select('id').eq('user_id', user.id).single();
-      if (profile.error) throw profile.error;
-
-      const dataInicio = format(subDays(new Date(), periodo), 'yyyy-MM-dd');
-      const dataFim = format(new Date(), 'yyyy-MM-dd');
-
       const { data, error } = await supabase
         .from('pontuacao_diaria')
-        .select('data, total_pontos_dia, categoria_dia')
-        .eq('user_id', profile.data.id)
-        .gte('data', dataInicio)
-        .lte('data', dataFim)
-        .order('data');
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: true })
+        .limit(periodo);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erro ao buscar dados de evolução:', error);
+        return;
+      }
 
-      const dadosFormatados: DadosPontuacao[] = data?.map(item => ({
-        data: item.data,
-        pontos: item.total_pontos_dia || 0,
-        categoria: item.categoria_dia || 'baixa',
-        dataFormatada: format(parseISO(item.data), 'dd/MM', { locale: ptBR })
-      })) || [];
-
-      setDadosEvolucao(dadosFormatados);
-      calcularEstatisticas(dadosFormatados);
+      if (data) {
+        const dadosFormatados: DadosPontuacao[] = data.map(item => ({
+          dataFormatada: new Date(item.created_at).toLocaleDateString('pt-BR'),
+          pontos: item.pontos_exercicio || item.pontos_alimentacao || item.pontos_avaliacao_dia || 0,
+          data: item.created_at,
+          categoria: 'media'
+        }));
+        setDadosEvolucao(dadosFormatados);
+      }
     } catch (error) {
-      console.error('Erro ao buscar dados de evolução:', error);
-    } finally {
-      setLoading(false);
+      console.error('Erro ao buscar dados:', error);
     }
   };
 
@@ -166,137 +157,118 @@ export const GraficoEvolucaoMissao = () => {
 
   return (
     <div className="space-y-6">
-      {/* Estatísticas Resumidas */}
-      {estatisticas && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-instituto-orange">
-                {estatisticas.totalPontos}
-              </div>
-              <div className="text-sm text-muted-foreground">Total de Pontos</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">
-                {estatisticas.diasAtivos}
-              </div>
-              <div className="text-sm text-muted-foreground">Dias Ativos</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-600">
-                {estatisticas.mediaUltimos7Dias.toFixed(1)}
-              </div>
-              <div className="text-sm text-muted-foreground">Média Diária</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                {getTendenciaIcon()}
-                <Badge className={getTendenciaColor()}>
-                  {getTendenciaTexto()}
-                </Badge>
-              </div>
-              <div className="text-sm text-muted-foreground">Tendência</div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Gráfico de Evolução */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-instituto-orange" />
-              Evolução da Pontuação
-            </CardTitle>
-            <div className="flex gap-2">
-              {[7, 14, 30].map((dias) => (
-                <button
-                  key={dias}
-                  onClick={() => setPeriodo(dias as 7 | 14 | 30)}
-                  className={`px-3 py-1 rounded text-sm ${
-                    periodo === dias
-                      ? 'bg-instituto-orange text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {dias}d
-                </button>
-              ))}
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {dadosEvolucao.length > 0 ? (
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={dadosEvolucao}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="dataFormatada" 
-                    tick={{ fontSize: 12 }}
-                  />
-                  <YAxis 
-                    domain={[0, 'dataMax + 5']}
-                    tick={{ fontSize: 12 }}
-                  />
-                  <Tooltip 
-                    formatter={(value: number) => [value, 'Pontos']}
-                    labelFormatter={(label) => `Data: ${label}`}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="pontos"
-                    stroke="#f97316"
-                    fill="#f97316"
-                    fillOpacity={0.2}
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div className="h-64 flex items-center justify-center text-muted-foreground">
-              <div className="text-center">
-                <Calendar className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
-                <p>Nenhum dado encontrado para o período selecionado</p>
-                <p className="text-sm">Complete suas missões para ver sua evolução</p>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Melhor Desempenho */}
-      {estatisticas && estatisticas.melhorDia.pontos > 0 && (
-        <Card>
-          <CardContent className="p-4">
+      {/* Métricas Principais */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium text-instituto-dark">Seu melhor dia</h4>
-                <p className="text-sm text-muted-foreground">
-                  {estatisticas.melhorDia.data}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-instituto-orange">
-                  {estatisticas.melhorDia.pontos}
+                <p className="text-netflix-text-muted text-sm">Pontos Totais</p>
+                <div className="text-2xl font-bold text-netflix-red">
+                  2,847
                 </div>
-                <div className="text-sm text-muted-foreground">pontos</div>
+              </div>
+              <div className="p-3 bg-netflix-red/10 rounded-full">
+                <TrendingUp className="w-6 h-6 text-netflix-red" />
               </div>
             </div>
           </CardContent>
         </Card>
-      )}
+
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-netflix-text-muted text-sm">Missões Concluídas</p>
+                <div className="text-2xl font-bold text-netflix-red">
+                  28
+                </div>
+              </div>
+              <div className="p-3 bg-netflix-red/10 rounded-full">
+                <CheckCircle className="w-6 h-6 text-netflix-red" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-netflix-text-muted text-sm">Sequência Atual</p>
+                <div className="text-2xl font-bold text-netflix-red">
+                  12 dias
+                </div>
+              </div>
+              <div className="p-3 bg-netflix-red/10 rounded-full">
+                <Star className="w-6 h-6 text-netflix-red" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Gráfico de Evolução */}
+      <Card className="bg-netflix-card border-netflix-border mb-8">
+        <CardHeader>
+          <CardTitle className="text-netflix-text">Evolução dos Pontos</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={dadosEvolucao}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis 
+                dataKey="dataFormatada" 
+                stroke="#9CA3AF"
+                tick={{ fill: '#9CA3AF' }}
+              />
+              <YAxis 
+                stroke="#9CA3AF"
+                tick={{ fill: '#9CA3AF' }}
+              />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: '#1F2937',
+                  border: '1px solid #374151',
+                  borderRadius: '8px',
+                  color: '#F9FAFB'
+                }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="pontos" 
+                stroke="#E50914" 
+                strokeWidth={3}
+                dot={{ fill: '#E50914', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, stroke: '#E50914', strokeWidth: 2 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Melhor Performance */}
+      <Card className="bg-netflix-card border-netflix-border">
+        <CardHeader>
+          <CardTitle className="text-netflix-text">Melhor Performance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-medium text-netflix-text">Seu melhor dia</h4>
+              <p className="text-netflix-text-muted">
+                {estatisticas?.melhorDia.data}
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-netflix-red">
+                {estatisticas?.melhorDia.pontos}
+              </div>
+              <p className="text-sm text-netflix-text-muted">pontos</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

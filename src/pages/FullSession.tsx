@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Target, Clock, Settings, Play, Brain } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import butterflyLogo from '@/assets/butterfly-logo.png';
 
@@ -160,10 +160,10 @@ const FullSession = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-instituto-dark mb-4">
+              <h2 className="text-2xl font-bold text-netflix-text mb-4">
                 🌟 Bem-vindo à sua sessão completa
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-netflix-text-muted leading-relaxed">
                 {sessionContent.intro}
               </p>
             </div>
@@ -173,7 +173,7 @@ const FullSession = () => {
       case 'video':
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-instituto-dark mb-4">
+            <h2 className="text-2xl font-bold text-netflix-text mb-4">
               🎥 Conteúdo Principal
             </h2>
             <div className="aspect-video rounded-lg overflow-hidden bg-black">
@@ -195,13 +195,13 @@ const FullSession = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-instituto-dark mb-4">{task.title}</h3>
-              <p className="text-instituto-dark/70 mb-6">{task.description}</p>
+              <h3 className="text-xl font-semibold text-netflix-text mb-4">{task.title}</h3>
+              <p className="text-netflix-text-muted/70 mb-6">{task.description}</p>
             </div>
             
             <Card className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-instituto-dark">Sua Resposta:</h4>
+                <h4 className="font-semibold text-netflix-text">Sua Resposta:</h4>
               </div>
               <Textarea 
                 placeholder="Digite sua resposta aqui..."
@@ -217,16 +217,16 @@ const FullSession = () => {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-instituto-dark mb-4">
+              <h2 className="text-3xl font-bold text-netflix-text mb-4">
                 🎉 Sessão Concluída com Sucesso!
               </h2>
-              <p className="text-lg text-instituto-dark/70">
+              <p className="text-lg text-netflix-text-muted">
                 Parabéns por completar esta jornada de autoconhecimento
               </p>
             </div>
             
-            <div className="bg-gradient-to-r from-instituto-green/10 to-instituto-light/10 p-6 rounded-lg border border-instituto-green/20">
-              <p className="text-lg text-instituto-dark leading-relaxed text-center">
+            <div className="bg-gradient-to-r from-netflix-red/10 to-netflix-red/5 p-6 rounded-lg border border-netflix-red/20">
+              <p className="text-lg text-netflix-text leading-relaxed text-center">
                 {sessionContent.conclusion}
               </p>
             </div>
@@ -236,7 +236,7 @@ const FullSession = () => {
                 onClick={() => navigate('/dashboard')}
                 variant="outline"
                 size="lg"
-                className="border-instituto-orange text-instituto-orange hover:bg-instituto-orange hover:text-white"
+                className="border-netflix-red text-netflix-red hover:bg-netflix-red hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar ao Dashboard
@@ -251,7 +251,7 @@ const FullSession = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-instituto-light via-white to-instituto-cream">
+    <div className="min-h-screen bg-gradient-to-br from-netflix-light via-white to-netflix-cream">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-6 py-4">
@@ -259,14 +259,14 @@ const FullSession = () => {
             <div className="flex items-center gap-3">
               <img src={butterflyLogo} alt="Instituto dos Sonhos" className="w-8 h-8" />
               <div>
-                <h1 className="text-xl font-bold text-instituto-dark">Instituto dos Sonhos</h1>
+                <h1 className="text-xl font-bold text-netflix-text">Instituto dos Sonhos</h1>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <Button 
                 variant="ghost" 
                 onClick={() => navigate('/dashboard')}
-                className="text-instituto-dark"
+                className="text-netflix-text"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar
@@ -277,69 +277,227 @@ const FullSession = () => {
       </header>
 
       <div className="container mx-auto px-6 py-8">
-        {/* Session Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-instituto-dark mb-2">{session.title}</h1>
-          <div className="flex items-center justify-center gap-4 text-sm text-instituto-dark/70">
-            <Badge variant="outline" className="border-instituto-green text-instituto-green">
-              <CheckCircle className="w-3 h-3 mr-1" />
-              Acesso Completo
-            </Badge>
-            <span>{session.estimated_duration}</span>
-            <span>{sessionContent.tasks?.length || 0} atividades</span>
-          </div>
-          <div className="mt-4">
-            <div className="text-sm text-instituto-dark/70 mb-2">Progresso</div>
-            <Progress value={(currentStep / (steps.length - 1)) * 100} className="w-full max-w-md mx-auto" />
-            <div className="text-sm text-instituto-orange font-semibold mt-1">
-              {Math.round((currentStep / (steps.length - 1)) * 100)}% concluído
+        {/* Header da Sessão */}
+        <div className="bg-netflix-card border-b border-netflix-border p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-netflix-red rounded-full flex items-center justify-center">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-netflix-text">Instituto dos Sonhos</h1>
+                <Badge variant="outline" className="text-xs border-netflix-red text-netflix-red">
+                  Sessão Completa
+                </Badge>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="outline"
+                className="border-netflix-border text-netflix-text"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Configurações
+              </Button>
+              <Button 
+                className="bg-netflix-red hover:bg-netflix-red/90"
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Iniciar Sessão
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Content */}
-        <Card className="mb-8">
-          <CardContent className="p-8">
-            {renderStep()}
-          </CardContent>
-        </Card>
+        {/* Informações da Sessão */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-netflix-text mb-2">{session.title}</h1>
+          <div className="flex items-center justify-center gap-4 text-sm text-netflix-text-muted">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>60 minutos</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Target className="w-4 h-4" />
+              <span>Mentalidade Positiva</span>
+            </div>
+            <Badge variant="outline" className="border-netflix-red text-netflix-red">
+              Completo
+            </Badge>
+          </div>
+        </div>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center">
-          <Button
+        {/* Barra de Progresso */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-netflix-text-muted">Progresso</span>
+            <span className="text-sm text-netflix-red font-semibold">3 de 4 tarefas</span>
+          </div>
+          <Progress value={75} className="h-2" />
+        </div>
+
+        {/* Seção de Introdução */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            Sobre esta Sessão
+          </h2>
+          <p className="text-netflix-text-muted mb-6">
+            Esta sessão completa foi desenvolvida para transformar sua mentalidade 
+            e ajudá-lo a alcançar seus objetivos de forma sustentável.
+          </p>
+          
+          <Card className="mt-6 border-netflix-red/20 bg-netflix-red/5">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-2 text-netflix-red mb-2">
+                <Target className="w-5 h-5" />
+                <span className="font-semibold">Objetivo da Sessão</span>
+              </div>
+              <p className="text-sm text-netflix-text-muted">
+                Desenvolver uma mentalidade positiva e resiliente através de 
+                técnicas comprovadas e exercícios práticos.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Seção de Benefícios */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            O que você vai descobrir:
+          </h2>
+          
+          <div className="bg-netflix-red/10 p-6 rounded-lg border border-netflix-red/20">
+            <h3 className="font-semibold text-netflix-text mb-2">O que você vai descobrir:</h3>
+            <ul className="space-y-2 text-netflix-text-muted">
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Como identificar padrões de pensamento negativo
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Técnicas para reestruturar pensamentos limitantes
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Estratégias para manter uma mentalidade positiva
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Ferramentas práticas para o dia a dia
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Seção de Tarefas */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            Tarefas da Sessão
+          </h2>
+          
+          {sessionContent.tasks.map((task, index) => (
+            <Card key={index} className="mb-6 bg-netflix-card border-netflix-border">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-semibold text-netflix-text mb-4">{task.title}</h3>
+                <p className="text-netflix-text-muted mb-6">{task.description}</p>
+                
+                <Card className="p-6 bg-netflix-red/5 border border-netflix-red/20">
+                  <CardContent className="p-0">
+                    <h4 className="font-semibold text-netflix-text">Sua Resposta:</h4>
+                    <Badge variant="outline" className="text-xs border-netflix-red text-netflix-red">
+                      Salvo automaticamente
+                    </Badge>
+                    <textarea 
+                      className="w-full mt-3 p-3 bg-netflix-card border border-netflix-border rounded-lg text-netflix-text placeholder-netflix-text-muted resize-none"
+                      rows={4}
+                      placeholder="Escreva suas reflexões aqui..."
+                    />
+                  </CardContent>
+                </Card>
+                
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-netflix-text-muted" />
+                    <p className="text-xs text-netflix-text-muted">
+                      Tempo estimado: {task.duration}
+                    </p>
+                  </div>
+                  <Button 
+                    className="bg-netflix-red hover:bg-netflix-red/90"
+                  >
+                    Marcar como Concluída
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+
+        {/* Seção de Conclusão */}
+        <section className="mb-8">
+          <h2 className="text-3xl font-bold text-netflix-text mb-4">
+            Próximos Passos
+          </h2>
+          
+          <p className="text-lg text-netflix-text-muted">
+            Após completar esta sessão, você terá uma base sólida para 
+            desenvolver uma mentalidade mais positiva e resiliente.
+          </p>
+          
+          <div className="bg-gradient-to-r from-netflix-red/10 to-netflix-red/5 p-6 rounded-lg border border-netflix-red/20">
+            <p className="text-lg text-netflix-text leading-relaxed text-center">
+              "A mudança começa com um único pensamento. 
+              Cada escolha que você faz hoje molda o amanhã que você deseja."
+            </p>
+          </div>
+          
+          <div className="mt-6 flex gap-4">
+            <Button 
+              variant="outline"
+              className="border-netflix-red text-netflix-red hover:bg-netflix-red hover:text-white"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+            <Button 
+              className="bg-netflix-red hover:bg-netflix-red/90"
+            >
+              Continuar para Próxima Sessão
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </section>
+
+        {/* Navegação */}
+        <div className="flex justify-between items-center mt-8">
+          <Button 
             variant="outline"
-            onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-            disabled={currentStep === 0}
-            className="border-instituto-orange text-instituto-orange hover:bg-instituto-orange hover:text-white"
+            className="border-netflix-red text-netflix-red hover:bg-netflix-red hover:text-white"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Anterior
           </Button>
-
+          
           <div className="flex gap-2">
-            {steps.map((step, index) => (
+            {sessionContent.tasks.map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentStep
-                    ? 'bg-instituto-orange'
-                    : index < currentStep
-                    ? 'bg-instituto-orange/60'
-                    : 'bg-gray-300'
+                className={`w-3 h-3 rounded-full ${
+                  index < 3 ? 'bg-netflix-red' : 'bg-netflix-red/60'
                 }`}
               />
             ))}
           </div>
-
-          <Button
-            onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
-            disabled={currentStep === steps.length - 1}
-            className="bg-instituto-orange hover:bg-instituto-orange-hover"
+          
+          <Button 
+            className="bg-netflix-red hover:bg-netflix-red/90"
           >
             Próximo
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
+
       </div>
 
     </div>

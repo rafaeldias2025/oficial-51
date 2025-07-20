@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,13 +8,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Play, BookOpen, Clock } from 'lucide-react';
+import { Plus, Edit, Trash2, Play, BookOpen, Clock, Settings } from 'lucide-react';
 import { useCourses } from '@/hooks/useCourses';
 import { useToast } from '@/hooks/use-toast';
 
 export const CourseManagement = () => {
   const { courses, loading, createCourse, updateCourse, deleteCourse, fetchCourseModules, createModule, createLesson } = useCourses();
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isModuleModalOpen, setIsModuleModalOpen] = useState(false);
@@ -168,9 +170,8 @@ export const CourseManagement = () => {
   };
 
   const handleViewCourse = async (course: any) => {
-    setSelectedCourse(course);
-    const modules = await fetchCourseModules(course.id);
-    setCourseModules(modules);
+    // Navegar para a página de gestão de módulos do curso
+    navigate(`/admin/courses/${course.id}/modules/1/edit`);
   };
 
   const getCategoryColor = (category: string) => {
@@ -286,13 +287,12 @@ export const CourseManagement = () => {
                       <Button
                         size="sm"
                         onClick={() => {
-                          setSelectedModule(module);
-                          setIsLessonModalOpen(true);
+                          window.location.href = `/admin/courses/${selectedCourse.id}/modules/${module.id}/lessons/new`;
                         }}
                         className="gap-2"
                       >
                         <Plus className="w-4 h-4" />
-                        Adicionar Aula
+                        Adicionar Aula Avançada
                       </Button>
                     </div>
                     {module.description && (
@@ -352,67 +352,6 @@ export const CourseManagement = () => {
           )}
         </div>
 
-        {/* Modal para criar aula */}
-        <Dialog open={isLessonModalOpen} onOpenChange={setIsLessonModalOpen}>
-          <DialogContent className="bg-netflix-card border-netflix-border">
-            <DialogHeader>
-              <DialogTitle className="text-netflix-text">Nova Aula</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="lesson-title">Título da Aula</Label>
-                <Input
-                  id="lesson-title"
-                  value={lessonForm.title}
-                  onChange={(e) => setLessonForm(prev => ({ ...prev, title: e.target.value }))}
-                  className="bg-netflix-hover border-netflix-border"
-                />
-              </div>
-              <div>
-                <Label htmlFor="lesson-description">Descrição</Label>
-                <Textarea
-                  id="lesson-description"
-                  value={lessonForm.description}
-                  onChange={(e) => setLessonForm(prev => ({ ...prev, description: e.target.value }))}
-                  className="bg-netflix-hover border-netflix-border"
-                />
-              </div>
-              <div>
-                <Label htmlFor="lesson-video">URL do Vídeo (YouTube)</Label>
-                <Input
-                  id="lesson-video"
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  value={lessonForm.video_url}
-                  onChange={(e) => setLessonForm(prev => ({ ...prev, video_url: e.target.value }))}
-                  className="bg-netflix-hover border-netflix-border"
-                />
-              </div>
-              <div>
-                <Label htmlFor="lesson-duration">Duração (minutos)</Label>
-                <Input
-                  id="lesson-duration"
-                  type="number"
-                  value={lessonForm.duration_minutes}
-                  onChange={(e) => setLessonForm(prev => ({ ...prev, duration_minutes: parseInt(e.target.value) }))}
-                  className="bg-netflix-hover border-netflix-border"
-                />
-              </div>
-              <div>
-                <Label htmlFor="lesson-order">Ordem</Label>
-                <Input
-                  id="lesson-order"
-                  type="number"
-                  value={lessonForm.order_index}
-                  onChange={(e) => setLessonForm(prev => ({ ...prev, order_index: parseInt(e.target.value) }))}
-                  className="bg-netflix-hover border-netflix-border"
-                />
-              </div>
-              <Button onClick={handleCreateLesson} className="w-full">
-                Criar Aula
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     );
   }
@@ -536,8 +475,9 @@ export const CourseManagement = () => {
                       size="sm" 
                       variant="outline" 
                       onClick={() => handleViewCourse(course)}
+                      title="Gerenciar Módulos e Aulas"
                     >
-                      <BookOpen className="w-4 h-4" />
+                      <Settings className="w-4 h-4" />
                     </Button>
                     <Button 
                       size="sm" 

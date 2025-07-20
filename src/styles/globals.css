@@ -5,192 +5,352 @@
 
 @layer base {
   :root {
-    /* Light Theme */
-    --color-background: 255 255 255;
-    --color-foreground: 23 23 23;
-    --color-primary: 24 144 255;
-    --color-secondary: 34 197 94;
-    --color-accent: 255 107 107;
-    --color-border: 229 229 229;
+    /* === SISTEMA DE CORES NETFLIX - INSTITUTO DOS SONHOS === */
+    
+    /* === CORES PRIMÁRIAS === */
+    --background: 0 0 0;          /* Preto Netflix */
+    --foreground: 255 255 255;    /* Branco */
+    --card: 20 20 20;             /* Cinza muito escuro */
+    --card-foreground: 255 255 255;
+    --popover: 20 20 20;          /* Cinza muito escuro */
+    --popover-foreground: 255 255 255;
+    
+    /* === CORES PRINCIPAIS === */
+    --primary: 229 9 20;          /* Vermelho Netflix */
+    --primary-foreground: 255 255 255;
+    --secondary: 51 51 51;         /* Cinza médio */
+    --secondary-foreground: 255 255 255;
+    --accent: 229 9 20;           /* Vermelho Netflix como acento */
+    --accent-foreground: 255 255 255;
+    
+    /* === CORES DE ESTADO === */
+    --success: 34 197 94;         /* Verde sucesso */
+    --success-foreground: 255 255 255;
+    --warning: 245 158 11;        /* Âmbar aviso */
+    --warning-foreground: 255 255 255;
+    --destructive: 239 68 68;     /* Vermelho erro */
+    --destructive-foreground: 255 255 255;
+    
+    /* === CORES DE INTERFACE === */
+    --muted: 51 51 51;            /* Cinza médio */
+    --muted-foreground: 156 163 175;
+    --border: 51 51 51;           /* Cinza médio */
+    --input: 51 51 51;            /* Cinza médio */
+    --ring: 229 9 20;             /* Vermelho Netflix */
+    
+    /* === CORES DE SAÚDE === */
+    --health-heart: 239 68 68;     /* Vermelho coração */
+    --health-steps: 59 130 246;    /* Azul passos */
+    --health-sleep: 139 92 246;    /* Roxo sono */
+    --health-water: 6 182 212;     /* Ciano água */
+    --health-calories: 245 158 11; /* Âmbar calorias */
+    --health-weight: 34 197 94;    /* Verde peso */
+    --health-pressure: 220 38 38;  /* Vermelho pressão */
+    --health-temperature: 249 115 22; /* Laranja temperatura */
+    
+    /* === CORES DE GRÁFICOS === */
+    --chart-1: 229 9 20;          /* Vermelho Netflix */
+    --chart-2: 34 197 94;         /* Verde */
+    --chart-3: 245 158 11;        /* Âmbar */
+    --chart-4: 239 68 68;         /* Vermelho */
+    --chart-5: 139 92 246;        /* Roxo */
+    
+    /* === RADIUS === */
+    --radius: 0.5rem;
   }
 
   .dark {
-    /* Dark Theme */
-    --color-background: 10 10 10;
-    --color-foreground: 250 250 250;
-    --color-primary: 64 169 255;
-    --color-secondary: 74 222 128;
-    --color-accent: 252 129 129;
-    --color-border: 38 38 38;
+    /* === TEMA ESCURO (NETFLIX JÁ É ESCURO) === */
+    --background: 0 0 0;          /* Preto Netflix */
+    --foreground: 255 255 255;    /* Branco */
+    --card: 20 20 20;             /* Cinza muito escuro */
+    --card-foreground: 255 255 255;
+    --popover: 20 20 20;          /* Cinza muito escuro */
+    --popover-foreground: 255 255 255;
+    
+    /* === CORES PRINCIPAIS (DARK) === */
+    --primary: 229 9 20;          /* Vermelho Netflix */
+    --primary-foreground: 255 255 255;
+    --secondary: 51 51 51;         /* Cinza médio */
+    --secondary-foreground: 255 255 255;
+    --accent: 229 9 20;           /* Vermelho Netflix */
+    --accent-foreground: 255 255 255;
+    
+    /* === CORES DE ESTADO (DARK) === */
+    --success: 34 197 94;
+    --success-foreground: 255 255 255;
+    --warning: 245 158 11;
+    --warning-foreground: 255 255 255;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    
+    /* === CORES DE INTERFACE (DARK) === */
+    --muted: 51 51 51;
+    --muted-foreground: 156 163 175;
+    --border: 51 51 51;
+    --input: 51 51 51;
+    --ring: 229 9 20;
+    
+    /* === CORES DE SAÚDE (DARK) === */
+    --health-heart: 239 68 68;
+    --health-steps: 96 165 250;
+    --health-sleep: 167 139 250;
+    --health-water: 34 211 238;
+    --health-calories: 245 158 11;
+    --health-weight: 34 197 94;
+    --health-pressure: 239 68 68;
+    --health-temperature: 251 146 60;
+    
+    /* === CORES DE GRÁFICOS (DARK) === */
+    --chart-1: 229 9 20;          /* Vermelho Netflix */
+    --chart-2: 34 197 94;
+    --chart-3: 245 158 11;
+    --chart-4: 239 68 68;
+    --chart-5: 139 92 246;
   }
 
   body {
-    @apply bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
 @layer components {
-  /* Botão Primário */
+  /* === BOTÕES NETFLIX === */
   .btn-primary {
-    @apply bg-primary text-white hover:bg-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
-    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200;
-    @apply shadow-md hover:shadow-lg active:scale-95;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    @apply px-6 py-3 rounded font-semibold transition-all duration-200;
+    @apply shadow-lg hover:shadow-xl active:scale-95;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 
-  /* Botão Secundário */
+  .btn-primary:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+
   .btn-secondary {
-    @apply bg-secondary text-white hover:bg-secondary-600 focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2;
-    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200;
-    @apply shadow-md hover:shadow-lg active:scale-95;
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    @apply px-6 py-3 rounded font-semibold transition-all duration-200;
+    @apply shadow-lg hover:shadow-xl active:scale-95;
+    @apply focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2;
   }
 
-  /* Botão Accent */
+  .btn-secondary:hover {
+    background-color: hsl(var(--secondary) / 0.8);
+  }
+
   .btn-accent {
-    @apply bg-accent text-white hover:bg-accent-600 focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
-    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200;
-    @apply shadow-md hover:shadow-lg active:scale-95;
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    @apply px-6 py-3 rounded font-semibold transition-all duration-200;
+    @apply shadow-lg hover:shadow-xl active:scale-95;
+    @apply focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
   }
 
-  /* Card Health */
+  .btn-accent:hover {
+    background-color: hsl(var(--accent) / 0.9);
+  }
+
+  /* === CARDS NETFLIX === */
+  .card-modern {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+    @apply rounded-lg shadow-xl;
+    @apply p-6 hover:shadow-2xl transition-all duration-300;
+    @apply backdrop-blur-sm;
+  }
+
   .card-health {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-health border border-gray-200 dark:border-gray-700;
-    @apply p-6 hover:shadow-health-lg transition-all duration-300;
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+    @apply rounded-lg shadow-xl;
+    @apply p-6 hover:shadow-2xl transition-all duration-300;
+    @apply backdrop-blur-sm;
   }
 
-  /* Health Metric Display */
+  /* === MÉTRICAS DE SAÚDE === */
   .metric-display {
-    @apply text-3xl font-bold mb-2;
+    @apply text-3xl font-bold mb-2 bg-clip-text text-transparent;
+    background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)));
   }
 
   .metric-label {
-    @apply text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wide;
+    @apply text-sm uppercase tracking-wide font-medium;
+    color: hsl(var(--muted-foreground));
   }
 
-  /* Progress Bar Health */
-  .progress-health {
-    @apply w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3;
+  /* === BARRAS DE PROGRESSO === */
+  .progress-modern {
+    @apply w-full rounded-full h-3 overflow-hidden;
+    background-color: hsl(var(--muted));
   }
 
   .progress-fill {
     @apply h-full rounded-full transition-all duration-500 ease-out;
+    background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)));
   }
 
-  /* Health Gradients */
-  .gradient-health {
-    @apply bg-health-gradient text-white;
+  /* === GRADIENTES NETFLIX === */
+  .gradient-primary {
+    background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    color: hsl(var(--primary-foreground));
   }
 
-  .gradient-dark {
-    @apply bg-dark-gradient text-white;
+  .gradient-secondary {
+    background: linear-gradient(to right, hsl(var(--secondary)), hsl(var(--secondary) / 0.8));
+    color: hsl(var(--secondary-foreground));
   }
 
   .gradient-accent {
-    @apply bg-accent-gradient text-white;
+    background: linear-gradient(to right, hsl(var(--accent)), hsl(var(--accent) / 0.8));
+    color: hsl(var(--accent-foreground));
+  }
+
+  .gradient-health {
+    background: linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--secondary)));
+    color: white;
   }
 }
 
 @layer utilities {
-  /* Text Gradients */
-  .text-gradient-health {
-    @apply bg-health-gradient bg-clip-text text-transparent;
+  /* === GRADIENTES DE TEXTO === */
+  .text-gradient-primary {
+    background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-secondary {
+    background: linear-gradient(to right, hsl(var(--secondary)), hsl(var(--secondary) / 0.8));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-accent {
-    @apply bg-accent-gradient bg-clip-text text-transparent;
+    background: linear-gradient(to right, hsl(var(--accent)), hsl(var(--accent) / 0.8));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  /* Health Colors for Icons */
+  .text-gradient-health {
+    background: linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--secondary)));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* === CORES DE SAÚDE MODERNAS === */
   .text-health-heart {
-    color: rgb(239 68 68);
+    color: hsl(var(--health-heart));
   }
 
   .text-health-steps {
-    color: rgb(59 130 246);
+    color: hsl(var(--health-steps));
   }
 
   .text-health-sleep {
-    color: rgb(139 92 246);
+    color: hsl(var(--health-sleep));
   }
 
   .text-health-water {
-    color: rgb(6 182 212);
+    color: hsl(var(--health-water));
   }
 
   .text-health-calories {
-    color: rgb(245 158 11);
+    color: hsl(var(--health-calories));
   }
 
   .text-health-weight {
-    color: rgb(16 185 129);
+    color: hsl(var(--health-weight));
   }
 
   .text-health-pressure {
-    color: rgb(220 38 38);
+    color: hsl(var(--health-pressure));
   }
 
   .text-health-temperature {
-    color: rgb(249 115 22);
+    color: hsl(var(--health-temperature));
   }
 
-  /* Background Health Colors */
+  /* === BACKGROUNDS DE SAÚDE === */
   .bg-health-heart {
-    background-color: rgb(239 68 68);
+    background-color: hsl(var(--health-heart));
   }
 
   .bg-health-steps {
-    background-color: rgb(59 130 246);
+    background-color: hsl(var(--health-steps));
   }
 
   .bg-health-sleep {
-    background-color: rgb(139 92 246);
+    background-color: hsl(var(--health-sleep));
   }
 
   .bg-health-water {
-    background-color: rgb(6 182 212);
+    background-color: hsl(var(--health-water));
   }
 
   .bg-health-calories {
-    background-color: rgb(245 158 11);
+    background-color: hsl(var(--health-calories));
   }
 
   .bg-health-weight {
-    background-color: rgb(16 185 129);
+    background-color: hsl(var(--health-weight));
   }
 
   .bg-health-pressure {
-    background-color: rgb(220 38 38);
+    background-color: hsl(var(--health-pressure));
   }
 
   .bg-health-temperature {
-    background-color: rgb(249 115 22);
+    background-color: hsl(var(--health-temperature));
   }
 
-  /* Responsive Health Grid */
+  /* === LAYOUTS MODERNOS === */
   .health-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .modern-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
   }
 
-  /* Health Animation */
-  .pulse-health {
-    animation: pulse-health 2s infinite;
+  /* === ANIMAÇÕES NETFLIX === */
+  .pulse-modern {
+    animation: pulse-modern 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  @keyframes pulse-health {
+  @keyframes pulse-modern {
     0%, 100% {
       opacity: 1;
     }
     50% {
-      opacity: 0.7;
+      opacity: 0.5;
     }
   }
 
-  /* Smooth transitions */
-  .transition-health {
+  /* === UTILITÁRIOS NETFLIX === */
+  .transition-modern {
     @apply transition-all duration-300 ease-in-out;
   }
 
-  /* Focus states */
-  .focus-health {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  .focus-modern {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  .shadow-modern {
+    @apply shadow-xl hover:shadow-2xl transition-shadow duration-300;
+  }
+
+  .shadow-glow {
+    @apply shadow-lg hover:shadow-xl;
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
   }
 }

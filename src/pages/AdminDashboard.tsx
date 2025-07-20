@@ -7,8 +7,8 @@ export const AdminDashboard: React.FC = () => {
   
   return (
     <HealthLayout 
-      showHealthStats={true} 
-      enableQuickAccess={true}
+      showHealthStats={false} 
+      enableQuickAccess={false}
       className="admin-dashboard"
     >
       <EnhancedAdminDashboard />

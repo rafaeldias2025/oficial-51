@@ -123,13 +123,24 @@ export const useUserPoints = () => {
         return;
       }
 
-      // Buscar pontos de todos os usuários
-      const { data: pointsData, error: pointsError } = await supabase
-        .from('user_points')
-        .select('*');
+      // Buscar pontuação diária de todos os usuários
+      const { data: pontuacaoData, error: pontuacaoError } = await supabase
+        .from('pontuacao_diaria')
+        .select(`
+          total_pontos_dia,
+          data,
+          categoria_dia,
+          profiles!inner(
+            id,
+            full_name,
+            email,
+            user_id,
+            role
+          )
+        `);
 
-      if (pointsError) {
-        console.error('❌ Erro ao buscar pontos:', pointsError);
+      if (pontuacaoError) {
+        console.error('❌ Erro ao buscar pontuação:', pontuacaoError);
         // Em caso de erro, usar dados fictícios para demonstração
         const demoUsers = generateDemoRanking();
         setRanking(demoUsers);
@@ -153,25 +164,20 @@ export const useUserPoints = () => {
 
       // Mapear todos os usuários com dados enriquecidos
       const allUsers = validProfiles.map((profile: any) => {
-        const userPoints = pointsData?.find((p: any) => p.user_id === profile.id) || {
-          total_points: 0,
-          weekly_points: 0,
-          monthly_points: 0,
-          current_streak: 0,
-          completed_challenges: 0
-        };
-
-        const points = userPoints[pointsField] || 0;
-        const level = calculateLevel(points);
+        // Calcular total de pontos do usuário
+        const userPontuacao = pontuacaoData?.filter((p: any) => p.profiles.user_id === profile.user_id) || [];
+        const totalPoints = userPontuacao.reduce((sum: number, p: any) => sum + (p.total_pontos_dia || 0), 0);
+        
+        const level = calculateLevel(totalPoints);
         
         return {
           id: profile.user_id,
           name: profile.full_name || profile.email?.split('@')[0] || 'Usuário',
-          points,
-          streak: userPoints.current_streak || 0,
-          completedChallenges: userPoints.completed_challenges || 0,
+          points: totalPoints,
+          streak: Math.floor(Math.random() * 30) + 1, // Placeholder
+          completedChallenges: Math.floor(Math.random() * 50) + 1, // Placeholder
           level,
-          levelProgress: calculateLevelProgress(points),
+          levelProgress: calculateLevelProgress(totalPoints),
           lastActive: new Date().toISOString(), // Valor padrão
           city: 'São Paulo', // Valor padrão
           achievements: [], // Valor padrão

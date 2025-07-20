@@ -154,11 +154,11 @@ export const ClientSessions: React.FC = () => {
     const response = responses[session.id];
     
     if (response?.completed) {
-      return <Badge className="bg-instituto-green text-white">Concluída</Badge>;
+      return <Badge className="bg-success text-success-foreground">Concluída</Badge>;
     } else if (response?.response) {
-      return <Badge className="bg-instituto-orange text-white">Em Andamento</Badge>;
+      return <Badge className="bg-primary text-primary-foreground">Em Andamento</Badge>;
     } else {
-      return <Badge variant="outline" className="border-netflix-border text-netflix-text-muted">Não Iniciada</Badge>;
+      return <Badge variant="outline" className="border-border text-muted-foreground">Não Iniciada</Badge>;
     }
   };
 
@@ -171,29 +171,29 @@ export const ClientSessions: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header com introdução */}
-      <Card className="bg-gradient-to-r from-instituto-orange/20 to-instituto-purple/20 border-instituto-orange/30">
+      <Card className="bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="p-3 bg-instituto-orange/20 rounded-full">
-              <Lightbulb className="h-8 w-8 text-instituto-orange" />
+            <div className="p-3 bg-primary/20 rounded-full">
+              <Lightbulb className="h-8 w-8 text-primary" />
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-netflix-text mb-2">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
                 Suas Sessões Personalizadas ✨
               </h2>
-              <p className="text-netflix-text-muted mb-4">
+              <p className="text-muted-foreground mb-4">
                 Estas são as sessões enviadas especialmente para você pelo seu terapeuta Rafael. 
                 Clique para iniciar sua jornada de autoconhecimento e transformação.
               </p>
               <div className="flex gap-4 text-sm">
-                <span className="text-instituto-green font-medium">
+                <span className="text-success font-medium">
                   {getCompletedCount()} Concluídas
                 </span>
-                <span className="text-instituto-orange font-medium">
+                <span className="text-primary font-medium">
                   {sessions.length - getCompletedCount()} Pendentes
                 </span>
                 {newSessionsCount > 0 && (
-                  <Badge className="bg-instituto-purple text-white animate-pulse">
+                  <Badge className="bg-accent text-accent-foreground animate-pulse">
                     {newSessionsCount} Nova(s)
                   </Badge>
                 )}

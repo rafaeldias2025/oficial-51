@@ -113,6 +113,40 @@ export const usePontuacaoDiaria = () => {
     // Aplicar multiplicadores e bônus
     const pontuacaoFinal = await calcularPontuacaoTotal(pontos);
 
+    // Sincronizar com o banco em tempo real
+    try {
+      const { data: existingData } = await supabase
+        .from('pontuacao_diaria')
+        .select('*')
+        .eq('user_id', user?.id)
+        .eq('data', format(new Date(), 'yyyy-MM-dd'))
+        .single();
+
+      if (existingData) {
+        await supabase
+          .from('pontuacao_diaria')
+          .update({
+            total_pontos_dia: pontuacaoFinal,
+            categoria_dia: pontuacaoFinal >= 100 ? 'excelente' : 
+                          pontuacaoFinal >= 60 ? 'medio' : 'baixa',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingData.id);
+      } else {
+        await supabase
+          .from('pontuacao_diaria')
+          .insert({
+            user_id: user?.id,
+            data: format(new Date(), 'yyyy-MM-dd'),
+            total_pontos_dia: pontuacaoFinal,
+            categoria_dia: pontuacaoFinal >= 100 ? 'excelente' : 
+                          pontuacaoFinal >= 60 ? 'medio' : 'baixa'
+          });
+      }
+    } catch (error) {
+      console.error('Erro ao sincronizar pontuação:', error);
+    }
+
     return {
       pontos_liquido_manha: missaoDia.liquido_ao_acordar === 'sim' ? PONTOS_BASE.liquido_manha : 0,
       pontos_conexao_interna: missaoDia.pratica_conexao === 'sim' ? PONTOS_BASE.conexao_interna : 0,

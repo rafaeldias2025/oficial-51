@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, ArrowRight, Play, Pause, CheckCircle, Lock, Clock, Users, Crown, Sparkles, Heart, Eye } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Play, Pause, CheckCircle, Lock, Clock, Users, Crown, Sparkles, Heart, Eye, Target, Video, Brain, Settings, Star } from 'lucide-react';
 import ConversionCTA from '@/components/ConversionCTA';
 import butterflyLogo from '@/assets/butterfly-logo.png';
 
@@ -156,20 +156,20 @@ const SampleSession = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-instituto-dark mb-4">
+              <h2 className="text-2xl font-bold text-netflix-text mb-4">
                 🌟 Bem-vindo à sua sessão de transformação
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-netflix-text-muted leading-relaxed">
                 {sessionContent.intro}
               </p>
               
-              <Card className="mt-6 border-instituto-orange/20 bg-instituto-orange/5">
+              <Card className="mt-6 border-netflix-red/20 bg-netflix-red/5">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-2 text-instituto-orange mb-2">
+                  <div className="flex items-center gap-2 text-netflix-red mb-2">
                     <Sparkles className="w-4 h-4" />
                     <span className="text-sm font-semibold">Amostra Limitada</span>
                   </div>
-                  <p className="text-sm text-instituto-dark/70">
+                  <p className="text-sm text-netflix-text-muted">
                     Esta é uma versão resumida. A sessão completa inclui exercícios interativos, 
                     reflexões guiadas e materiais extras.
                   </p>
@@ -177,24 +177,24 @@ const SampleSession = () => {
               </Card>
             </div>
             
-            <div className="bg-instituto-orange/10 p-6 rounded-lg border border-instituto-orange/20">
-              <h3 className="font-semibold text-instituto-dark mb-2">O que você vai descobrir:</h3>
-              <ul className="space-y-2 text-instituto-dark/80">
+            <div className="bg-netflix-red/10 p-6 rounded-lg border border-netflix-red/20">
+              <h3 className="font-semibold text-netflix-text mb-2">O que você vai descobrir:</h3>
+              <ul className="space-y-2 text-netflix-text-muted">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-netflix-red" />
                   Como identificar padrões limitantes
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-netflix-red" />
                   Técnicas de autoconhecimento
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-netflix-red" />
                   Primeiros passos para a transformação
                 </li>
                 <li className="flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-instituto-orange" />
-                  <span className="text-instituto-orange">Exercícios práticos (versão completa)</span>
+                  <Lock className="h-4 w-4 text-netflix-red" />
+                  <span className="text-netflix-red">Exercícios práticos (versão completa)</span>
                 </li>
               </ul>
             </div>
@@ -204,7 +204,7 @@ const SampleSession = () => {
       case 'video':
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-instituto-dark mb-4">
+            <h2 className="text-2xl font-bold text-netflix-text mb-4">
               🎥 Conteúdo Principal
             </h2>
             <div className="aspect-video rounded-lg overflow-hidden bg-black">
@@ -232,16 +232,16 @@ const SampleSession = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-instituto-dark mb-4">{task.title}</h3>
-              <p className="text-instituto-dark/70 mb-6">{task.description}</p>
+              <h3 className="text-xl font-semibold text-netflix-text mb-4">{task.title}</h3>
+              <p className="text-netflix-text-muted mb-6">{task.description}</p>
             </div>
             
-            <Card className="p-6 bg-instituto-orange/5 border border-instituto-orange/20">
+            <Card className="p-6 bg-netflix-red/5 border border-netflix-red/20">
               <div className="flex items-center gap-2 mb-3">
-                <h4 className="font-semibold text-instituto-dark">Espaço para Reflexão:</h4>
-                <Badge variant="outline" className="text-xs border-instituto-orange text-instituto-orange">
+                <h4 className="font-semibold text-netflix-text">Espaço para Reflexão:</h4>
+                <Badge variant="outline" className="text-xs border-netflix-red text-netflix-red">
                   <Eye className="w-3 h-3 mr-1" />
-                  Prévia
+                  Opcional
                 </Badge>
               </div>
               <Textarea 
@@ -256,13 +256,13 @@ const SampleSession = () => {
                 disabled
               />
               <div className="flex items-center justify-between mt-3">
-                <p className="text-xs text-instituto-dark/60">
+                <p className="text-xs text-netflix-text-muted">
                   💡 Dica: Na versão completa, suas respostas são salvas automaticamente
                 </p>
                 <Button 
                   size="sm" 
                   onClick={() => navigate('/auth')}
-                  className="bg-instituto-orange hover:bg-instituto-orange-hover"
+                  className="bg-netflix-red hover:bg-netflix-red/90"
                 >
                   <Crown className="w-3 h-3 mr-1" />
                   Desbloquear
@@ -282,16 +282,16 @@ const SampleSession = () => {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-instituto-dark mb-4">
+              <h2 className="text-3xl font-bold text-netflix-text mb-4">
                 🎉 Parabéns! Amostra Concluída
               </h2>
-              <p className="text-lg text-instituto-dark/70">
+              <p className="text-lg text-netflix-text-muted">
                 Você experimentou uma pequena amostra do poder das nossas sessões
               </p>
             </div>
             
-            <div className="bg-gradient-to-r from-instituto-orange/10 to-instituto-warm/10 p-6 rounded-lg border border-instituto-orange/20">
-              <p className="text-lg text-instituto-dark leading-relaxed text-center">
+            <div className="bg-gradient-to-r from-netflix-red/10 to-netflix-red/5 p-6 rounded-lg border border-netflix-red/20">
+              <p className="text-lg text-netflix-text leading-relaxed text-center">
                 {sessionContent.conclusion}
               </p>
             </div>
@@ -306,7 +306,7 @@ const SampleSession = () => {
                 onClick={() => navigate('/visitor-sessions')}
                 variant="outline"
                 size="lg"
-                className="border-instituto-orange text-instituto-orange hover:bg-instituto-orange hover:text-white"
+                className="border-netflix-red text-netflix-red hover:bg-netflix-red hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Explorar Outras Amostras
@@ -314,7 +314,7 @@ const SampleSession = () => {
               <Button 
                 onClick={() => navigate('/auth')}
                 size="lg"
-                className="bg-instituto-orange hover:bg-instituto-orange-hover"
+                className="bg-netflix-red hover:bg-netflix-red/90"
               >
                 <Crown className="w-4 h-4 mr-2" />
                 Desbloquear Conteúdo Completo
@@ -330,7 +330,7 @@ const SampleSession = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-instituto-light via-white to-instituto-cream">
+    <div className="min-h-screen bg-gradient-to-br from-netflix-light via-white to-netflix-cream">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-6 py-4">
@@ -338,8 +338,8 @@ const SampleSession = () => {
             <div className="flex items-center gap-3">
               <img src={butterflyLogo} alt="Instituto dos Sonhos" className="w-8 h-8" />
               <div>
-                <h1 className="text-xl font-bold text-instituto-dark">Instituto dos Sonhos</h1>
-                <Badge variant="outline" className="text-xs border-instituto-orange text-instituto-orange">
+                <h1 className="text-xl font-bold text-netflix-text">Instituto dos Sonhos</h1>
+                <Badge variant="outline" className="text-xs border-netflix-red text-netflix-red">
                   <Eye className="w-3 h-3 mr-1" />
                   Modo Visitante
                 </Badge>
@@ -349,14 +349,14 @@ const SampleSession = () => {
               <Button 
                 variant="ghost" 
                 onClick={() => navigate('/visitor-sessions')}
-                className="text-instituto-dark"
+                className="text-netflix-text"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar
               </Button>
               <Button 
                 onClick={() => navigate('/auth')}
-                className="bg-instituto-orange hover:bg-instituto-orange-hover"
+                className="bg-netflix-red hover:bg-netflix-red/90"
               >
                 <Crown className="w-4 h-4 mr-2" />
                 Criar Conta
@@ -367,31 +367,228 @@ const SampleSession = () => {
       </header>
 
       <div className="container mx-auto px-6 py-8">
-        {/* Session Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-instituto-dark mb-2">{session.title}</h1>
-          <div className="flex items-center justify-center gap-4 text-sm text-instituto-dark/70">
-            <Badge variant="outline" className="border-green-500 text-green-600">
-              <Eye className="w-3 h-3 mr-1" />
-              Amostra Gratuita
-            </Badge>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {session.estimated_duration}
+        {/* Header da Sessão */}
+        <div className="bg-netflix-card border-b border-netflix-border p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-netflix-red rounded-full flex items-center justify-center">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-netflix-text">Instituto dos Sonhos</h1>
+                <Badge variant="outline" className="text-xs border-netflix-red text-netflix-red">
+                  Sessão de Amostra
+                </Badge>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <Users className="w-4 h-4" />
-              {sessionContent.tasks?.length || 0} atividades
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="text-sm text-instituto-dark/70 mb-2">Progresso da Amostra</div>
-            <Progress value={(currentStep / (steps.length - 1)) * 100} className="w-full max-w-md mx-auto" />
-            <div className="text-sm text-instituto-orange font-semibold mt-1">
-              {Math.round((currentStep / (steps.length - 1)) * 100)}% concluído
+            
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="outline"
+                className="border-netflix-border text-netflix-text"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Configurações
+              </Button>
+              <Button 
+                className="bg-netflix-red hover:bg-netflix-red/90"
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Iniciar Sessão
+              </Button>
             </div>
           </div>
         </div>
+
+        {/* Informações da Sessão */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-netflix-text mb-2">{session.title}</h1>
+          <div className="flex items-center justify-center gap-4 text-sm text-netflix-text-muted">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>45 minutos</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Target className="w-4 h-4" />
+              <span>Mentalidade Positiva</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Star className="w-4 h-4" />
+              <span>Nível: Iniciante</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Barra de Progresso */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-netflix-text-muted">Progresso da Amostra</span>
+            <span className="text-sm text-netflix-red font-semibold">2 de 4 tarefas</span>
+          </div>
+          <Progress value={50} className="h-2" />
+        </div>
+
+        {/* Seção de Introdução */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            Sobre esta Sessão
+          </h2>
+          <p className="text-netflix-text-muted mb-6">
+            Esta sessão foi cuidadosamente desenvolvida para ajudá-lo a desenvolver 
+            uma mentalidade mais positiva e resiliente.
+          </p>
+          
+          <Card className="mt-6 border-netflix-red/20 bg-netflix-red/5">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-2 text-netflix-red mb-2">
+                <Target className="w-5 h-5" />
+                <span className="font-semibold">Objetivo da Sessão</span>
+              </div>
+              <p className="text-sm text-netflix-text-muted">
+                Desenvolver técnicas práticas para transformar pensamentos negativos 
+                em perspectivas mais construtivas e motivadoras.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Seção de Benefícios */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            O que você vai descobrir:
+          </h2>
+          
+          <div className="bg-netflix-red/10 p-6 rounded-lg border border-netflix-red/20">
+            <h3 className="font-semibold text-netflix-text mb-2">O que você vai descobrir:</h3>
+            <ul className="space-y-2 text-netflix-text-muted">
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Como identificar padrões de pensamento negativo
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Técnicas para reestruturar pensamentos limitantes
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Estratégias para manter uma mentalidade positiva
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-netflix-red" />
+                Ferramentas práticas para o dia a dia
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Seção de Recursos */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            Recursos Inclusos
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-netflix-card border-netflix-border">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Video className="w-8 h-8 text-netflix-red" />
+                  <div>
+                    <h4 className="font-semibold text-netflix-text">Vídeo Introdutório</h4>
+                    <p className="text-sm text-netflix-text-muted">15 minutos</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-netflix-card border-netflix-border">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Lock className="h-4 w-4 text-netflix-red" />
+                  <span className="text-netflix-red">Exercícios práticos (versão completa)</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Seção de Tarefas */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-netflix-text mb-4">
+            Tarefas da Sessão
+          </h2>
+          
+          {sessionContent.tasks.map((task, index) => (
+            <Card key={index} className="mb-6 bg-netflix-card border-netflix-border">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-semibold text-netflix-text mb-4">{task.title}</h3>
+                <p className="text-netflix-text-muted mb-6">{task.description}</p>
+                
+                <Card className="p-6 bg-netflix-red/5 border border-netflix-red/20">
+                  <CardContent className="p-0">
+                    <h4 className="font-semibold text-netflix-text">Espaço para Reflexão:</h4>
+                    <Badge variant="outline" className="text-xs border-netflix-red text-netflix-red">
+                      Opcional
+                    </Badge>
+                    <textarea 
+                      className="w-full mt-3 p-3 bg-netflix-card border border-netflix-border rounded-lg text-netflix-text placeholder-netflix-text-muted resize-none"
+                      rows={4}
+                      placeholder="Escreva suas reflexões aqui..."
+                    />
+                  </CardContent>
+                </Card>
+                
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-netflix-text-muted" />
+                    <p className="text-xs text-netflix-text-muted">
+                      Tempo estimado: {task.duration}
+                    </p>
+                  </div>
+                  <Button 
+                    className="bg-netflix-red hover:bg-netflix-red/90"
+                  >
+                    Marcar como Concluída
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+
+        {/* Seção de Conclusão */}
+        <section className="mb-8">
+          <h2 className="text-3xl font-bold text-netflix-text mb-4">
+            Próximos Passos
+          </h2>
+          
+          <p className="text-lg text-netflix-text-muted">
+            Após completar esta sessão, você terá uma base sólida para 
+            desenvolver uma mentalidade mais positiva e resiliente.
+          </p>
+          
+          <div className="bg-gradient-to-r from-netflix-red/10 to-netflix-red/5 p-6 rounded-lg border border-netflix-red/20">
+            <p className="text-lg text-netflix-text leading-relaxed text-center">
+              "A mudança começa com um único pensamento. 
+              Cada escolha que você faz hoje molda o amanhã que você deseja."
+            </p>
+          </div>
+          
+          <div className="mt-6 flex gap-4">
+            <Button 
+              variant="outline"
+              className="border-netflix-red text-netflix-red hover:bg-netflix-red hover:text-white"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+            <Button 
+              className="bg-netflix-red hover:bg-netflix-red/90"
+            >
+              Continuar para Próxima Sessão
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </section>
 
         {/* Conversion Banner */}
         <ConversionCTA 
@@ -408,39 +605,31 @@ const SampleSession = () => {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center">
-          <Button
+        <div className="flex justify-between items-center mt-8">
+          <Button 
             variant="outline"
-            onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-            disabled={currentStep === 0}
-            className="border-instituto-orange text-instituto-orange hover:bg-instituto-orange hover:text-white"
+            className="border-netflix-red text-netflix-red hover:bg-netflix-red hover:text-white"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Anterior
           </Button>
-
+          
           <div className="flex gap-2">
-            {steps.map((step, index) => (
+            {sessionContent.tasks.map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentStep
-                    ? 'bg-instituto-orange'
-                    : index < currentStep
-                    ? 'bg-instituto-orange/60'
-                    : 'bg-gray-300'
+                className={`w-3 h-3 rounded-full ${
+                  index < 2 ? 'bg-netflix-red' : 'bg-netflix-red/60'
                 }`}
               />
             ))}
           </div>
-
-          <Button
-            onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
-            disabled={currentStep === steps.length - 1}
-            className="bg-instituto-orange hover:bg-instituto-orange-hover"
+          
+          <Button 
+            className="bg-netflix-red hover:bg-netflix-red/90"
           >
             Próximo
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </div>

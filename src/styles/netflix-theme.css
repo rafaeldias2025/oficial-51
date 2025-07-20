@@ -1,0 +1,209 @@
+/* FORÇAR TEMA NETFLIX - INSTITUTO DOS SONHOS */
+
+/* Reset completo para garantir tema Netflix */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Classes Netflix específicas */
+.netflix-background {
+  background-color: #000000 !important;
+}
+
+.netflix-card {
+  background-color: #141414 !important;
+  border: 1px solid #333333 !important;
+  color: #FFFFFF !important;
+}
+
+.netflix-border {
+  border-color: #333333 !important;
+}
+
+.netflix-text {
+  color: #FFFFFF !important;
+}
+
+.netflix-text-muted {
+  color: #9CA3AF !important;
+}
+
+.netflix-red {
+  color: #E50914 !important;
+}
+
+.bg-netflix-red {
+  background-color: #E50914 !important;
+}
+
+.bg-netflix-card {
+  background-color: #141414 !important;
+}
+
+.bg-netflix-hover {
+  background-color: #1F2937 !important;
+}
+
+.border-netflix-border {
+  border-color: #333333 !important;
+}
+
+.text-netflix-text {
+  color: #FFFFFF !important;
+}
+
+.text-netflix-text-muted {
+  color: #9CA3AF !important;
+}
+
+.text-netflix-red {
+  color: #E50914 !important;
+}
+
+/* Forçar cores em elementos específicos */
+.card {
+  background-color: #141414 !important;
+  border-color: #333333 !important;
+  color: #FFFFFF !important;
+}
+
+.card-header {
+  background-color: #141414 !important;
+  color: #FFFFFF !important;
+}
+
+.card-content {
+  background-color: #141414 !important;
+  color: #FFFFFF !important;
+}
+
+.card-title {
+  color: #FFFFFF !important;
+}
+
+/* Botões Netflix */
+.btn-netflix {
+  background-color: #E50914 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+}
+
+.btn-netflix:hover {
+  background-color: #DC2626 !important;
+}
+
+/* Inputs Netflix */
+input, textarea, select {
+  background-color: #1F2937 !important;
+  border-color: #333333 !important;
+  color: #FFFFFF !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #9CA3AF !important;
+}
+
+/* Scrollbar Netflix */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4B5563;
+}
+
+/* Override qualquer tema claro */
+.light {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* Garantir que todos os elementos usem o tema Netflix */
+div, section, main, aside, header, footer {
+  background-color: inherit;
+  color: inherit;
+}
+
+/* Gradientes Netflix */
+.gradient-netflix {
+  background: linear-gradient(135deg, #E50914 0%, #DC2626 100%) !important;
+}
+
+.gradient-dark {
+  background: linear-gradient(135deg, #000000 0%, #141414 100%) !important;
+}
+
+/* Efeitos Netflix */
+.glow-netflix {
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.3) !important;
+}
+
+/* Animações Netflix */
+@keyframes netflix-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.netflix-fade-in {
+  animation: netflix-fade-in 0.5s ease-out;
+}
+
+/* Responsividade Netflix */
+@media (max-width: 768px) {
+  .netflix-card {
+    background-color: #141414 !important;
+    margin: 8px !important;
+  }
+}
+
+/* Forçar tema em componentes específicos */
+[class*="bg-"] {
+  background-color: #141414 !important;
+}
+
+[class*="text-"] {
+  color: #FFFFFF !important;
+}
+
+/* Exceções para elementos que devem manter cores específicas */
+.text-netflix-red,
+.bg-netflix-red,
+.btn-netflix {
+  /* Manter cores específicas */
+}
+
+/* Override final para garantir tema Netflix */
+body * {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+/* Exceções para elementos que precisam de cores específicas */
+.netflix-red,
+.bg-netflix-red,
+.text-netflix-red,
+.btn-netflix {
+  /* Manter suas cores específicas */
+} 

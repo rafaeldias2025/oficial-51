@@ -27,6 +27,15 @@ export interface Course {
   progress?: number;
   rating?: number;
   tags?: string[];
+  is_premium?: boolean;
+  hero_type?: 'image' | 'video';
+  hero_url?: string;
+  module_display_mode?: 'direct' | 'course-based';
+  active_modules?: string[];
+  total_comments?: number;
+  total_favorites?: number;
+  average_rating?: number;
+  completion_rate?: number;
   modules?: Array<{
     id: string;
     title: string;
@@ -91,7 +100,16 @@ export const useCourses = () => {
           is_active,
           created_by,
           created_at,
-          updated_at
+          updated_at,
+          is_premium,
+          hero_type,
+          hero_url,
+          module_display_mode,
+          active_modules,
+          total_comments,
+          total_favorites,
+          average_rating,
+          completion_rate
         `)
         .eq('is_active', true)
         .order('created_at', { ascending: false });
@@ -117,7 +135,15 @@ export const useCourses = () => {
         .from('courses')
         .insert([{ 
           ...courseData, 
-          created_by: userProfile.id 
+          created_by: userProfile.id,
+          is_premium: courseData.is_premium || false,
+          hero_type: courseData.hero_type || 'image',
+          module_display_mode: courseData.module_display_mode || 'direct',
+          active_modules: courseData.active_modules || [],
+          total_comments: 0,
+          total_favorites: 0,
+          average_rating: 0,
+          completion_rate: 0
         }])
         .select(`
           id,
@@ -129,7 +155,16 @@ export const useCourses = () => {
           is_active,
           created_by,
           created_at,
-          updated_at
+          updated_at,
+          is_premium,
+          hero_type,
+          hero_url,
+          module_display_mode,
+          active_modules,
+          total_comments,
+          total_favorites,
+          average_rating,
+          completion_rate
         `)
         .maybeSingle();
 
@@ -163,7 +198,16 @@ export const useCourses = () => {
           is_active,
           created_by,
           created_at,
-          updated_at
+          updated_at,
+          is_premium,
+          hero_type,
+          hero_url,
+          module_display_mode,
+          active_modules,
+          total_comments,
+          total_favorites,
+          average_rating,
+          completion_rate
         `)
         .maybeSingle();
 

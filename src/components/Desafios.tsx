@@ -44,71 +44,71 @@ export default function Desafios() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-background p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Desafios e Conquistas
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Transforme sua jornada em um jogo divertido e motivador
           </p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-yellow-400 to-yellow-500 text-white border-0">
+          <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-yellow-100 text-sm font-medium">Pontos Totais</p>
+                  <p className="text-primary-foreground/80 text-sm font-medium">Pontos Totais</p>
                   <p className="text-2xl font-bold">{currentUserRanking?.points?.toLocaleString() || '0'}</p>
                 </div>
-                <Star className="w-8 h-8 text-yellow-200" />
+                <Star className="w-8 h-8 text-primary-foreground/60" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
+          <Card className="bg-gradient-to-br from-success to-success/80 text-success-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-green-100 text-sm font-medium">Desafios Completos</p>
+                  <p className="text-success-foreground/80 text-sm font-medium">Desafios Completos</p>
                   <p className="text-2xl font-bold">{completedChallenges.length}</p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-green-200" />
+                <CheckCircle className="w-8 h-8 text-success-foreground/60" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
+          <Card className="bg-gradient-to-br from-accent to-accent/80 text-accent-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-100 text-sm font-medium">Desafios Ativos</p>
+                  <p className="text-accent-foreground/80 text-sm font-medium">Desafios Ativos</p>
                   <p className="text-2xl font-bold">{userChallenges.length}</p>
                 </div>
-                <Award className="w-8 h-8 text-purple-200" />
+                <Award className="w-8 h-8 text-accent-foreground/60" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white border-0">
+          <Card className="bg-gradient-to-br from-warning to-warning/80 text-warning-foreground border-0">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-red-100 text-sm font-medium">Sequência</p>
+                  <p className="text-warning-foreground/80 text-sm font-medium">Sequência</p>
                   <p className="text-2xl font-bold">{currentUserRanking?.streak || 0} dias</p>
                 </div>
-                <Flame className="w-8 h-8 text-red-200" />
+                <Flame className="w-8 h-8 text-warning-foreground/60" />
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 mb-8 bg-white rounded-lg p-1 shadow-sm">
+        <div className="flex space-x-1 mb-8 bg-card rounded-lg p-1 shadow-sm">
           <Button
             variant={selectedTab === "ativos" ? "default" : "ghost"}
             onClick={() => setSelectedTab("ativos")}

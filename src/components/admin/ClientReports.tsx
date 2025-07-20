@@ -11,9 +11,11 @@ import {
   Activity,
   BarChart3,
   Users,
-  Calendar
+  Calendar,
+  Award
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { Progress } from '@/components/ui/progress';
 
 // Mock data para demonstração
 const sleepData = [
@@ -121,7 +123,7 @@ export const ClientReports: React.FC = () => {
           <Card className="bg-netflix-card border-netflix-border">
             <CardHeader>
               <CardTitle className="text-netflix-text flex items-center gap-2">
-                <Moon className="h-5 w-5 text-instituto-purple" />
+                <Moon className="h-5 w-5 text-netflix-red" />
                 Evolução do Sono
               </CardTitle>
             </CardHeader>
@@ -147,7 +149,7 @@ export const ClientReports: React.FC = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
-              <div className="mt-4 p-3 bg-instituto-purple/10 rounded-lg">
+              <div className="mt-4 p-3 bg-netflix-red/10 rounded-lg">
                 <div className="text-sm text-netflix-text">
                   <strong>Média:</strong> 7.6 horas/noite
                 </div>
@@ -162,7 +164,7 @@ export const ClientReports: React.FC = () => {
           <Card className="bg-netflix-card border-netflix-border">
             <CardHeader>
               <CardTitle className="text-netflix-text flex items-center gap-2">
-                <Droplets className="h-5 w-5 text-instituto-blue" />
+                <Droplets className="h-5 w-5 text-netflix-red" />
                 Consumo de Água
               </CardTitle>
             </CardHeader>
@@ -188,7 +190,7 @@ export const ClientReports: React.FC = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
-              <div className="mt-4 p-3 bg-blue-500/10 rounded-lg">
+              <div className="mt-4 p-3 bg-netflix-red/10 rounded-lg">
                 <div className="text-sm text-netflix-text">
                   <strong>Média:</strong> 2.4 litros/dia
                 </div>
@@ -203,7 +205,7 @@ export const ClientReports: React.FC = () => {
           <Card className="bg-netflix-card border-netflix-border">
             <CardHeader>
               <CardTitle className="text-netflix-text flex items-center gap-2">
-                <Activity className="h-5 w-5 text-instituto-orange" />
+                <Activity className="h-5 w-5 text-netflix-red" />
                 Níveis de Estresse
               </CardTitle>
             </CardHeader>
@@ -229,7 +231,7 @@ export const ClientReports: React.FC = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
-              <div className="mt-4 p-3 bg-orange-500/10 rounded-lg">
+              <div className="mt-4 p-3 bg-netflix-red/10 rounded-lg">
                 <div className="text-sm text-netflix-text">
                   <strong>Média:</strong> 4.0/10
                 </div>
@@ -244,7 +246,7 @@ export const ClientReports: React.FC = () => {
           <Card className="bg-netflix-card border-netflix-border">
             <CardHeader>
               <CardTitle className="text-netflix-text flex items-center gap-2">
-                <Heart className="h-5 w-5 text-instituto-green" />
+                <Heart className="h-5 w-5 text-netflix-red" />
                 Perfil Emocional
               </CardTitle>
             </CardHeader>
@@ -268,7 +270,7 @@ export const ClientReports: React.FC = () => {
                   />
                 </RadarChart>
               </ResponsiveContainer>
-              <div className="mt-4 p-3 bg-green-500/10 rounded-lg">
+              <div className="mt-4 p-3 bg-netflix-red/10 rounded-lg">
                 <div className="text-sm text-netflix-text">
                   <strong>Score Geral:</strong> 7.2/10
                 </div>
@@ -291,19 +293,19 @@ export const ClientReports: React.FC = () => {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
               <div className="p-4 bg-netflix-hover rounded-lg">
-                <Moon className="h-8 w-8 text-instituto-purple mx-auto mb-2" />
+                <Moon className="h-8 w-8 text-netflix-red mx-auto mb-2" />
                 <div className="text-sm text-netflix-text">Sono</div>
               </div>
               <div className="p-4 bg-netflix-hover rounded-lg">
-                <Droplets className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+                <Droplets className="h-8 w-8 text-netflix-red mx-auto mb-2" />
                 <div className="text-sm text-netflix-text">Hidratação</div>
               </div>
               <div className="p-4 bg-netflix-hover rounded-lg">
-                <Activity className="h-8 w-8 text-instituto-orange mx-auto mb-2" />
+                <Activity className="h-8 w-8 text-netflix-red mx-auto mb-2" />
                 <div className="text-sm text-netflix-text">Estresse</div>
               </div>
               <div className="p-4 bg-netflix-hover rounded-lg">
-                <Heart className="h-8 w-8 text-instituto-green mx-auto mb-2" />
+                <Heart className="h-8 w-8 text-netflix-red mx-auto mb-2" />
                 <div className="text-sm text-netflix-text">Emocional</div>
               </div>
             </div>
@@ -311,41 +313,183 @@ export const ClientReports: React.FC = () => {
         </Card>
       )}
 
+      {/* Métricas de Sono */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <Moon className="h-5 w-5 text-netflix-red" />
+              Qualidade do Sono
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-netflix-text-muted">Média semanal</span>
+                <span className="text-2xl font-bold text-netflix-text">7.2h</span>
+              </div>
+              <Progress value={72} className="h-2" />
+              <div className="mt-4 p-3 bg-netflix-red/10 rounded-lg">
+                <p className="text-sm text-netflix-text-muted">
+                  Seu sono melhorou 15% esta semana. Continue mantendo uma rotina consistente.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Métricas de Hidratação */}
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <Droplets className="h-5 w-5 text-netflix-red" />
+              Hidratação
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-netflix-text-muted">Meta diária</span>
+                <span className="text-2xl font-bold text-netflix-text">2.5L</span>
+              </div>
+              <Progress value={85} className="h-2" />
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="text-center">
+                  <p className="text-sm text-netflix-text-muted">Consumido</p>
+                  <p className="text-lg font-semibold text-netflix-text">2.1L</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-netflix-text-muted">Restante</p>
+                  <p className="text-lg font-semibold text-netflix-text">0.4L</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Métricas de Atividade */}
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <Activity className="h-5 w-5 text-netflix-red" />
+              Atividade Física
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-netflix-text-muted">Passos hoje</span>
+                <span className="text-2xl font-bold text-netflix-text">8,432</span>
+              </div>
+              <Progress value={84} className="h-2" />
+              <div className="grid grid-cols-3 gap-4 mt-4">
+                <div className="text-center">
+                  <p className="text-sm text-netflix-text-muted">Calorias</p>
+                  <p className="text-lg font-semibold text-netflix-text">324</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-netflix-text-muted">Distância</p>
+                  <p className="text-lg font-semibold text-netflix-text">6.2km</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-netflix-text-muted">Tempo</p>
+                  <p className="text-lg font-semibold text-netflix-text">45min</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Métricas de Saúde Cardíaca */}
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-netflix-text">
+              <Heart className="h-5 w-5 text-netflix-red" />
+              Saúde Cardíaca
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-netflix-text-muted">Frequência cardíaca</span>
+                <span className="text-2xl font-bold text-netflix-text">72 bpm</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 bg-netflix-red/10 rounded-lg">
+                  <p className="text-sm text-netflix-text-muted">Repouso</p>
+                  <p className="text-lg font-semibold text-netflix-text">58 bpm</p>
+                </div>
+                <div className="text-center p-3 bg-netflix-red/10 rounded-lg">
+                  <p className="text-sm text-netflix-text-muted">Máxima</p>
+                  <p className="text-lg font-semibold text-netflix-text">142 bpm</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Gráficos de Tendências */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6 text-center">
+            <Moon className="h-8 w-8 text-netflix-red mx-auto mb-2" />
+            <h3 className="font-semibold text-netflix-text mb-1">Sono</h3>
+            <p className="text-sm text-netflix-text-muted">+15% esta semana</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6 text-center">
+            <Activity className="h-8 w-8 text-netflix-red mx-auto mb-2" />
+            <h3 className="font-semibold text-netflix-text mb-1">Atividade</h3>
+            <p className="text-sm text-netflix-text-muted">+8% esta semana</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6 text-center">
+            <Heart className="h-8 w-8 text-netflix-red mx-auto mb-2" />
+            <h3 className="font-semibold text-netflix-text mb-1">Saúde</h3>
+            <p className="text-sm text-netflix-text-muted">+12% esta semana</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-netflix-card border-netflix-border">
+          <CardContent className="p-6 text-center">
+            <Users className="h-8 w-8 text-netflix-red" />
+            <h3 className="font-semibold text-netflix-text mb-1">Comunidade</h3>
+            <p className="text-sm text-netflix-text-muted">+5% esta semana</p>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Estatísticas Gerais */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="bg-netflix-card border-netflix-border">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <Users className="h-8 w-8 text-instituto-orange" />
-              <div>
-                <div className="text-2xl font-bold text-netflix-text">{mockClients.length}</div>
-                <div className="text-sm text-netflix-text-muted">Clientes Ativos</div>
-              </div>
-            </div>
+          <CardContent className="p-6 text-center">
+            <Calendar className="h-8 w-8 text-netflix-red mx-auto mb-2" />
+            <h3 className="font-semibold text-netflix-text mb-1">Dias Ativos</h3>
+            <p className="text-2xl font-bold text-netflix-text">28</p>
+            <p className="text-sm text-netflix-text-muted">este mês</p>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-netflix-card border-netflix-border">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <Calendar className="h-8 w-8 text-instituto-green" />
-              <div>
-                <div className="text-2xl font-bold text-netflix-text">89%</div>
-                <div className="text-sm text-netflix-text-muted">Taxa de Adesão</div>
-              </div>
-            </div>
+          <CardContent className="p-6 text-center">
+            <TrendingUp className="h-8 w-8 text-netflix-red mx-auto mb-2" />
+            <h3 className="font-semibold text-netflix-text mb-1">Progresso</h3>
+            <p className="text-2xl font-bold text-netflix-text">87%</p>
+            <p className="text-sm text-netflix-text-muted">meta mensal</p>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-netflix-card border-netflix-border">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <TrendingUp className="h-8 w-8 text-instituto-purple" />
-              <div>
-                <div className="text-2xl font-bold text-netflix-text">+15%</div>
-                <div className="text-sm text-netflix-text-muted">Melhoria Geral</div>
-              </div>
-            </div>
+          <CardContent className="p-6 text-center">
+            <Award className="h-8 w-8 text-netflix-red mx-auto mb-2" />
+            <h3 className="font-semibold text-netflix-text mb-1">Conquistas</h3>
+            <p className="text-2xl font-bold text-netflix-text">12</p>
+            <p className="text-sm text-netflix-text-muted">este mês</p>
           </CardContent>
         </Card>
       </div>

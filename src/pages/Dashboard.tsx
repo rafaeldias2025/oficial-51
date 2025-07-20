@@ -25,11 +25,19 @@ import { RequiredDataModal } from "@/components/RequiredDataModal";
 import { PaidCourses } from "@/components/courses/PaidCourses";
 import { AdvancedHealthDashboard } from "@/components/dashboard/AdvancedHealthDashboard";
 import { HealthLayout } from "@/components/layout/HealthLayout";
+import { UserAssessments } from "@/components/user/UserAssessments";
 
 import { GoogleFitIntegration } from "@/components/GoogleFitIntegration";
+import { PlataformaSonhos } from "@/components/plataforma/PlataformaSonhos";
 
 import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/components/ui/button";
+import { 
+  NetflixButton,
+  NetflixPrimaryButton,
+  NetflixSecondaryButton,
+  NetflixOutlineButton,
+  NetflixGhostButton
+} from "@/components/ui/netflix-buttons";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Home,
@@ -43,7 +51,11 @@ import {
   Scale,
   GraduationCap,
   User,
-  Activity
+  Activity,
+  CreditCard,
+  Grid,
+  HelpCircle,
+  ClipboardList
 } from "lucide-react";
 
 // Dados mock para ranking
@@ -63,9 +75,11 @@ const Dashboard = () => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'inicio', label: 'Missão do Dia', icon: Activity },
+    { id: 'plataforma-sonhos', label: 'Plataforma dos Sonhos', icon: GraduationCap },
     { id: 'cursos-pagos', label: 'Cursos Premium', icon: GraduationCap },
     { id: 'sessoes', label: 'Sessões', icon: FileText },
     { id: 'ranking', label: 'Ranking', icon: Trophy },
+    { id: 'avaliacoes', label: 'Avaliações', icon: ClipboardList },
     { id: 'avaliacao-semanal', label: 'Avaliação Semanal', icon: Calendar },
     { id: 'metas', label: 'Minhas Metas', icon: Target },
     { id: 'desafios', label: 'Desafios', icon: Award },
@@ -74,6 +88,9 @@ const Dashboard = () => {
     { id: 'meu-progresso', label: 'Meu Progresso', icon: BarChart3 },
     { id: 'analise-avancada', label: 'Análise Avançada', icon: BarChart3 },
     { id: 'google-fit', label: 'Google Fit', icon: Activity },
+    { id: 'assinaturas', label: 'Assinaturas', icon: CreditCard },
+    { id: 'apps', label: 'Apps', icon: Grid },
+    { id: 'ajuda', label: 'Ajuda', icon: HelpCircle },
     
   ];
 
@@ -94,6 +111,8 @@ const Dashboard = () => {
             onTimeFilterChange={setRankingTimeFilter}
           />
         );
+      case 'avaliacoes':
+        return <UserAssessments />;
       case 'avaliacao-semanal':
         return <AvaliacaoSemanal />;
       case 'metas':
@@ -115,6 +134,14 @@ const Dashboard = () => {
         return <AdvancedHealthDashboard />;
       case 'google-fit':
         return <GoogleFitIntegration />;
+      case 'plataforma-sonhos':
+        return <PlataformaSonhos isEmbedded={true} onBack={() => setActiveSection('dashboard')} />;
+      case 'assinaturas':
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Assinaturas</h2><p>Gerenciamento de assinaturas em desenvolvimento...</p></div>;
+      case 'apps':
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Apps</h2><p>Integrações de apps em desenvolvimento...</p></div>;
+      case 'ajuda':
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Ajuda</h2><p>Central de ajuda em desenvolvimento...</p></div>;
 
       default:
         return <ModernDashboard user={{name: user?.email?.split('@')[0] || 'Usuário'}} />;
@@ -146,25 +173,20 @@ const Dashboard = () => {
           
           {/* Botão de colapsar - só no desktop */}
           <div className="hidden lg:flex items-center gap-2">
-            <ModernButton
-              variant="ghost"
-              size="icon"
+            <NetflixGhostButton
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              title={isCollapsed ? "Expandir menu" : "Recolher menu"}
             >
               {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-            </ModernButton>
+            </NetflixGhostButton>
           </div>
           
           {/* Botão de fechar mobile */}
-          <ModernButton
-            variant="ghost"
-            size="icon"
+          <NetflixGhostButton
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden"
           >
             <X className="w-5 h-5" />
-          </ModernButton>
+          </NetflixGhostButton>
         </div>
       </div>
 

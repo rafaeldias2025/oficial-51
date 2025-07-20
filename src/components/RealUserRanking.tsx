@@ -85,9 +85,9 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
 
   if (loading) {
     return (
-      <Card className="border-instituto-orange/20">
+      <Card className="border-primary/20">
         <CardContent className="p-12 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-instituto-orange mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
           <div className="text-muted-foreground">Carregando ranking...</div>
         </CardContent>
       </Card>
@@ -95,11 +95,11 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
   }
 
   return (
-    <Card className="border-instituto-orange/20">
+    <Card className="border-primary/20">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-2xl font-bold text-instituto-dark flex items-center gap-2">
-            <Trophy className="w-6 h-6 text-instituto-orange" />
+          <CardTitle className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Trophy className="w-6 h-6 text-primary" />
             Ranking Geral
           </CardTitle>
           <div className="flex gap-2">
@@ -109,8 +109,8 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
                 onClick={() => onTimeFilterChange(filter)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   timeFilter === filter
-                    ? 'bg-instituto-orange text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
                 {getTimeFilterLabel(filter)}
@@ -126,9 +126,9 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
       <CardContent>
         {ranking.length === 0 ? (
           <div className="text-center py-12">
-            <Trophy className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-            <h3 className="text-lg font-medium text-gray-500 mb-2">Nenhum usuário no ranking</h3>
-            <p className="text-sm text-gray-400">Seja o primeiro a completar uma missão!</p>
+            <Trophy className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-lg font-medium text-muted-foreground mb-2">Nenhum usuário no ranking</h3>
+            <p className="text-sm text-muted-foreground">Seja o primeiro a completar uma missão!</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -141,7 +141,7 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
                   className={`
                     flex items-center justify-between p-4 rounded-lg border-2 transition-all
                     ${getMedalClass(user.position)}
-                    ${isCurrentUser ? 'ring-2 ring-instituto-orange ring-opacity-50' : ''}
+                    ${isCurrentUser ? 'ring-2 ring-primary ring-opacity-50' : ''}
                   `}
                 >
                   <div className="flex items-center gap-4">
@@ -150,18 +150,18 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
                     </div>
                     
                     <Avatar className="w-12 h-12">
-                      <AvatarFallback className="bg-instituto-orange text-white font-bold">
+                      <AvatarFallback className="bg-primary text-primary-foreground font-bold">
                         {getInitials(user.name)}
                       </AvatarFallback>
                     </Avatar>
                     
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-instituto-dark">
+                        <h3 className="font-semibold text-foreground">
                           {user.name}
                         </h3>
                         {isCurrentUser && (
-                          <Badge className="bg-instituto-orange text-white text-xs">
+                          <Badge className="bg-primary text-primary-foreground text-xs">
                             Você
                           </Badge>
                         )}
@@ -184,7 +184,7 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
                   </div>
                   
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-instituto-orange">
+                    <div className="text-2xl font-bold text-primary">
                       {user.points.toLocaleString()}
                     </div>
                     <div className="text-sm text-muted-foreground">pontos</div>
@@ -196,8 +196,8 @@ export const RealUserRanking: React.FC<RealUserRankingProps> = ({
         )}
         
         {ranking.length > 0 && (
-          <div className="mt-6 p-4 bg-instituto-orange/10 rounded-lg">
-            <h4 className="font-medium text-instituto-dark mb-2">Como funciona o ranking?</h4>
+          <div className="mt-6 p-4 bg-primary/10 rounded-lg">
+            <h4 className="font-medium text-foreground mb-2">Como funciona o ranking?</h4>
             <div className="text-sm text-muted-foreground space-y-1">
               <p>• Complete suas missões diárias para ganhar pontos</p>
               <p>• Mantenha sua sequência ativa para mais conquistas</p>
