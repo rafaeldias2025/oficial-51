@@ -18,7 +18,7 @@ const LessonEditPage: React.FC = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    content: '',
+    video_url: '',
     duration: '',
     order: 0,
     is_active: true
@@ -31,18 +31,19 @@ const LessonEditPage: React.FC = () => {
         id: lessonId,
         title: 'Aula 1: Introdução',
         description: 'Introdução ao curso',
-        content: 'Conteúdo da aula...',
-        duration: 30,
-        order: 1,
+        video_url: 'https://exemplo.com/video.mp4',
+        duration_minutes: 30,
+        order_index: 1,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        module_id: 'module-1'
       });
 
       setFormData({
         title: 'Aula 1: Introdução',
         description: 'Introdução ao curso',
-        content: 'Conteúdo da aula...',
+        video_url: 'https://exemplo.com/video.mp4',
         duration: '30',
         order: 1,
         is_active: true
@@ -128,13 +129,12 @@ const LessonEditPage: React.FC = () => {
             </div>
 
             <div>
-              <Label htmlFor="content">Conteúdo da Aula</Label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => handleInputChange('content', e.target.value)}
-                placeholder="Conteúdo detalhado da aula..."
-                rows={10}
+              <Label htmlFor="video_url">URL do Vídeo</Label>
+              <Input
+                id="video_url"
+                value={formData.video_url}
+                onChange={(e) => handleInputChange('video_url', e.target.value)}
+                placeholder="https://youtube.com/watch?v=..."
               />
             </div>
 

@@ -16,11 +16,11 @@ const Index = lazy(() => import('@/pages/Index'));
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const Auth = lazy(() => import('@/pages/Auth'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
-const EnhancedCourses = lazy(() => import('@/pages/EnhancedCourses'));
+// EnhancedCourses temporariamente desabilitado
 const CoursePage = lazy(() => import('@/pages/CoursePage'));
 const LessonPlayerPage = lazy(() => import('@/pages/LessonPlayerPage'));
 const LessonEditPage = lazy(() => import('@/pages/LessonEditPage'));
-const ModuleEditPage = lazy(() => import('@/pages/ModuleEditPage'));
+// ModuleEditPage temporariamente desabilitado
 const LessonCreatePage = lazy(() => import('@/pages/LessonCreatePage'));
 const TestCourses = lazy(() => import('@/pages/TestCourses'));
 const FullSession = lazy(() => import('@/pages/FullSession'));
@@ -31,12 +31,10 @@ const HealthMetrics = lazy(() => import('@/pages/HealthMetrics'));
 const TesteIntegracaoSaude = lazy(() => import('@/pages/TesteIntegracaoSaude').then(module => ({ default: module.TesteIntegracaoSaude })));
 const PlataformaSonhos = lazy(() => import('@/pages/PlataformaSonhos'));
 const ToolsPage = lazy(() => import('@/pages/ToolsPage').then(module => ({ default: module.ToolsPage })));
-const AssessmentPage = lazy(() => import('@/pages/AssessmentPage'));
-const AssessmentResultsPage = lazy(() => import('@/pages/AssessmentResultsPage'));
+// AssessmentPage e AssessmentResultsPage temporariamente desabilitados
 const SimpleAssessmentPage = lazy(() => import('@/pages/SimpleAssessmentPage'));
 const ResponseAnalysisDemo = lazy(() => import('@/pages/ResponseAnalysisDemo').then(module => ({ default: module.ResponseAnalysisDemo })));
-const ToolManagementDemo = lazy(() => import('@/pages/ToolManagementDemo').then(module => ({ default: module.ToolManagementDemo })));
-const UserSessionsDemo = lazy(() => import('@/pages/UserSessionsDemo').then(module => ({ default: module.UserSessionsDemo })));
+// ToolManagementDemo e UserSessionsDemo temporariamente desabilitados
 const SessionResultsDemo = lazy(() => import('@/pages/SessionResultsDemo').then(module => ({ default: module.SessionResultsDemo })));
 const FlowAuditor = lazy(() => import('@/components/audit/FlowAuditor').then(module => ({ default: module.default })));
 const FlowFixer = lazy(() => import('@/components/audit/FlowFixer').then(module => ({ default: module.default })));
@@ -317,11 +315,7 @@ const AppContent = () => {
                 <LessonEditPage />
               </Suspense>
             } />
-            <Route path="/admin/courses/:courseId/modules/:moduleId/edit" element={
-              <Suspense fallback={<PageFallback page="Editar Módulo" />}>
-                <ModuleEditPage />
-              </Suspense>
-            } />
+            {/* ModuleEditPage temporariamente desabilitado */}
             <Route path="/admin/courses/:courseId/modules/:moduleId/lessons/new" element={
               <Suspense fallback={<PageFallback page="Nova Aula" />}>
                 <LessonCreatePage />
@@ -353,16 +347,7 @@ const AppContent = () => {
                 <ToolsPage />
               </Suspense>
             } />
-            <Route path="/assessment/:toolId" element={
-              <Suspense fallback={<PageFallback page="Avaliação" />}>
-                <AssessmentPage />
-              </Suspense>
-            } />
-            <Route path="/assessment/results/:resultId" element={
-              <Suspense fallback={<PageFallback page="Resultados da Avaliação" />}>
-                <AssessmentResultsPage />
-              </Suspense>
-            } />
+            {/* Assessment routes temporariamente desabilitadas */}
             <Route path="/assessment/simple/:toolId" element={
               <Suspense fallback={<PageFallback page="Avaliação Simples" />}>
                 <SimpleAssessmentPage />
@@ -373,16 +358,7 @@ const AppContent = () => {
                 <ResponseAnalysisDemo />
               </Suspense>
             } />
-            <Route path="/tool-management" element={
-              <Suspense fallback={<PageFallback page="Gerenciamento de Ferramentas" />}>
-                <ToolManagementDemo />
-              </Suspense>
-            } />
-            <Route path="/user-sessions" element={
-              <Suspense fallback={<PageFallback page="Sessões de Usuário" />}>
-                <UserSessionsDemo />
-              </Suspense>
-            } />
+            {/* Tool management e user sessions temporariamente desabilitados */}
             <Route path="/session-results" element={
               <Suspense fallback={<PageFallback page="Resultados da Sessão" />}>
                 <SessionResultsDemo />

@@ -22,10 +22,9 @@ import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { WelcomeHeader } from "@/components/WelcomeHeader";
 import { ClientSessions } from "@/components/sessions/ClientSessions";
 import { RequiredDataModal } from "@/components/RequiredDataModal";
-import { PaidCourses } from "@/components/courses/PaidCourses";
+// PaidCourses e UserAssessments temporariamente desabilitados
 import { AdvancedHealthDashboard } from "@/components/dashboard/AdvancedHealthDashboard";
 import { HealthLayout } from "@/components/layout/HealthLayout";
-import { UserAssessments } from "@/components/user/UserAssessments";
 
 import { GoogleFitIntegration } from "@/components/GoogleFitIntegration";
 import { PlataformaSonhos } from "@/components/plataforma/PlataformaSonhos";
@@ -101,7 +100,7 @@ const Dashboard = () => {
       case 'inicio':
         return <MissaoDia isVisitor={false} />;
       case 'cursos-pagos':
-        return <PaidCourses />;
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Cursos Premium</h2><p>Funcionalidade temporariamente desabilitada</p></div>;
       case 'sessoes':
         return <ClientSessions />;
       case 'ranking':
@@ -112,7 +111,7 @@ const Dashboard = () => {
           />
         );
       case 'avaliacoes':
-        return <UserAssessments />;
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Avaliações</h2><p>Funcionalidade temporariamente desabilitada</p></div>;
       case 'avaliacao-semanal':
         return <AvaliacaoSemanal />;
       case 'metas':
