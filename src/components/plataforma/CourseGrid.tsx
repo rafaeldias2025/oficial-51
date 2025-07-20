@@ -261,7 +261,7 @@ export const CourseGrid = () => {
       {/* Capa Promocional - Banner Top 100% */}
       <div 
         ref={bannerRef}
-        className="absolute cursor-move w-full h-[640px] bg-gradient-to-r from-blue-50/90 to-blue-100/90"
+        className="absolute cursor-move w-full h-[640px] gradient-netflix"
         style={{
           left: `${bannerPosition.x}px`,
           top: `${bannerPosition.y}px`,
@@ -275,25 +275,25 @@ export const CourseGrid = () => {
           <div className="text-center">
             {/* Logo Borboleta */}
             <div className="mb-20">
-              <div className="w-24 h-24 mx-auto bg-teal-500 rounded-full flex items-center justify-center">
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-12 h-12 bg-teal-500 rounded-full"></div>
+              <div className="w-24 h-24 mx-auto bg-primary rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-primary rounded-full"></div>
                 </div>
               </div>
             </div>
             
             {/* Texto Central */}
             <div className="space-y-2 mb-16">
-              <h2 className="text-[5.5rem] font-bold text-white drop-shadow-lg tracking-wide">
+              <h2 className="text-[5.5rem] font-bold text-foreground drop-shadow-lg tracking-wide">
                 NOVO CONTEÚDO
               </h2>
-              <h3 className="text-[5.5rem] font-bold text-white drop-shadow-lg tracking-wide">
+              <h3 className="text-[5.5rem] font-bold text-foreground drop-shadow-lg tracking-wide">
                 MENSALMENTE
               </h3>
             </div>
             
             {/* Botão */}
-            <Button className="bg-teal-500 hover:bg-teal-600 text-white px-10 py-4 rounded-xl text-2xl font-semibold transition-all duration-300">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-4 rounded-xl text-2xl font-semibold transition-all duration-300">
               Acessar Conteúdo
             </Button>
           </div>
@@ -308,14 +308,14 @@ export const CourseGrid = () => {
         {modulesData.map((module, moduleIndex) => (
           <div key={moduleIndex} className="space-y-8 mb-12">
             {/* Cabeçalho do módulo - Compacto */}
-            <div className="flex items-center gap-3 py-4 px-4 bg-gray-50 rounded-lg">
-              <div className="w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">M</span>
+            <div className="flex items-center gap-3 py-4 px-4 bg-card rounded-lg border border-border">
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <span className="text-primary-foreground text-sm font-bold">M</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800">
+              <h3 className="text-xl font-semibold text-card-foreground">
                 {module.title}
               </h3>
-              <span className="text-sm text-gray-500 ml-auto">
+              <span className="text-sm text-muted-foreground ml-auto">
                 {module.courses.length} cursos
               </span>
             </div>
@@ -325,30 +325,30 @@ export const CourseGrid = () => {
               {module.courses.map((course, courseIndex) => (
                 <div key={courseIndex} className="group">
                   {/* Capa do curso - Dimensões exatas */}
-                  <div className="relative w-[320px] h-[480px] rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200 shadow-lg group-hover:shadow-xl transition-all duration-300 border-2 border-blue-200 mx-auto">
+                  <div className="relative w-[320px] h-[480px] rounded-lg overflow-hidden gradient-primary shadow-lg group-hover:shadow-xl transition-all duration-300 border-2 border-primary/20 mx-auto">
                     {/* Confetti decorativo */}
                     <div className="absolute inset-0">
-                      <div className="absolute top-4 left-4 w-2 h-2 bg-orange-400 rounded-full"></div>
-                      <div className="absolute top-8 right-6 w-1 h-1 bg-pink-400 rounded-full"></div>
-                      <div className="absolute top-12 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-                      <div className="absolute top-16 right-4 w-1 h-1 bg-blue-400 rounded-full"></div>
-                      <div className="absolute top-20 left-12 w-1 h-1 bg-green-400 rounded-full"></div>
-                      <div className="absolute top-24 right-8 w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                      <div className="absolute top-4 left-4 w-2 h-2 bg-warning rounded-full"></div>
+                      <div className="absolute top-8 right-6 w-1 h-1 bg-accent rounded-full"></div>
+                      <div className="absolute top-12 left-8 w-1.5 h-1.5 bg-warning rounded-full"></div>
+                      <div className="absolute top-16 right-4 w-1 h-1 bg-primary rounded-full"></div>
+                      <div className="absolute top-20 left-12 w-1 h-1 bg-success rounded-full"></div>
+                      <div className="absolute top-24 right-8 w-1.5 h-1.5 bg-accent rounded-full"></div>
                     </div>
                     
                     {/* Número do curso */}
                     <div className="absolute top-8 left-1/2 transform -translate-x-1/2">
-                      <div className="text-7xl font-bold text-white drop-shadow-lg">
+                      <div className="text-7xl font-bold text-primary-foreground drop-shadow-lg">
                         {String(courseIndex + 1).padStart(2, '0')}
                       </div>
                     </div>
                     
                     {/* Título do curso */}
                     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center w-full px-4">
-                      <h4 className="text-2xl font-bold text-gray-800 mb-2">
+                      <h4 className="text-2xl font-bold text-foreground mb-2">
                         {course.title}
                       </h4>
-                      <p className="text-lg text-gray-600">
+                      <p className="text-lg text-muted-foreground">
                         4 aulas
                       </p>
                     </div>
@@ -358,7 +358,7 @@ export const CourseGrid = () => {
                   <div className="mt-6 flex justify-center">
                     <Button 
                       onClick={() => handleCourseClick(course)}
-                      className="bg-brand-500 text-white px-10 py-4 rounded-lg hover:bg-brand-600 transition-colors text-base font-semibold shadow-lg"
+                      className="bg-primary text-primary-foreground px-10 py-4 rounded-lg hover:bg-primary/90 transition-colors text-base font-semibold shadow-lg"
                     >
                       Assistir
                     </Button>
@@ -384,7 +384,7 @@ export const CourseGrid = () => {
       {/* Botão Flutuante Adicionar */}
       <button
         onClick={() => setShowAddModal(true)}
-        className="fixed bottom-6 right-6 bg-purple-600 text-white rounded-full p-3 shadow-lg hover:bg-purple-700 transition-colors z-50"
+        className="fixed bottom-6 right-6 bg-accent text-accent-foreground rounded-full p-3 shadow-lg hover:bg-accent/90 transition-colors z-50"
       >
         <Plus className="w-5 h-5" />
       </button>
@@ -392,18 +392,18 @@ export const CourseGrid = () => {
       {/* Modal Adicionar Conteúdo */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+          <div className="bg-card rounded-lg shadow-xl w-full max-w-md border border-border">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b">
+              <div className="flex items-center justify-between p-6 border-b border-border">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Plus className="w-4 h-4 text-purple-600" />
+                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Plus className="w-4 h-4 text-accent" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Adicionar Conteúdo</h3>
+                <h3 className="text-lg font-semibold text-card-foreground">Adicionar Conteúdo</h3>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-muted-foreground hover:text-card-foreground transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
