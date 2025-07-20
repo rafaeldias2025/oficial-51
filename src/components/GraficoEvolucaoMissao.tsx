@@ -53,7 +53,7 @@ export const GraficoEvolucaoMissao = () => {
       if (data) {
         const dadosFormatados: DadosPontuacao[] = data.map(item => ({
           dataFormatada: new Date(item.created_at).toLocaleDateString('pt-BR'),
-          pontos: item.pontos_exercicio || item.pontos_alimentacao || item.pontos_avaliacao_dia || 0,
+          pontos: item.total_pontos_dia || 0,
           data: item.created_at,
           categoria: 'media'
         }));

@@ -25,7 +25,7 @@ import { CourseManager } from './CourseManager';
 import { JourneyManager } from './JourneyManager';
 import { QuizManager } from './QuizManager';
 import { AnamneseManager } from './AnamneseManager';
-import { SessionManager } from './SessionManager';
+// SessionManager temporariamente desabilitado
 
 type AdminTab = 'dashboard' | 'courses' | 'modules' | 'lessons' | 'journeys' | 'quizzes' | 'anamnese' | 'sessions' | 'analytics' | 'users' | 'settings';
 
@@ -135,7 +135,7 @@ export const AdminPanel: React.FC = () => {
       case 'anamnese':
         return <AnamneseManager />;
       case 'sessions':
-        return <SessionManager />;
+        return <div className="p-6 text-center text-muted-foreground">SessionManager temporariamente desabilitado</div>;
       case 'analytics':
         return <AnalyticsDashboard />;
       case 'users':

@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { AdminPanel } from './AdminPanel';
-import { SessionManager } from './SessionManager';
+// SessionManager temporariamente desabilitado
 import { ToolManager } from './ToolManager';
-import { AssessmentManager } from './AssessmentManager';
+// Assessment functionality temporarily disabled
 import { SystemSettings } from './SystemSettings';
 import {
   LayoutDashboard,
@@ -185,9 +185,9 @@ export const EnhancedAdminDashboard = () => {
               </Card>
             )}
             {selectedTab === 'courses' && <AdminPanel />}
-            {selectedTab === 'sessions' && <SessionManager />}
+            {selectedTab === 'sessions' && <div className="p-6 text-center text-muted-foreground">SessionManager temporariamente desabilitado</div>}
             {selectedTab === 'tools' && <ToolManager />}
-            {selectedTab === 'assessments' && <AssessmentManager />}
+            {selectedTab === 'assessments' && <div className="p-6 text-center text-muted-foreground">Funcionalidade de avaliações temporariamente desabilitada</div>}
             {selectedTab === 'settings' && <SystemSettings />}
           </div>
         </div>

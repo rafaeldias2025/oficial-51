@@ -284,9 +284,7 @@ export const QuizManager: React.FC = () => {
       // Adicionar nova questão
       const newQuestion: QuizQuestion = {
         id: Date.now().toString(),
-        ...questionFormData,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        ...questionFormData
       };
       setQuestions([...questions, newQuestion]);
       setIsAddQuestionDialogOpen(false);
