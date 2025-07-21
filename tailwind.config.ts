@@ -66,6 +66,20 @@ const config = {
           warning: 'var(--netflix-warning)',
           error: 'var(--netflix-error)',
           info: 'var(--netflix-info)'
+        },
+        
+        // Health colors
+        health: {
+          background: '#f8fafc',
+          primary: '#3B82F6',
+          secondary: '#10B981',
+          warning: '#F59E0B',
+          error: '#EF4444',
+          success: '#10B981',
+          heart: '#EF4444',
+          steps: '#3B82F6',
+          weight: '#10B981',
+          calories: '#F59E0B'
         }
       },
       borderRadius: {

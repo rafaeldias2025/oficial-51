@@ -1,0 +1,283 @@
+/* NETFLIX THEME - PALETA DE CORES UNIFICADA
+ * Baseada no site oficial da Netflix: https://www.netflix.com/br/
+ * Implementação 2023 - Instituto dos Sonhos
+ */
+
+:root {
+  /* === CORES PRINCIPAIS === */
+  --netflix-black: #000000;         /* Preto fundo principal */
+  --netflix-dark-gray: #141414;     /* Cinza escuro para cards */
+  --netflix-medium-gray: #333333;   /* Cinza médio para elementos secundários */
+  --netflix-light-gray: #b3b3b3;    /* Cinza claro para textos secundários */
+  --netflix-red: #e50914;           /* Vermelho Netflix principal */
+  --netflix-red-hover: #f40612;     /* Vermelho hover */
+  --netflix-white: #ffffff;         /* Branco para textos principais */
+  
+  /* === CORES DE INTERFACE === */
+  --netflix-bg-primary: var(--netflix-black);
+  --netflix-bg-card: var(--netflix-dark-gray);
+  --netflix-text-primary: var(--netflix-white);
+  --netflix-text-secondary: var(--netflix-light-gray);
+  --netflix-border: #404040;        /* Bordas de elementos */
+  --netflix-input-bg: #333333;      /* Fundo de inputs */
+  --netflix-button-primary: var(--netflix-red);
+  --netflix-button-hover: var(--netflix-red-hover);
+  --netflix-overlay: rgba(0, 0, 0, 0.75); /* Overlay para modais */
+  
+  /* === CORES DE STATUS === */
+  --netflix-success: #2aca45;       /* Verde Netflix */
+  --netflix-warning: #ffa00a;       /* Laranja aviso */
+  --netflix-error: #e87c03;         /* Laranja erro */
+  --netflix-info: #0080ff;          /* Azul informação */
+
+  /* === GRADIENTES === */
+  --netflix-gradient-dark: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  --netflix-gradient-overlay: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  
+  /* === SOMBRAS === */
+  --netflix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --netflix-shadow-md: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --netflix-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.7);
+  
+  /* === TRANSIÇÕES === */
+  --netflix-transition-fast: 150ms ease;
+  --netflix-transition-default: 250ms ease;
+  --netflix-transition-slow: 450ms ease;
+  
+  /* === RADII === */
+  --netflix-radius-sm: 2px;
+  --netflix-radius-md: 4px;
+  --netflix-radius-lg: 8px;
+}
+
+/* === CLASSES DE UTILIDADE === */
+
+/* Backgrounds */
+.bg-netflix {
+  background-color: var(--netflix-black);
+}
+
+.bg-netflix-card {
+  background-color: var(--netflix-dark-gray);
+}
+
+.bg-netflix-input {
+  background-color: var(--netflix-input-bg);
+}
+
+/* Texto */
+.text-netflix-primary {
+  color: var(--netflix-white);
+}
+
+.text-netflix-secondary {
+  color: var(--netflix-light-gray);
+}
+
+/* Botões */
+.btn-netflix-primary {
+  background-color: var(--netflix-red);
+  color: var(--netflix-white);
+  border: none;
+  border-radius: var(--netflix-radius-md);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color var(--netflix-transition-fast);
+}
+
+.btn-netflix-primary:hover {
+  background-color: var(--netflix-red-hover);
+}
+
+.btn-netflix-secondary {
+  background-color: var(--netflix-medium-gray);
+  color: var(--netflix-white);
+  border: none;
+  border-radius: var(--netflix-radius-md);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color var(--netflix-transition-fast);
+}
+
+.btn-netflix-secondary:hover {
+  background-color: #4d4d4d;
+}
+
+.btn-netflix-outline {
+  background-color: transparent;
+  color: var(--netflix-white);
+  border: 1px solid var(--netflix-light-gray);
+  border-radius: var(--netflix-radius-md);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color var(--netflix-transition-fast), 
+              border-color var(--netflix-transition-fast);
+}
+
+.btn-netflix-outline:hover {
+  border-color: var(--netflix-white);
+}
+
+/* Inputs */
+.input-netflix {
+  background-color: var(--netflix-input-bg);
+  border: none;
+  border-bottom: 2px solid var(--netflix-medium-gray);
+  color: var(--netflix-white);
+  padding: 0.75rem 1rem;
+  border-radius: var(--netflix-radius-sm);
+  transition: border-color var(--netflix-transition-fast);
+}
+
+.input-netflix:focus {
+  outline: none;
+  border-bottom-color: var(--netflix-white);
+}
+
+.input-netflix::placeholder {
+  color: var(--netflix-light-gray);
+}
+
+/* Cards */
+.card-netflix {
+  background-color: var(--netflix-dark-gray);
+  border-radius: var(--netflix-radius-md);
+  overflow: hidden;
+  box-shadow: var(--netflix-shadow-md);
+  transition: transform var(--netflix-transition-default);
+}
+
+.card-netflix:hover {
+  transform: scale(1.02);
+}
+
+/* Gradientes */
+.gradient-netflix-dark {
+  background-image: var(--netflix-gradient-dark);
+}
+
+.gradient-netflix-overlay {
+  background-image: var(--netflix-gradient-overlay);
+}
+
+/* Bordas */
+.border-netflix {
+  border-color: var(--netflix-border);
+}
+
+/* === OVERRIDES FORÇADOS PARA CORRIGIR INCONSISTÊNCIAS === */
+
+/* Forçar substituição de cores roxas */
+[class*="purple"], [class*="Purple"] {
+  color: var(--netflix-white) !important;
+  background-color: var(--netflix-dark-gray) !important;
+  border-color: var(--netflix-border) !important;
+}
+
+/* Forçar substituição de cores amarelas/douradas */
+[class*="yellow"], [class*="Yellow"], [class*="amber"], [class*="Amber"] {
+  color: var(--netflix-white) !important;
+  background-color: var(--netflix-dark-gray) !important;
+  border-color: var(--netflix-border) !important;
+}
+
+/* Forçar substituição de cores laranjas */
+[class*="orange"], [class*="Orange"] {
+  color: var(--netflix-white) !important;
+  background-color: var(--netflix-dark-gray) !important;
+  border-color: var(--netflix-border) !important;
+}
+
+/* Override gradientes problemáticos */
+[class*="from-purple"], [class*="via-purple"], [class*="to-purple"] {
+  background: var(--netflix-gradient-dark) !important;
+}
+
+[class*="from-yellow"], [class*="via-yellow"], [class*="to-yellow"],
+[class*="from-amber"], [class*="via-amber"], [class*="to-amber"] {
+  background: var(--netflix-gradient-dark) !important;
+}
+
+[class*="from-orange"], [class*="via-orange"], [class*="to-orange"] {
+  background: var(--netflix-gradient-dark) !important;
+}
+
+/* Override específico para estrelas de rating */
+[class*="text-yellow"], [class*="text-amber"] {
+  color: var(--netflix-white) !important;
+}
+
+/* Override para inputs com fundo claro */
+input[class*="bg-gray"], input[class*="bg-slate"] {
+  background-color: var(--netflix-input-bg) !important;
+  color: var(--netflix-white) !important;
+  border-color: var(--netflix-border) !important;
+}
+
+/* Override para botões administrativos */
+[class*="border-amber"], [class*="border-yellow"] {
+  border-color: var(--netflix-red) !important;
+  color: var(--netflix-white) !important;
+}
+
+/* Override para cards com cores inconsistentes */
+[class*="bg-purple"], [class*="bg-yellow"], [class*="bg-amber"], [class*="bg-orange"] {
+  background-color: var(--netflix-dark-gray) !important;
+  border-color: var(--netflix-border) !important;
+}
+
+/* Override para textos com cores inconsistentes */
+[class*="text-purple"], [class*="text-yellow"], [class*="text-amber"], [class*="text-orange"] {
+  color: var(--netflix-white) !important;
+}
+
+/* Override para badges */
+[class*="bg-yellow"], [class*="bg-amber"], [class*="bg-orange"] {
+  background-color: var(--netflix-medium-gray) !important;
+  color: var(--netflix-white) !important;
+}
+
+/* Override para gradientes de texto */
+[class*="bg-gradient-to-r from-purple"], [class*="bg-gradient-to-r from-yellow"], 
+[class*="bg-gradient-to-r from-amber"], [class*="bg-gradient-to-r from-orange"] {
+  background: linear-gradient(to right, var(--netflix-red), var(--netflix-red-hover)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Override para backgrounds de página */
+[class*="bg-gradient-to-br from-slate-900 via-purple-900"] {
+  background: var(--netflix-black) !important;
+}
+
+[class*="bg-gradient-to-br from-purple-50"], [class*="bg-gradient-to-br from-yellow-50"],
+[class*="bg-gradient-to-br from-amber-50"], [class*="bg-gradient-to-br from-orange-50"] {
+  background: var(--netflix-black) !important;
+}
+
+/* Override para focus states */
+[class*="focus:border-purple"], [class*="focus:border-yellow"], 
+[class*="focus:border-amber"], [class*="focus:border-orange"] {
+  border-color: var(--netflix-red) !important;
+}
+
+/* Override para hover states */
+[class*="hover:from-purple"], [class*="hover:to-purple"],
+[class*="hover:from-yellow"], [class*="hover:to-yellow"],
+[class*="hover:from-amber"], [class*="hover:to-amber"],
+[class*="hover:from-orange"], [class*="hover:to-orange"] {
+  background: var(--netflix-red-hover) !important;
+}
+
+/* Override para shadows coloridas */
+[class*="shadow-purple"], [class*="shadow-yellow"], 
+[class*="shadow-amber"], [class*="shadow-orange"] {
+  box-shadow: var(--netflix-shadow-md) !important;
+} 

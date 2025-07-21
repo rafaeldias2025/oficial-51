@@ -1,0 +1,204 @@
+/* FORÇAR TEMA NETFLIX - PRIORIDADE MÁXIMA */
+
+/* Reset completo com !important */
+* {
+  box-sizing: border-box !important;
+}
+
+html {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+body {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Forçar tema Netflix em todos os elementos */
+div, section, main, aside, header, footer, article, nav {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* Cards e containers */
+.card, .bg-card, [class*="card"] {
+  background-color: #141414 !important;
+  border-color: #333333 !important;
+  color: #FFFFFF !important;
+}
+
+/* Textos */
+h1, h2, h3, h4, h5, h6, p, span, label, a {
+  color: #FFFFFF !important;
+}
+
+/* Botões */
+button, .btn, [class*="btn"] {
+  background-color: #E50914 !important;
+  color: #FFFFFF !important;
+  border-color: #E50914 !important;
+}
+
+button:hover, .btn:hover, [class*="btn"]:hover {
+  background-color: #DC2626 !important;
+}
+
+/* Inputs */
+input, textarea, select {
+  background-color: #1F2937 !important;
+  border-color: #333333 !important;
+  color: #FFFFFF !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #9CA3AF !important;
+}
+
+/* Classes específicas Netflix */
+.netflix-background {
+  background-color: #000000 !important;
+}
+
+.netflix-card {
+  background-color: #141414 !important;
+  border: 1px solid #333333 !important;
+  color: #FFFFFF !important;
+}
+
+.netflix-text {
+  color: #FFFFFF !important;
+}
+
+.netflix-text-muted {
+  color: #9CA3AF !important;
+}
+
+.netflix-red {
+  color: #E50914 !important;
+}
+
+.bg-netflix-red {
+  background-color: #E50914 !important;
+}
+
+.bg-netflix-card {
+  background-color: #141414 !important;
+}
+
+.bg-netflix-hover {
+  background-color: #1F2937 !important;
+}
+
+.border-netflix-border {
+  border-color: #333333 !important;
+}
+
+.text-netflix-text {
+  color: #FFFFFF !important;
+}
+
+.text-netflix-text-muted {
+  color: #9CA3AF !important;
+}
+
+.text-netflix-red {
+  color: #E50914 !important;
+}
+
+/* Override Tailwind */
+.bg-white {
+  background-color: #141414 !important;
+}
+
+.bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400, .bg-gray-500 {
+  background-color: #1F2937 !important;
+}
+
+.text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-gray-500 {
+  color: #FFFFFF !important;
+}
+
+.text-gray-400, .text-gray-300, .text-gray-200, .text-gray-100 {
+  color: #9CA3AF !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333 !important;
+  border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4B5563 !important;
+}
+
+/* Forçar tema escuro */
+.light, .dark {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* Gradientes Netflix */
+.gradient-netflix {
+  background: linear-gradient(135deg, #E50914 0%, #DC2626 100%) !important;
+}
+
+.gradient-dark {
+  background: linear-gradient(135deg, #000000 0%, #141414 100%) !important;
+}
+
+/* Efeitos */
+.glow-netflix {
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.3) !important;
+}
+
+/* Animações */
+@keyframes netflix-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.netflix-fade-in {
+  animation: netflix-fade-in 0.5s ease-out !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .netflix-card {
+    background-color: #141414 !important;
+    margin: 8px !important;
+  }
+}
+
+/* Override final com máxima prioridade */
+body * {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+/* Exceções para elementos específicos */
+.netflix-red,
+.bg-netflix-red,
+.text-netflix-red,
+.btn-netflix,
+[class*="netflix"] {
+  /* Manter suas cores específicas */
+} 

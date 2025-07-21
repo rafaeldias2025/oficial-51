@@ -1,0 +1,262 @@
+/* Melhorias de Contraste - Página Inicial e Auth */
+
+/* ===== PÁGINA INICIAL ===== */
+
+/* Melhor contraste para navegação */
+.homepage-nav button {
+  background-color: hsl(221, 83%, 60%) !important; /* Azul mais claro */
+  color: hsl(0, 0%, 100%) !important;
+  border: 2px solid hsl(221, 83%, 70%) !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.homepage-nav button:hover {
+  background-color: hsl(221, 83%, 70%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Call-to-action principal mais destacado */
+.homepage-hero button {
+  background: linear-gradient(135deg, hsl(221, 83%, 60%) 0%, hsl(200, 95%, 50%) 100%) !important;
+  color: hsl(0, 0%, 100%) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+  border: 3px solid hsl(221, 83%, 80%) !important;
+}
+
+.homepage-hero button:hover {
+  background: linear-gradient(135deg, hsl(221, 83%, 70%) 0%, hsl(200, 95%, 60%) 100%) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.6) !important;
+}
+
+/* Cards de programas com melhor contraste */
+.program-card {
+  background: linear-gradient(145deg, hsl(220, 13%, 25%) 0%, hsl(220, 13%, 20%) 100%) !important;
+  border: 2px solid hsl(217, 32%, 30%) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+.program-card h3 {
+  color: hsl(221, 83%, 70%) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.program-card p {
+  color: hsl(210, 20%, 90%) !important;
+  line-height: 1.6 !important;
+}
+
+.program-card button {
+  background: linear-gradient(135deg, hsl(142, 76%, 45%) 0%, hsl(160, 84%, 50%) 100%) !important;
+  color: hsl(0, 0%, 100%) !important;
+  font-weight: 600 !important;
+  border: 2px solid hsl(142, 76%, 55%) !important;
+}
+
+/* Estatísticas com melhor destaque */
+.stats-card {
+  background: linear-gradient(145deg, hsl(220, 13%, 22%) 0%, hsl(220, 13%, 18%) 100%) !important;
+  border: 2px solid hsl(221, 83%, 40%) !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2) !important;
+}
+
+.stats-number {
+  color: hsl(221, 83%, 70%) !important;
+  font-weight: 800 !important;
+  font-size: 2.5rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.stats-label {
+  color: hsl(210, 20%, 85%) !important;
+  font-weight: 600 !important;
+}
+
+/* Ranking com melhor contraste */
+.ranking-card {
+  background: linear-gradient(145deg, hsl(220, 13%, 23%) 0%, hsl(220, 13%, 19%) 100%) !important;
+  border: 2px solid hsl(38, 92%, 50%) !important;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.2) !important;
+}
+
+.ranking-position {
+  color: hsl(38, 92%, 60%) !important;
+  font-weight: 800 !important;
+  font-size: 1.5rem !important;
+}
+
+.ranking-name {
+  color: hsl(210, 20%, 95%) !important;
+  font-weight: 700 !important;
+}
+
+.ranking-points {
+  color: hsl(142, 76%, 60%) !important;
+  font-weight: 600 !important;
+}
+
+/* ===== PÁGINA AUTH ===== */
+
+/* Formulário de login com melhor contraste */
+.auth-form {
+  background: linear-gradient(145deg, hsl(220, 13%, 22%) 0%, hsl(220, 13%, 18%) 100%) !important;
+  border: 3px solid hsl(221, 83%, 50%) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.auth-form input {
+  background-color: hsl(220, 13%, 25%) !important;
+  border: 2px solid hsl(217, 32%, 35%) !important;
+  color: hsl(210, 20%, 95%) !important;
+  font-weight: 500 !important;
+}
+
+.auth-form input:focus {
+  border-color: hsl(221, 83%, 60%) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+  background-color: hsl(220, 13%, 28%) !important;
+}
+
+.auth-form input::placeholder {
+  color: hsl(215, 20%, 65%) !important;
+  font-weight: 400 !important;
+}
+
+/* Botão de login mais destacado */
+.auth-submit-btn {
+  background: linear-gradient(135deg, hsl(221, 83%, 60%) 0%, hsl(200, 95%, 50%) 100%) !important;
+  color: hsl(0, 0%, 100%) !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+  border: 3px solid hsl(221, 83%, 80%) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+}
+
+.auth-submit-btn:hover {
+  background: linear-gradient(135deg, hsl(221, 83%, 70%) 0%, hsl(200, 95%, 60%) 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.6) !important;
+}
+
+/* Botões administrativos */
+.admin-btn {
+  background: linear-gradient(135deg, hsl(38, 92%, 55%) 0%, hsl(25, 95%, 58%) 100%) !important;
+  color: hsl(0, 0%, 100%) !important;
+  font-weight: 600 !important;
+  border: 2px solid hsl(38, 92%, 65%) !important;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3) !important;
+}
+
+.admin-btn:hover {
+  background: linear-gradient(135deg, hsl(38, 92%, 65%) 0%, hsl(25, 95%, 68%) 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5) !important;
+}
+
+/* Tabs com melhor contraste */
+.auth-tabs {
+  background: linear-gradient(145deg, hsl(220, 13%, 20%) 0%, hsl(220, 13%, 16%) 100%) !important;
+  border: 2px solid hsl(217, 32%, 30%) !important;
+}
+
+.auth-tab {
+  color: hsl(215, 20%, 65%) !important;
+  font-weight: 500 !important;
+  border-bottom: 3px solid transparent !important;
+}
+
+.auth-tab[aria-selected="true"] {
+  color: hsl(221, 83%, 70%) !important;
+  font-weight: 700 !important;
+  border-bottom-color: hsl(221, 83%, 70%) !important;
+  background-color: hsl(220, 13%, 25%) !important;
+}
+
+/* Testimonial com melhor contraste */
+.testimonial-card {
+  background: linear-gradient(145deg, hsl(220, 13%, 24%) 0%, hsl(220, 13%, 20%) 100%) !important;
+  border: 2px solid hsl(142, 76%, 40%) !important;
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.2) !important;
+}
+
+.testimonial-text {
+  color: hsl(210, 20%, 90%) !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
+}
+
+.testimonial-author {
+  color: hsl(142, 76%, 60%) !important;
+  font-weight: 600 !important;
+}
+
+/* ===== MELHORIAS GERAIS ===== */
+
+/* Texto com melhor contraste */
+h1, h2, h3 {
+  color: hsl(210, 20%, 95%) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+p {
+  color: hsl(210, 20%, 85%) !important;
+  line-height: 1.6 !important;
+}
+
+/* Links com melhor contraste */
+a {
+  color: hsl(221, 83%, 70%) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+a:hover {
+  color: hsl(221, 83%, 80%) !important;
+  text-decoration: underline !important;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(220, 13%, 18%) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(221, 83%, 50%) !important;
+  border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(221, 83%, 60%) !important;
+}
+
+/* Animações suaves */
+* {
+  transition: all 0.3s ease !important;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .homepage-hero button {
+    font-size: 1rem !important;
+    padding: 12px 24px !important;
+  }
+  
+  .auth-form {
+    margin: 20px !important;
+    padding: 30px 20px !important;
+  }
+  
+  .stats-number {
+    font-size: 2rem !important;
+  }
+} 

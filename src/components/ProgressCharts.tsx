@@ -132,20 +132,20 @@ const ModernChart = ({ data, type, title, dataKey, color, subtitle }) => {
                 <stop offset="95%" stopColor={color} stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--health-background))" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis 
               dataKey="data" 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-              axisLine={{ stroke: 'hsl(var(--health-background))' }}
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              axisLine={{ stroke: '#e2e8f0' }}
             />
             <YAxis 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-              axisLine={{ stroke: 'hsl(var(--health-background))' }}
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              axisLine={{ stroke: '#e2e8f0' }}
             />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: 'hsl(var(--background))', 
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: '#ffffff', 
+                border: '1px solid #e2e8f0',
                 borderRadius: '12px',
                 boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
               }}
@@ -165,20 +165,20 @@ const ModernChart = ({ data, type, title, dataKey, color, subtitle }) => {
       case 'line':
         return (
           <LineChart {...chartProps}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--health-background))" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis 
               dataKey="data" 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-              axisLine={{ stroke: 'hsl(var(--health-background))' }}
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              axisLine={{ stroke: '#e2e8f0' }}
             />
             <YAxis 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-              axisLine={{ stroke: 'hsl(var(--health-background))' }}
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              axisLine={{ stroke: '#e2e8f0' }}
             />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: 'hsl(var(--background))', 
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: '#ffffff', 
+                border: '1px solid #e2e8f0',
                 borderRadius: '12px',
                 boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
               }}
@@ -197,20 +197,20 @@ const ModernChart = ({ data, type, title, dataKey, color, subtitle }) => {
       case 'bar':
         return (
           <BarChart {...chartProps}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--health-background))" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis 
               dataKey="data" 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-              axisLine={{ stroke: 'hsl(var(--health-background))' }}
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              axisLine={{ stroke: '#e2e8f0' }}
             />
             <YAxis 
-              tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-              axisLine={{ stroke: 'hsl(var(--health-background))' }}
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              axisLine={{ stroke: '#e2e8f0' }}
             />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: 'hsl(var(--background))', 
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: '#ffffff', 
+                border: '1px solid #e2e8f0',
                 borderRadius: '12px',
                 boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
               }}
@@ -328,9 +328,9 @@ export const ProgressCharts = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="glass-card p-6 animate-pulse">
-              <div className="h-4 bg-health-background rounded mb-4"></div>
-              <div className="h-8 bg-health-background rounded mb-2"></div>
-              <div className="h-3 bg-health-background rounded w-2/3"></div>
+              <div className="h-4 bg-gray-200 rounded mb-4"></div>
+              <div className="h-8 bg-gray-200 rounded mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-2/3"></div>
             </div>
           ))}
         </div>
