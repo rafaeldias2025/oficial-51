@@ -14,13 +14,13 @@ async function migrarDadosSistemas() {
       {
         id: '11111111-1111-1111-1111-111111111111',
         full_name: 'João Silva - SistemaTizeCoach',
-        email: 'joao.silva@sistemetizecoach.com',
+        email: 'joao.silva@institutodossonhos.com',
         created_at: new Date('2025-01-15').toISOString()
       },
       {
         id: '22222222-2222-2222-2222-222222222222',
         full_name: 'Maria Santos - SistemaGB',
-        email: 'maria.santos@sistemagb.com',
+        email: 'maria.santos@institutodossonhos.com',
         created_at: new Date('2025-01-20').toISOString()
       },
       {
@@ -32,7 +32,7 @@ async function migrarDadosSistemas() {
       {
         id: '44444444-4444-4444-4444-444444444444',
         full_name: 'Ana Costa - SistemaGB',
-        email: 'ana.costa@sistemagb.com',
+        email: 'ana.costa@institutodossonhos.com',
         created_at: new Date('2025-02-10').toISOString()
       },
       {

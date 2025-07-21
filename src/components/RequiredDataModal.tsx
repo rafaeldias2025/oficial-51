@@ -36,31 +36,37 @@ export const RequiredDataModal = () => {
       setIsChecking(true);
       console.log('🔍 Verificando dados obrigatórios para usuário:', user.id);
       
-      // Desabilitar modal temporariamente para evitar problemas
-      // TODO: Reativar quando o esquema do banco estiver estável
-      console.log('✅ Modal de dados obrigatórios desabilitado temporariamente');
-      setOpen(false);
-      return;
-      
-      // Código original comentado para evitar erros
-      /*
       // 1. Verificar se o usuário tem dados físicos completos na tabela dados_fisicos_usuario
-      const { data: profileData } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('id')
         .eq('user_id', user.id)
         .maybeSingle();
 
-      if (!profileData) {
-        console.log('❌ Profile não encontrado');
+      if (profileError) {
+        console.log('❌ Erro ao buscar profile:', profileError);
+        setOpen(false);
         return;
       }
 
-      const { data: dadosFisicos } = await supabase
+      if (!profileData) {
+        console.log('❌ Profile não encontrado');
+        setOpen(false);
+        return;
+      }
+
+      const { data: dadosFisicos, error: dadosError } = await supabase
         .from('dados_fisicos_usuario')
         .select('altura_cm, sexo, data_nascimento, peso_atual_kg')
         .eq('user_id', profileData.id)
         .maybeSingle();
+
+      if (dadosError) {
+        console.log('⚠️ Erro ao verificar dados físicos:', dadosError);
+        // Em caso de erro, não mostrar modal para não interromper UX
+        setOpen(false);
+        return;
+      }
 
       // Se dados físicos já existem e estão completos, não mostrar modal
       if (dadosFisicos && dadosFisicos.altura_cm && dadosFisicos.sexo && dadosFisicos.data_nascimento) {
@@ -69,9 +75,9 @@ export const RequiredDataModal = () => {
         return;
       }
 
-      console.log('✅ Todos os dados estão presentes, não exibindo modal');
-      setOpen(false);
-      */
+      // Se chegou até aqui, dados estão incompletos - mostrar modal
+      console.log('⚠️ Dados físicos incompletos, exibindo modal');
+      setOpen(true);
     } catch (error) {
       console.error('❌ Erro ao verificar dados obrigatórios:', error);
       // Em caso de erro, não mostrar modal para não interromper a experiência

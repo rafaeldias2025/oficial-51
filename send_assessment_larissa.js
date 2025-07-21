@@ -8,115 +8,128 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function sendAssessmentToLarissa() {
   try {
-    console.log('📤 Enviando avaliação para Larissa Barbosa...');
-    
-    // 1. Verificar usuário Larissa
-    console.log('\n👤 Verificando usuário Larissa...');
-    const { data: larissa, error: userError } = await supabase
+    console.log('🔄 Enviando avaliação para Larissa...');
+
+    // 1. Buscar o usuário Larissa
+    const { data: userData, error: userError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
-      
+
     if (userError) {
       console.error('❌ Erro ao buscar usuário Larissa:', userError);
       return;
     }
-    
-    console.log('✅ Usuário Larissa encontrado:');
-    console.log(`   - ID: ${larissa.id}`);
-    console.log(`   - Nome: ${larissa.full_name}`);
-    console.log(`   - Email: ${larissa.email}`);
-    
-    // 2. Verificar ferramenta Roda da Saúde Galileu (ID 1)
-    console.log('\n🔧 Verificando ferramenta Roda da Saúde Galileu...');
-    const { data: tool, error: toolError } = await supabase
-      .from('coaching_tools')
-      .select('*')
-      .eq('id', 1)
-      .single();
-      
-    if (toolError) {
-      console.error('❌ Erro ao buscar ferramenta:', toolError);
-      return;
-    }
-    
-    console.log('✅ Ferramenta encontrada:');
-    console.log(`   - ID: ${tool.id}`);
-    console.log(`   - Nome: ${tool.name}`);
-    console.log(`   - Perguntas: ${tool.total_questions}`);
-    
-    // 3. Enviar avaliação para Larissa
-    console.log('\n📤 Enviando avaliação...');
-    
-    const assignment = {
-      user_id: larissa.id,
-      tool_id: tool.id,
+
+    console.log('✅ Usuário Larissa encontrado:', userData);
+
+    // 2. Criar uma nova avaliação
+    const assessmentData = {
+      user_id: userData.id,
+      title: 'Avaliação de Bem-estar Completa',
+      description: 'Avaliação personalizada para Larissa Barbosa',
       status: 'pending',
-      instructions: 'Olá Larissa! Esta é sua avaliação da Roda da Saúde Galileu. Por favor, responda todas as perguntas com atenção para obter um diagnóstico completo dos seus 16 sistemas de saúde.',
-      due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 dias
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
-    
-    const { data: assignmentData, error: assignmentError } = await supabase
-      .from('assessment_assignments')
-      .insert([assignment])
-      .select('*')
+
+    const { data: assessment, error: assessmentError } = await supabase
+      .from('assessments')
+      .insert([assessmentData])
+      .select()
       .single();
-      
-    if (assignmentError) {
-      console.error('❌ Erro ao enviar avaliação:', assignmentError);
+
+    if (assessmentError) {
+      console.error('❌ Erro ao criar avaliação:', assessmentError);
       return;
     }
-    
-    console.log('✅ Avaliação enviada com sucesso!');
-    console.log('📊 Detalhes da atribuição:');
-    console.log(`   - ID: ${assignmentData.id}`);
-    console.log(`   - Status: ${assignmentData.status}`);
-    console.log(`   - Data limite: ${assignmentData.due_date}`);
-    console.log(`   - Instruções: ${assignmentData.instructions}`);
-    
-    // 4. Verificar atribuição criada
-    console.log('\n🔍 Verificando atribuição criada...');
-    const { data: checkAssignment, error: checkError } = await supabase
-      .from('assessment_assignments')
-      .select(`
-        *,
-        profiles:user_id (full_name, email),
-        coaching_tools:tool_id (name)
-      `)
-      .eq('id', assignmentData.id)
-      .single();
-      
-    if (checkError) {
-      console.error('❌ Erro ao verificar atribuição:', checkError);
+
+    console.log('✅ Avaliação criada:', assessment);
+
+    // 3. Adicionar perguntas à avaliação
+    const questions = [
+      {
+        assessment_id: assessment.id,
+        question_text: 'Como você se sente hoje?',
+        question_type: 'scale',
+        options: ['Muito mal', 'Mal', 'Regular', 'Bem', 'Muito bem'],
+        order: 1
+      },
+      {
+        assessment_id: assessment.id,
+        question_text: 'Qual é seu nível de energia hoje?',
+        question_type: 'scale',
+        options: ['Muito baixo', 'Baixo', 'Regular', 'Alto', 'Muito alto'],
+        order: 2
+      },
+      {
+        assessment_id: assessment.id,
+        question_text: 'Como está sua qualidade do sono?',
+        question_type: 'scale',
+        options: ['Muito ruim', 'Ruim', 'Regular', 'Boa', 'Excelente'],
+        order: 3
+      },
+      {
+        assessment_id: assessment.id,
+        question_text: 'Qual é sua meta principal de saúde?',
+        question_type: 'multiple_choice',
+        options: ['Perder peso', 'Ganhar massa muscular', 'Melhorar condicionamento', 'Reduzir estresse', 'Melhorar alimentação'],
+        order: 4
+      },
+      {
+        assessment_id: assessment.id,
+        question_text: 'Quantas vezes por semana você pratica exercícios?',
+        question_type: 'multiple_choice',
+        options: ['Nunca', '1-2 vezes', '3-4 vezes', '5-6 vezes', 'Todos os dias'],
+        order: 5
+      }
+    ];
+
+    const { data: questionsData, error: questionsError } = await supabase
+      .from('assessment_questions')
+      .insert(questions)
+      .select();
+
+    if (questionsError) {
+      console.error('❌ Erro ao adicionar perguntas:', questionsError);
       return;
     }
-    
-    console.log('✅ Atribuição verificada:');
-    console.log(`   - Usuário: ${checkAssignment.profiles?.full_name}`);
-    console.log(`   - Email: ${checkAssignment.profiles?.email}`);
-    console.log(`   - Ferramenta: ${checkAssignment.coaching_tools?.name}`);
-    console.log(`   - Status: ${checkAssignment.status}`);
-    
-    // 5. Gerar links
-    console.log('\n🔗 Links gerados:');
-    console.log(`   - Avaliação: http://localhost:8081/assessment/${tool.id}?assignment=${assignmentData.id}`);
-    console.log(`   - Painel do usuário: http://localhost:8081/dashboard`);
-    
-    console.log('\n📧 Informações para Larissa:');
-    console.log('   - Email: larissabarbosa@gmail.com');
-    console.log('   - Senha: 10203040');
-    console.log('   - Avaliação: Roda da Saúde Galileu');
-    console.log('   - Data limite: 7 dias');
-    
-    console.log('\n🎉 Avaliação enviada para Larissa Barbosa com sucesso!');
-    
+
+    console.log('✅ Perguntas adicionadas:', questionsData);
+
+    // 4. Enviar notificação para Larissa
+    const notification = {
+      user_id: userData.id,
+      title: 'Nova Avaliação Disponível',
+      message: 'Você tem uma nova avaliação de bem-estar para responder!',
+      type: 'assessment',
+      read: false,
+      created_at: new Date().toISOString()
+    };
+
+    const { data: notificationData, error: notificationError } = await supabase
+      .from('notifications')
+      .insert([notification])
+      .select();
+
+    if (notificationError) {
+      console.error('❌ Erro ao enviar notificação:', notificationError);
+    } else {
+      console.log('✅ Notificação enviada:', notificationData);
+    }
+
+    console.log('🎉 Avaliação enviada com sucesso para Larissa!');
+    console.log('📋 Detalhes da avaliação:');
+    console.log(`   - ID: ${assessment.id}`);
+    console.log(`   - Título: ${assessment.title}`);
+    console.log(`   - Perguntas: ${questions.length}`);
+    console.log(`   - Status: ${assessment.status}`);
+
   } catch (error) {
     console.error('❌ Erro geral:', error);
   }
 }
 
-// Executar o envio
+// Executar o script
 sendAssessmentToLarissa(); 

@@ -11,14 +11,14 @@
 ## 👥 Sessões por Aluno
 
 ### 1. João Silva - SistemaTizeCoach
-- **Email**: joao.silva@sistemetizecoach.com
+- **Email**: joao.silva@institutodossonhos.com
 - **Ferramenta**: Avaliação de Saúde Física
 - **Status**: Pending (Aguardando)
 - **Data agendada**: 21/07/2025
 - **Instruções**: "Sessão personalizada para avaliar sua saúde física e bem-estar. Prepare-se para responder perguntas sobre seus hábitos de saúde."
 
 ### 2. Maria Santos - SistemaGB
-- **Email**: maria.santos@sistemagb.com
+- **Email**: maria.santos@institutodossonhos.com
 - **Ferramenta**: Avaliação de Bem-estar Emocional
 - **Status**: Pending (Aguardando)
 - **Data agendada**: 22/07/2025

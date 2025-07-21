@@ -84,7 +84,18 @@ CREATE TABLE IF NOT EXISTS public.community_messages (
 CREATE INDEX IF NOT EXISTS idx_user_achievements_user_id ON public.user_achievements(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_achievements_achievement_id ON public.user_achievements(achievement_id);
 CREATE INDEX IF NOT EXISTS idx_user_badges_user_id ON public.user_badges(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_badges_badge_id ON public.user_badges(badge_id);
+-- Verificar se a coluna badge_id existe antes de criar o índice
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'user_badges' 
+        AND column_name = 'badge_id' 
+        AND table_schema = 'public'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_user_badges_badge_id ON public.user_badges(badge_id);
+    END IF;
+END $$;
 CREATE INDEX IF NOT EXISTS idx_user_levels_user_id ON public.user_levels(user_id);
 CREATE INDEX IF NOT EXISTS idx_community_messages_user_id ON public.community_messages(user_id);
 CREATE INDEX IF NOT EXISTS idx_community_messages_course_id ON public.community_messages(course_id);
@@ -114,7 +125,7 @@ CREATE POLICY "Admins can manage achievements" ON public.achievements
         EXISTS (
             SELECT 1 FROM public.profiles 
             WHERE profiles.user_id = auth.uid() 
-            AND profiles.role = 'admin'
+            AND profiles.email IN ('admin@instituto.com', 'rafael@instituto.com')
         )
     );
 
@@ -145,7 +156,7 @@ CREATE POLICY "Admins can view all user achievements" ON public.user_achievement
         EXISTS (
             SELECT 1 FROM public.profiles 
             WHERE profiles.user_id = auth.uid() 
-            AND profiles.role = 'admin'
+            AND profiles.email IN ('admin@instituto.com', 'rafael@instituto.com')
         )
     );
 
@@ -158,7 +169,7 @@ CREATE POLICY "Admins can manage badges" ON public.badges
         EXISTS (
             SELECT 1 FROM public.profiles 
             WHERE profiles.user_id = auth.uid() 
-            AND profiles.role = 'admin'
+            AND profiles.email IN ('admin@instituto.com', 'rafael@instituto.com')
         )
     );
 
@@ -189,7 +200,7 @@ CREATE POLICY "Admins can view all user badges" ON public.user_badges
         EXISTS (
             SELECT 1 FROM public.profiles 
             WHERE profiles.user_id = auth.uid() 
-            AND profiles.role = 'admin'
+            AND profiles.email IN ('admin@instituto.com', 'rafael@instituto.com')
         )
     );
 
@@ -220,7 +231,7 @@ CREATE POLICY "Admins can view all user levels" ON public.user_levels
         EXISTS (
             SELECT 1 FROM public.profiles 
             WHERE profiles.user_id = auth.uid() 
-            AND profiles.role = 'admin'
+            AND profiles.email IN ('admin@instituto.com', 'rafael@instituto.com')
         )
     );
 
@@ -254,7 +265,7 @@ CREATE POLICY "Admins can manage all messages" ON public.community_messages
         EXISTS (
             SELECT 1 FROM public.profiles 
             WHERE profiles.user_id = auth.uid() 
-            AND profiles.role = 'admin'
+            AND profiles.email IN ('admin@instituto.com', 'rafael@instituto.com')
         )
     );
 

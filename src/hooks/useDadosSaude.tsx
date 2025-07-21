@@ -394,7 +394,7 @@ export const useDadosSaude = () => {
     };
     
     initializeProfileId();
-  }, [fetchProfileId]);
+  }, [user]);
 
   // Carregar dados quando o profileId estiver disponível
   useEffect(() => {
@@ -402,7 +402,7 @@ export const useDadosSaude = () => {
       fetchDadosSaude();
       fetchMissoesDaSemana();
     }
-  }, [profileId, fetchDadosSaude, fetchMissoesDaSemana]);
+  }, [profileId]);
 
   // Configurar subscription em tempo real
   useEffect(() => {
@@ -445,14 +445,14 @@ export const useDadosSaude = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [profileId, fetchDadosSaude]);
+  }, [profileId]);
 
   // Verificar dados temporários quando o usuário logar
   useEffect(() => {
     if (user && profileId) {
       migrarDadosTemporarios();
     }
-  }, [user, profileId, migrarDadosTemporarios]);
+  }, [user, profileId]);
 
   const refetch = useCallback(async () => {
     await Promise.all([fetchDadosSaude(), fetchMissoesDaSemana()]);

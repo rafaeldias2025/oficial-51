@@ -4,7 +4,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Calendar, TrendingUp, Target } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { PontuacaoDiaria } from '@/hooks/usePontuacaoDiaria';
+// Tipo temporário para compatibilidade
+interface PontuacaoDiaria {
+  data: string;
+  total_pontos_dia: number;
+  categoria_dia: string;
+}
 
 interface EvolucaoSemanalPontuacaoProps {
   dados: PontuacaoDiaria[];

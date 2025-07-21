@@ -1,57 +1,34 @@
+@import './styles/netflix-theme.css';
+@import './styles/components/admin-netflix.css';
+@import './styles/auth-netflix-fix.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* TEMA NETFLIX - INSTITUTO DOS SONHOS */
-    --background: 0 0% 0%;          /* Preto Netflix */
-    --foreground: 0 0% 100%;        /* Branco */
-    --card: 0 0% 8%;                /* Cinza muito escuro */
-    --card-foreground: 0 0% 100%;   /* Branco */
-    --popover: 0 0% 8%;             /* Cinza muito escuro */
-    --popover-foreground: 0 0% 100%; /* Branco */
-    
-    /* Primary - Vermelho Netflix */
-    --primary: 0 100% 45%;
-    --primary-foreground: 0 0% 100%;
-    
-    /* Secondary - Cinza Netflix */
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 100%;
-    
-    /* Muted - Cinza escuro */
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 60%;
-    
-    /* Accent - Vermelho Netflix */
-    --accent: 0 100% 45%;
-    --accent-foreground: 0 0% 100%;
-    
-    /* Success - Verde */
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
-    
-    /* Warning - Âmbar */
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-    
-    /* Destructive - Vermelho */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    /* Border & Input - Cinza Netflix */
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 100% 45%;
-    --radius: 0.5rem;
-    
-    /* Chart Colors - Paleta Netflix */
-    --chart-1: 0 100% 45%;         /* Vermelho Netflix */
-    --chart-2: 142 76% 36%;        /* Verde */
-    --chart-3: 38 92% 50%;         /* Âmbar */
-    --chart-4: 262 52% 47%;        /* Roxo */
-    --chart-5: 0 84% 60%;          /* Vermelho */
+    /* Base do tema usando variáveis Netflix */
+    --background: var(--netflix-black);
+    --foreground: var(--netflix-white);
+    --card: var(--netflix-dark-gray);
+    --card-foreground: var(--netflix-white);
+    --popover: var(--netflix-dark-gray);
+    --popover-foreground: var(--netflix-white);
+    --primary: var(--netflix-red);
+    --primary-foreground: var(--netflix-white);
+    --secondary: var(--netflix-medium-gray);
+    --secondary-foreground: var(--netflix-white);
+    --muted: var(--netflix-medium-gray);
+    --muted-foreground: var(--netflix-light-gray);
+    --accent: var(--netflix-red);
+    --accent-foreground: var(--netflix-white);
+    --destructive: var(--netflix-error);
+    --destructive-foreground: var(--netflix-white);
+    --border: var(--netflix-border);
+    --input: var(--netflix-input-bg);
+    --ring: var(--netflix-red);
+    --radius: var(--netflix-radius-md);
   }
 }
 
@@ -72,13 +49,32 @@
   
   /* Custom text selection colors */
   ::selection {
-    background-color: hsl(0, 100%, 45%); /* Vermelho Netflix */
-    color: hsl(0, 0%, 100%); /* Branco */
+    background-color: var(--netflix-red);
+    color: var(--netflix-white);
   }
   
   ::-moz-selection {
-    background-color: hsl(0, 100%, 45%); /* Vermelho Netflix */
-    color: hsl(0, 0%, 100%); /* Branco */
+    background-color: var(--netflix-red);
+    color: var(--netflix-white);
+  }
+
+  /* Scrollbar personalizado Netflix */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--netflix-black);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--netflix-medium-gray);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
   }
 }
 
@@ -239,4 +235,56 @@
 ::-moz-selection {
   background-color: hsl(0, 100%, 45%);
   color: white;
+}
+
+/* Classes úteis para cores específicas da plataforma */
+.bg-netflix-dark {
+  background-color: hsl(0, 0%, 0%);
+}
+
+.bg-netflix-card {
+  background-color: hsl(0, 0%, 8%);
+}
+
+.border-netflix-border {
+  border-color: hsl(0, 0%, 20%);
+}
+
+.text-netflix-text {
+  color: hsl(0, 0%, 100%);
+}
+
+.text-netflix-text-muted {
+  color: hsl(0, 0%, 70%);
+}
+
+/* Correção de botões */
+.btn-admin {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-radius: var(--radius);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-admin:hover {
+  background-color: hsl(var(--primary-hover, 0 85% 40%));
+}
+
+/* Gradientes para o novo design */
+.gradient-brand {
+  background: linear-gradient(135deg, #ee7318 0%, #f39632 100%);
+}
+
+.gradient-wellness {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.gradient-mindful {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.gradient-ocean {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
 }

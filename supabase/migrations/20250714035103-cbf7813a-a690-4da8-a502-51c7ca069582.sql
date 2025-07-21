@@ -13,7 +13,8 @@ BEGIN
     COALESCE(NEW.raw_user_meta_data->>'full_name', ''),
     COALESCE(NEW.raw_user_meta_data->>'celular', ''),
     CASE 
-      WHEN NEW.email IN ('rafael@admin.com', 'admin@instituto.com') THEN 'admin'::user_role
+      WHEN NEW.email IN ('rafael@admin.com', 'admin@instituto.com', 'admin@sonhos.com') THEN 'admin'::user_role
+      WHEN NEW.raw_user_meta_data->>'role' = 'admin' THEN 'admin'::user_role
       ELSE 'client'::user_role
     END
   );

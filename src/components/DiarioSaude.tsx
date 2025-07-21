@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
-import { format, subDays, isToday } from "date-fns";
+import { format, subDays, isToday, isSameDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Lightbulb, TrendingUp, Droplets, Activity, BedDouble, Scale, Utensils, Info, Check, X, CheckCircle, Sunrise, Sunset } from 'lucide-react';
+import { Lightbulb, TrendingUp, Droplets, Activity, BedDouble, Scale, Utensils, Info, Check, X, CheckCircle, Sunrise, Sunset, CalendarIcon } from 'lucide-react';
 import {
     Accordion,
     AccordionContent,
@@ -50,10 +50,11 @@ const initialFormState = {
 
 export default function DiarioSaude() {
     const [entries, setEntries] = useState<any[]>([]);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
     const [isLoading, setIsLoading] = useState(true);
 
     const selectedEntry = useMemo(() => {
+        if (!selectedDate) return null;
         return entries.find(entry => format(new Date(entry.data), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd'));
     }, [entries, selectedDate]);
     
@@ -96,6 +97,8 @@ export default function DiarioSaude() {
     }, []);
     
     useEffect(() => {
+        if (!selectedDate) return;
+        
         const baseData = {
             ...initialFormState,
             data: format(selectedDate, 'yyyy-MM-dd'),
@@ -177,11 +180,57 @@ export default function DiarioSaude() {
                     <div className="lg:col-span-1 space-y-6">
                         <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
                             <CardHeader>
-                                <CardTitle>Selecione a Data</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <CalendarIcon className="w-5 h-5 text-blue-600" />
+                                    Selecione a Data
+                                </CardTitle>
                                 <CardDescription>Veja ou preencha o diário de um dia específico.</CardDescription>
                             </CardHeader>
-                            <CardContent className="flex justify-center">
-                                <Calendar mode="single" selected={selectedDate} onSelect={setSelectedDate} locale={ptBR} disabled={(date) => date > new Date()} className="pointer-events-auto" />
+                            <CardContent className="flex flex-col items-center space-y-4">
+                                {selectedDate && (
+                                    <div className="text-center mb-4">
+                                        <p className="text-sm text-gray-600 mb-2">
+                                            Data Selecionada:
+                                        </p>
+                                        <p className="text-lg font-semibold text-blue-800">
+                                            {format(selectedDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                                        </p>
+                                    </div>
+                                )}
+                                <Calendar 
+                                    mode="single" 
+                                    selected={selectedDate} 
+                                    onSelect={setSelectedDate}
+                                    locale={ptBR} 
+                                    disabled={(date) => date > new Date()} 
+                                    className="rounded-md border shadow-sm" 
+                                    captionLayout="dropdown"
+                                    classNames={{
+                                        day_selected: "bg-blue-600 text-white hover:bg-blue-700",
+                                        day_today: "bg-blue-100 text-blue-800 font-bold",
+                                        day: "hover:bg-blue-50 transition-colors",
+                                        nav_button: "hover:bg-blue-50",
+                                        caption_label: "text-lg font-semibold text-gray-900"
+                                    }}
+                                />
+                                <div className="flex gap-2 mt-4">
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => setSelectedDate(new Date())}
+                                        className="text-xs"
+                                    >
+                                        Hoje
+                                    </Button>
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => setSelectedDate(subDays(new Date(), 1))}
+                                        className="text-xs"
+                                    >
+                                        Ontem
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
 
@@ -210,7 +259,16 @@ export default function DiarioSaude() {
                     <div className="lg:col-span-2 space-y-6">
                         <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
                             <CardHeader>
-                                <CardTitle>Registro do Dia: {format(selectedDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <CalendarIcon className="w-5 h-5 text-blue-600" />
+                                    Registro do Dia: {selectedDate ? format(selectedDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }) : "Selecione uma data"}
+                                </CardTitle>
+                                {selectedEntry && (
+                                    <div className="flex items-center gap-2 text-sm text-green-600">
+                                        <CheckCircle className="w-4 h-4" />
+                                        <span>Registro encontrado para esta data</span>
+                                    </div>
+                                )}
                             </CardHeader>
                             <CardContent>
                                 <form onSubmit={handleSubmit} className="space-y-6">

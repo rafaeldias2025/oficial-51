@@ -16,7 +16,7 @@ interface WheelData {
 }
 
 interface WheelToolProps {
-  wheelType: 'energia_vital' | 'roda_vida' | 'saude_energia';
+  wheelType: 'energia_vital' | 'roda_vida' | 'saude_energia' | 'gratidao_proposito';
   sessionId: string;
   userId: string;
   isSessionActive: boolean;
@@ -48,6 +48,15 @@ const wheelConfigs = {
       'Qual hábito de saúde você considera mais forte?',
       'Qual área da sua saúde precisa de mais atenção?',
       'Que decisão você tomará para melhorar sua área mais fraca?'
+    ]
+  },
+  gratidao_proposito: {
+    title: 'Roda de Gratidão e Propósito',
+    areas: ['Gratidão pelo Passado', 'Apreciação do Presente', 'Esperança no Futuro', 'Propósito de Vida', 'Conexões Significativas', 'Crescimento Pessoal'],
+    questions: [
+      'Pelo que você é mais grato hoje?',
+      'Qual área do seu propósito está mais clara?',
+      'Como você pode ampliar sua gratidão e propósito?'
     ]
   }
 };
@@ -160,7 +169,13 @@ export const WheelTool: React.FC<WheelToolProps> = ({
       'Respiração': 'Como está sua respiração?',
       'Água': 'Como está seu consumo de água?',
       'Ausência de Doenças': 'Como está sua saúde em geral?',
-      'Energia': 'Como está seu nível de energia?'
+      'Energia': 'Como está seu nível de energia?',
+      'Gratidão pelo Passado': 'Como você se sente em relação ao seu passado?',
+      'Apreciação do Presente': 'Como você aprecia o momento atual?',
+      'Esperança no Futuro': 'Como está sua esperança no futuro?',
+      'Propósito de Vida': 'Como está clareza do seu propósito?',
+      'Conexões Significativas': 'Como estão suas conexões importantes?',
+      'Crescimento Pessoal': 'Como está seu desenvolvimento pessoal?'
     };
     return questionMap[area] || `Como está: ${area}?`;
   };

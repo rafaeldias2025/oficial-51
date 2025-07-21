@@ -46,7 +46,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '1',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Como você constrói relacionamentos?',
           responseValue: 8,
           responseText: 'Genuinamente e com interesse',
@@ -56,7 +56,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '2',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Qual sua capacidade de empatia?',
           responseValue: 9,
           responseText: 'Alta empatia',
@@ -66,7 +66,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '3',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Como você comunica?',
           responseValue: 8,
           responseText: 'Clara e objetiva',
@@ -76,7 +76,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '4',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Qual sua capacidade de escuta?',
           responseValue: 9,
           responseText: 'Escuta ativa',
@@ -86,7 +86,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '5',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Como você resolve conflitos?',
           responseValue: 7,
           responseText: 'Diálogo construtivo',
@@ -96,7 +96,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '6',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Qual sua assertividade?',
           responseValue: 8,
           responseText: 'Comunicação assertiva',
@@ -106,7 +106,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '7',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Como você dá feedback?',
           responseValue: 9,
           responseText: 'Feedback construtivo',
@@ -116,7 +116,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '8',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Qual sua capacidade de influência?',
           responseValue: 7,
           responseText: 'Influência positiva',
@@ -126,7 +126,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '9',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Como você trabalha em equipe?',
           responseValue: 8,
           responseText: 'Colaboração efetiva',
@@ -136,7 +136,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '10',
           userId: 'ana-costa',
-          userName: 'Ana Costa - SistemaGB',
+          userName: 'Ana Costa',
           questionText: 'Qual sua capacidade de liderança?',
           responseValue: 6,
           responseText: 'Liderança em desenvolvimento',
@@ -148,7 +148,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '11',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você se sente emocionalmente hoje?',
           responseValue: 7,
           responseText: 'Equilibrado',
@@ -158,7 +158,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '12',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual seu nível de estresse?',
           responseValue: 6,
           responseText: 'Moderado',
@@ -168,7 +168,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '13',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você lida com frustrações?',
           responseValue: 8,
           responseText: 'Análise e resolução',
@@ -178,7 +178,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '14',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua capacidade de resiliência?',
           responseValue: 7,
           responseText: 'Boa',
@@ -188,7 +188,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '15',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você expressa emoções?',
           responseValue: 6,
           responseText: 'Abertamente',
@@ -198,7 +198,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '16',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual seu nível de ansiedade?',
           responseValue: 5,
           responseText: 'Baixo',
@@ -208,7 +208,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '17',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você pratica autocuidado?',
           responseValue: 8,
           responseText: 'Rotina diária',
@@ -218,7 +218,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '18',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua capacidade de empatia?',
           responseValue: 9,
           responseText: 'Excelente',
@@ -228,7 +228,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '19',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você gerencia conflitos?',
           responseValue: 7,
           responseText: 'Diálogo construtivo',
@@ -238,7 +238,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '20',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual seu nível de autoconfiança?',
           responseValue: 8,
           responseText: 'Alto',
@@ -250,7 +250,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '21',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você pratica mindfulness?',
           responseValue: 6,
           responseText: 'Meditação diária',
@@ -260,7 +260,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '22',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua clareza mental?',
           responseValue: 8,
           responseText: 'Muito boa',
@@ -270,7 +270,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '23',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você mantém foco?',
           responseValue: 7,
           responseText: 'Técnicas específicas',
@@ -280,7 +280,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '24',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua capacidade de decisão?',
           responseValue: 8,
           responseText: 'Rápida e assertiva',
@@ -290,7 +290,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '25',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você processa informações?',
           responseValue: 9,
           responseText: 'Análise detalhada',
@@ -300,7 +300,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '26',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua criatividade?',
           responseValue: 7,
           responseText: 'Boa',
@@ -310,7 +310,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '27',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você resolve problemas?',
           responseValue: 8,
           responseText: 'Método sistemático',
@@ -320,7 +320,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '28',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua memória?',
           responseValue: 6,
           responseText: 'Regular',
@@ -330,7 +330,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '29',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Como você aprende?',
           responseValue: 9,
           responseText: 'Múltiplas estratégias',
@@ -340,7 +340,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
         {
           id: '30',
           userId: 'maria-santos',
-          userName: 'Maria Santos - SistemaGB',
+          userName: 'Maria Santos',
           questionText: 'Qual sua curiosidade intelectual?',
           responseValue: 8,
           responseText: 'Alta',
@@ -386,7 +386,7 @@ export const ResponseAnalysisDemo: React.FC = () => {
       {/* Header */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-gray-900">
-          📊 Análise de Respostas - SistemaGB
+          📊 Análise de Respostas 
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Sistema inteligente de análise de respostas que identifica padrões, 

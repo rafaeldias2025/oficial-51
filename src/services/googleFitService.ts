@@ -15,9 +15,12 @@ class GoogleFitService {
   ];
 
   constructor() {
-    // Usar variável de ambiente ou fallback para desenvolvimento
-    this.clientId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID || 
-                   '705908448787-p8u2r5kqr1l1ig9509m58q3e8crke7fa.apps.googleusercontent.com';
+    // Usar variável de ambiente - obrigatória
+    this.clientId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
+    
+    if (!this.clientId) {
+      throw new Error('VITE_GOOGLE_CLIENT_ID is required for Google Fit integration');
+    }
   }
 
   // Inicializar Google API

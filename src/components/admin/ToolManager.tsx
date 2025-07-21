@@ -20,10 +20,13 @@ import {
   Users,
   BarChart3,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Send
 } from 'lucide-react';
+import { SendToolModal } from './SendToolModal';
 import { createClient } from '@supabase/supabase-js';
 import type { CoachingTool } from '@/types/sessions';
+import { toast } from 'sonner';
 
 // Criar cliente Supabase com service_role para contornar RLS
 const supabaseAdmin = createClient(
@@ -34,11 +37,11 @@ const supabaseAdmin = createClient(
 interface Question {
   number: number;
   text: string;
-  type: 'scale' | 'multiple_choice' | 'text';
+  type: 'scale' | 'multiple_choice' | 'text' | 'matrix' | 'image_selection' | 'drawing';
   category: string;
   min?: number;
   max?: number;
-  options?: string[];
+  options?: any; // Para armazenar opções específicas de cada tipo
 }
 
 interface ToolFormData {
@@ -59,6 +62,8 @@ export const ToolManager = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingTool, setEditingTool] = useState<CoachingTool | null>(null);
+  const [isSendModalOpen, setIsSendModalOpen] = useState(false);
+  const [selectedToolForSend, setSelectedToolForSend] = useState<CoachingTool | null>(null);
   const [formData, setFormData] = useState<ToolFormData>({
     name: '',
     description: '',
@@ -194,6 +199,12 @@ export const ToolManager = () => {
     });
     setIsEditModalOpen(true);
   };
+  
+  // Abrir modal de envio
+  const openSendModal = (tool: CoachingTool) => {
+    setSelectedToolForSend(tool);
+    setIsSendModalOpen(true);
+  };
 
   // Adicionar pergunta
   const addQuestion = () => {
@@ -227,6 +238,146 @@ export const ToolManager = () => {
     setFormData({ ...formData, questions: newQuestions });
   };
 
+  // Adicionar função para criar ferramenta de sabotadores
+  const createSabotadoresTool = async () => {
+    try {
+      console.log('🚀 Iniciando criação da ferramenta Sabotadores...');
+      
+      const sabotadoresTool = {
+        name: "Sabotadores do Emagrecimento",
+        description: "Avaliação dos principais sabotadores que impedem o processo de emagrecimento e mudança de hábitos.",
+        category: "Mental",
+        estimated_time: 45,
+        total_questions: 5,
+        is_active: true,
+        question_data: [
+          {
+            text: "Com que frequência você come por motivos emocionais?",
+            type: "scale",
+            category: "Emocional",
+            options: {
+              min: 1,
+              max: 10,
+              min_label: "Nunca",
+              max_label: "Sempre",
+              show_numbers: true,
+              show_labels: true
+            }
+          },
+          {
+            text: "Você costuma se criticar quando não segue a dieta?",
+            type: "multiple_choice",
+            category: "Autocrítica",
+            options: {
+              choices: ["Sempre", "Frequentemente", "Às vezes", "Raramente", "Nunca"],
+              single_selection: true,
+              include_other: false,
+              randomize: false
+            }
+          },
+          {
+            text: "Classifique estes alimentos de acordo com sua frequência de consumo quando está estressado(a)",
+            type: "matrix",
+            category: "Comportamento Alimentar",
+            options: {
+              rows: ["Doces e chocolates", "Fast food", "Salgadinhos", "Refrigerantes"],
+              columns: ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"]
+            }
+          },
+          {
+            text: "Selecione as imagens que representam como você se sente após comer em excesso",
+            type: "image_selection",
+            category: "Emocional",
+            options: {
+              images: [
+                { url: "/assets/emotion-sad.jpg", label: "Tristeza" },
+                { url: "/assets/emotion-guilt.jpg", label: "Culpa" },
+                { url: "/assets/emotion-anger.jpg", label: "Raiva" },
+                { url: "/assets/emotion-disappointment.jpg", label: "Decepção" },
+                { url: "/assets/emotion-shame.jpg", label: "Vergonha" },
+                { url: "/assets/emotion-frustration.jpg", label: "Frustração" }
+              ],
+              multiple_selection: true,
+              show_labels: true,
+              show_carousel: true,
+              show_grid: false
+            }
+          },
+          {
+            text: "Desenhe como você se sente em relação ao seu corpo",
+            type: "drawing",
+            category: "Imagem Corporal",
+            options: {
+              include_drawing_tools: true,
+              allow_image_upload: true,
+              include_description_field: true
+            }
+          }
+        ],
+        scoring_config: {
+          enabled: true,
+          method: "sum_by_categories",
+          categories: ["Emocional", "Autocrítica", "Comportamento Alimentar", "Imagem Corporal"],
+          ranges: [
+            {
+              category: "Emocional",
+              ranges: [
+                { min: 0, max: 3, label: "Baixa influência emocional", interpretation: "Baixa influência emocional" },
+                { min: 4, max: 7, label: "Influência emocional moderada", interpretation: "Influência emocional moderada" },
+                { min: 8, max: 10, label: "Alta influência emocional", interpretation: "Alta influência emocional" }
+              ]
+            }
+          ],
+          visualization: {
+            charts: ["radar", "bar", "pie"],
+            report_format: ["executive_summary", "detailed_analysis", "personalized_recommendations", "action_plan"],
+            export_options: ["pdf"],
+            share_options: true
+          },
+          display: {
+            icon: "🧠",
+            highlight_color: "#E50914",
+            theme: "netflix_standard",
+            show_progress_bar: true,
+            show_immediate_results: true,
+            allow_history_view: true,
+            require_all_answers: false,
+            allow_save_continue: true,
+            show_estimated_time: false,
+            show_question_number: true
+          },
+          notifications: {
+            send_on_assignment: true,
+            reminder_after_3_days: true,
+            notify_admin_on_completion: true,
+            channels: ["in_app", "email"],
+            message: "Uma nova ferramenta foi compartilhada com você!"
+          }
+        }
+      };
+
+      console.log('📋 Dados da ferramenta preparados:', sabotadoresTool);
+
+      const { data, error } = await supabaseAdmin
+        .from('coaching_tools')
+        .insert(sabotadoresTool)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('❌ Erro do Supabase:', error);
+        throw error;
+      }
+
+      console.log('✅ Ferramenta criada com sucesso:', data);
+      toast.success('Ferramenta "Sabotadores do Emagrecimento" criada com sucesso!');
+      loadTools(); // Recarregar a lista
+    } catch (error) {
+      console.error('❌ Erro ao criar ferramenta:', error);
+      toast.error(`Erro ao criar ferramenta: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    }
+  };
+
   useEffect(() => {
     loadTools();
   }, []);
@@ -243,193 +394,27 @@ export const ToolManager = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Gerenciar Ferramentas de Coaching</h2>
-          <p className="text-muted-foreground">
-            Crie e edite ferramentas de coaching com perguntas personalizadas
-          </p>
+          <h2 className="text-2xl font-bold text-netflix-text">Gerenciar Ferramentas</h2>
+          <p className="text-netflix-text-muted">Crie e gerencie ferramentas de coaching</p>
         </div>
-        <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Nova Ferramenta
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Criar Nova Ferramenta</DialogTitle>
-              <DialogDescription>
-                Crie uma nova ferramenta de coaching com perguntas personalizadas
-              </DialogDescription>
-            </DialogHeader>
-            
-            <Tabs defaultValue="basic" className="w-full">
-              <TabsList>
-                <TabsTrigger value="basic">Informações Básicas</TabsTrigger>
-                <TabsTrigger value="questions">Perguntas</TabsTrigger>
-                <TabsTrigger value="scoring">Configuração de Pontuação</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="basic" className="space-y-4">
-                <div className="grid gap-4">
-                  <div>
-                    <Label htmlFor="name">Nome da Ferramenta</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Ex: Roda da Saúde Galileu"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="description">Descrição</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      placeholder="Descreva o objetivo desta ferramenta"
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="category">Categoria</Label>
-                      <Input
-                        id="category"
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        placeholder="Ex: Saúde, Bem-estar"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="time">Tempo Estimado (minutos)</Label>
-                      <Input
-                        id="time"
-                        type="number"
-                        value={formData.estimated_time}
-                        onChange={(e) => setFormData({ ...formData, estimated_time: parseInt(e.target.value) })}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="questions" className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Perguntas ({formData.questions.length})</h3>
-                  <Button onClick={addQuestion} size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Adicionar Pergunta
-                  </Button>
-                </div>
-
-                <div className="space-y-4">
-                  {formData.questions.map((question, index) => (
-                    <Card key={index}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-semibold">Pergunta {question.number}</h4>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => removeQuestion(index)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div>
-                          <Label>Texto da Pergunta</Label>
-                          <Textarea
-                            value={question.text}
-                            onChange={(e) => updateQuestion(index, 'text', e.target.value)}
-                            placeholder="Digite a pergunta..."
-                          />
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <Label>Tipo</Label>
-                            <Select
-                              value={question.type}
-                              onValueChange={(value) => updateQuestion(index, 'type', value)}
-                            >
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="scale">Escala</SelectItem>
-                                <SelectItem value="multiple_choice">Múltipla Escolha</SelectItem>
-                                <SelectItem value="text">Texto</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <Label>Categoria</Label>
-                            <Input
-                              value={question.category}
-                              onChange={(e) => updateQuestion(index, 'category', e.target.value)}
-                              placeholder="Ex: Emocional"
-                            />
-                          </div>
-                          {question.type === 'scale' && (
-                            <div className="grid grid-cols-2 gap-2">
-                              <div>
-                                <Label>Mín</Label>
-                                <Input
-                                  type="number"
-                                  value={question.min}
-                                  onChange={(e) => updateQuestion(index, 'min', parseInt(e.target.value))}
-                                />
-                              </div>
-                              <div>
-                                <Label>Máx</Label>
-                                <Input
-                                  type="number"
-                                  value={question.max}
-                                  onChange={(e) => updateQuestion(index, 'max', parseInt(e.target.value))}
-                                />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="scoring" className="space-y-4">
-                <div>
-                  <Label>Configuração de Pontuação (JSON)</Label>
-                  <Textarea
-                    value={JSON.stringify(formData.scoring_config, null, 2)}
-                    onChange={(e) => {
-                      try {
-                        const config = JSON.parse(e.target.value);
-                        setFormData({ ...formData, scoring_config: config });
-                      } catch (err) {
-                        // Ignora erros de JSON inválido
-                      }
-                    }}
-                    placeholder='{"categories": ["Emocional", "Fisiológico"], "max_score": 10}'
-                    rows={10}
-                  />
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateModalOpen(false)}>
-                Cancelar
-              </Button>
-              <Button onClick={handleCreateTool} disabled={!formData.name || formData.questions.length === 0}>
-                Criar Ferramenta
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <div className="flex gap-2">
+          <Button
+            onClick={createSabotadoresTool}
+            className="bg-netflix-red text-white hover:bg-netflix-red/90 border-none"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Criar Sabotadores
+          </Button>
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="bg-netflix-red text-white hover:bg-netflix-red/90 border-none"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Nova Ferramenta
+          </Button>
+        </div>
       </div>
 
       {/* Lista de ferramentas */}
@@ -461,6 +446,15 @@ export const ToolManager = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => openSendModal(tool)}
+                    className="bg-netflix-red text-white hover:bg-netflix-red/90 border-none"
+                  >
+                    <Send className="h-4 w-4 mr-2" />
+                    Enviar
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
@@ -603,6 +597,9 @@ export const ToolManager = () => {
                               <SelectItem value="scale">Escala</SelectItem>
                               <SelectItem value="multiple_choice">Múltipla Escolha</SelectItem>
                               <SelectItem value="text">Texto</SelectItem>
+                              <SelectItem value="matrix">Matriz</SelectItem>
+                              <SelectItem value="image_selection">Seleção de Imagem</SelectItem>
+                              <SelectItem value="drawing">Desenho</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -630,6 +627,52 @@ export const ToolManager = () => {
                                 value={question.max}
                                 onChange={(e) => updateQuestion(index, 'max', parseInt(e.target.value))}
                               />
+                            </div>
+                          </div>
+                        )}
+                        {question.type === 'multiple_choice' && question.options && (
+                          <div className="grid grid-cols-2 gap-2">
+                            <Label>Opções</Label>
+                            <div className="flex flex-wrap gap-2">
+                              {question.options.choices.map((choice: string, choiceIndex: number) => (
+                                <Badge key={choiceIndex} variant="secondary">{choice}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {question.type === 'matrix' && question.options && (
+                          <div className="grid grid-cols-2 gap-2">
+                            <Label>Linhas</Label>
+                            <div className="flex flex-wrap gap-2">
+                              {question.options.rows.map((row: string, rowIndex: number) => (
+                                <Badge key={rowIndex} variant="secondary">{row}</Badge>
+                              ))}
+                            </div>
+                            <Label>Colunas</Label>
+                            <div className="flex flex-wrap gap-2">
+                              {question.options.columns.map((col: string, colIndex: number) => (
+                                <Badge key={colIndex} variant="secondary">{col}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {question.type === 'image_selection' && question.options && (
+                          <div className="grid grid-cols-2 gap-2">
+                            <Label>Imagens</Label>
+                            <div className="flex flex-wrap gap-2">
+                              {question.options.images.map((image: any, imageIndex: number) => (
+                                <Badge key={imageIndex} variant="secondary">{image.label}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {question.type === 'drawing' && question.options && (
+                          <div className="grid grid-cols-2 gap-2">
+                            <Label>Opções de Desenho</Label>
+                            <div className="flex flex-wrap gap-2">
+                              {question.options.include_drawing_tools && <Badge variant="secondary">Ferramentas</Badge>}
+                              {question.options.allow_image_upload && <Badge variant="secondary">Upload de Imagem</Badge>}
+                              {question.options.include_description_field && <Badge variant="secondary">Campo de Descrição</Badge>}
                             </div>
                           </div>
                         )}
@@ -669,6 +712,13 @@ export const ToolManager = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      
+      {/* Modal de envio */}
+      <SendToolModal
+        isOpen={isSendModalOpen}
+        onClose={() => setIsSendModalOpen(false)}
+        tool={selectedToolForSend}
+      />
     </div>
   );
 }; 

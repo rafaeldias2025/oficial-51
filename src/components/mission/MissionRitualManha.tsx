@@ -1,7 +1,14 @@
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Coffee } from 'lucide-react';
-import { MissaoDia } from '@/hooks/useMissaoDia';
+
+// Tipo temporário para compatibilidade
+interface MissaoDia {
+  liquido_ao_acordar?: string;
+  conexao_interna?: string;
+  energia_acordar?: number;
+  [key: string]: any;
+}
 
 interface MissionRitualManhaProps {
   missao: MissaoDia | null;

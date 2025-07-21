@@ -286,9 +286,18 @@ const ModernChart = ({ data, type, title, dataKey, color, subtitle }) => {
 };
 
 export const ProgressCharts = () => {
-  const { pesagens, dadosFisicos, loading } = useProgressData();
+  const { pesagens, dadosFisicos, loading, error } = useProgressData();
   const [activeTab, setActiveTab] = useState('overview');
   const [timeRange, setTimeRange] = useState(30);
+
+  // Debug logs
+  console.log('🔍 ProgressCharts Debug:', {
+    loading,
+    error,
+    pesagensCount: pesagens?.length || 0,
+    dadosFisicos: !!dadosFisicos,
+    pesagens: pesagens?.slice(0, 3) // Primeiras 3 pesagens para debug
+  });
 
   // Configurar listener em tempo real para atualizações
   useEffect(() => {
@@ -313,6 +322,7 @@ export const ProgressCharts = () => {
   }, []);
 
   if (loading) {
+    console.log('🔄 ProgressCharts: Carregando...');
     return (
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -328,7 +338,31 @@ export const ProgressCharts = () => {
     );
   }
 
+  if (error) {
+    console.error('❌ ProgressCharts: Erro:', error);
+    return (
+      <div className="space-y-8">
+        <div className="glass-card p-12 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="p-4 rounded-2xl bg-red-500/10">
+              <BarChart3 className="h-16 w-16 text-red-500" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-red-600 mb-2">
+                Erro ao Carregar Dados
+              </h3>
+              <p className="text-muted-foreground text-lg">
+                {error}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!pesagens.length) {
+    console.log('📊 ProgressCharts: Sem dados de pesagem');
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -351,6 +385,8 @@ export const ProgressCharts = () => {
       </motion.div>
     );
   }
+
+  console.log('✅ ProgressCharts: Dados carregados com sucesso');
 
   // Preparar dados para gráficos
   const chartData = pesagens.slice(0, timeRange).reverse().map(pesagem => {

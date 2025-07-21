@@ -31,6 +31,11 @@ export const SessionTools: React.FC<SessionToolsProps> = ({
       id: 'saude_energia',
       name: 'Roda da Saúde e Energia',
       description: 'Diagnóstico completo dos seus hábitos de saúde'
+    },
+    {
+      id: 'gratidao_proposito',
+      name: 'Roda de Gratidão e Propósito',
+      description: 'Explore sua gratidão e clareza de propósito em 6 dimensões'
     }
   ];
 
@@ -82,7 +87,7 @@ export const SessionTools: React.FC<SessionToolsProps> = ({
           </div>
           
           <WheelTool
-            wheelType={tool.id as 'energia_vital' | 'roda_vida' | 'saude_energia'}
+            wheelType={tool.id as 'energia_vital' | 'roda_vida' | 'saude_energia' | 'gratidao_proposito'}
             sessionId={sessionId}
             userId={userId}
             isSessionActive={isSessionActive}

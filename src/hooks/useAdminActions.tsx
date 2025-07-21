@@ -207,37 +207,89 @@ export const useAdminActions = () => {
         throw new Error('Senha deve ter pelo menos 6 caracteres');
       }
 
+      console.log('🚀 Iniciando criação de usuário:', userData.email);
+
       // Criar usuário no Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: userData.email,
         password: userData.password,
         options: {
           data: {
-            full_name: userData.full_name
+            full_name: userData.full_name,
+            role: userData.role
           }
         }
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        console.error('❌ Erro ao criar usuário no Auth:', authError);
+        throw authError;
+      }
 
-      // Atualizar perfil com role
+      console.log('✅ Usuário criado no Auth:', authData?.user?.id);
+
+      // Aguardar o trigger criar o perfil
+      console.log('⏳ Aguardando trigger criar o perfil...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Verificar se o perfil foi criado
       if (authData.user) {
-        const { error: profileError } = await supabase
+        const { data: profile, error: profileQueryError } = await supabase
           .from('profiles')
-          .update({
-            full_name: userData.full_name,
-            role: userData.role
-          })
-          .eq('user_id', authData.user.id);
+          .select('*')
+          .eq('user_id', authData.user.id)
+          .maybeSingle();
 
-        if (profileError) throw profileError;
+        if (profileQueryError) {
+          console.error('❌ Erro ao buscar perfil:', profileQueryError);
+          throw profileQueryError;
+        }
+
+        if (!profile) {
+          console.warn('⚠️ Perfil não encontrado, tentando criar manualmente...');
+          
+          // Criar perfil manualmente
+          const { error: createProfileError } = await supabase
+            .from('profiles')
+            .insert({
+              user_id: authData.user.id,
+              email: userData.email,
+              full_name: userData.full_name,
+              role: userData.role
+            });
+
+          if (createProfileError) {
+            console.error('❌ Erro ao criar perfil manualmente:', createProfileError);
+            throw createProfileError;
+          }
+
+          console.log('✅ Perfil criado manualmente');
+        } else {
+          console.log('✅ Perfil encontrado, atualizando role...');
+          
+          // Atualizar role do perfil
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({
+              full_name: userData.full_name,
+              role: userData.role
+            })
+            .eq('user_id', authData.user.id);
+
+          if (updateError) {
+            console.error('❌ Erro ao atualizar perfil:', updateError);
+            throw updateError;
+          }
+
+          console.log('✅ Role atualizada com sucesso');
+        }
       }
 
       toast.success(`Usuário ${userData.full_name} criado com sucesso!`);
       return true;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro ao criar usuário';
-      console.error('Erro ao criar usuário:', error);
+      console.error('❌ Erro ao criar usuário:', error);
       setError(errorMessage);
       toast.error(`Erro ao criar usuário: ${errorMessage}`);
       return false;

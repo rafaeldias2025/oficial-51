@@ -1,7 +1,14 @@
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Activity } from 'lucide-react';
-import { MissaoDia } from '@/hooks/useMissaoDia';
+
+// Tipo temporário para compatibilidade
+interface MissaoDia {
+  sono_horas?: number;
+  agua_litros?: string;
+  atividade_fisica?: boolean;
+  [key: string]: any;
+}
 
 interface MissionHabitosDiaProps {
   missao: MissaoDia | null;

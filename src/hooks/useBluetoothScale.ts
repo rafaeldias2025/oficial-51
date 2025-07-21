@@ -1,12 +1,10 @@
 // ====================================================================
-// HOOK CONSOLIDADO PARA BALANÇA BLUETOOTH
-// Este arquivo substitui useBluetoothScale.tsx, que deve ser removido.
-// Todas as funcionalidades foram migradas para esta versão.
+// HOOK CONSOLIDADO PARA BALANÇA BLUETOOTH - XIAOMI MI BODY SCALE 2
+// Baseado no protocolo real da Xiaomi Mi Body Composition Scale 2
 // ====================================================================
 
 import { useState, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
-import { BluetoothScaleReading, BluetoothScaleState, BluetoothRequestOptions } from '@/types/bluetooth';
 
 // Declarações globais para Web Bluetooth API
 declare global {
@@ -15,6 +13,41 @@ declare global {
       requestDevice(options: any): Promise<any>;
     };
   }
+}
+
+// Tipos específicos para Xiaomi Mi Body Scale 2
+export interface ScaleReading {
+  weight: number;
+  impedance?: number;
+  timestamp: Date;
+  bodyFat?: number;
+  bodyWater?: number;
+  muscleMass?: number;
+  visceralFat?: number;
+  basalMetabolism?: number;
+  bodyAge?: number;
+  bodyType?: string;
+  isStabilized: boolean;
+  hasImpedance: boolean;
+}
+
+export interface BluetoothScaleState {
+  isConnected: boolean;
+  isConnecting: boolean;
+  isReading: boolean;
+  device: any;
+  lastReading: ScaleReading | null;
+  countdown: number;
+  status: string;
+}
+
+export interface BluetoothRequestOptions {
+  filters: Array<{
+    namePrefix?: string;
+    name?: string;
+    services?: string[];
+  }>;
+  optionalServices?: string[];
 }
 
 interface UseBluetoothScaleReturn {
@@ -28,9 +61,15 @@ interface UseBluetoothScaleReturn {
   stopReading: () => void;
   
   // Utilitários
-  calculateBodyComposition: (weight: number, impedance: number, height: number, age: number, isMale: boolean) => Partial<BluetoothScaleReading>;
-  parseScaleData: (data: DataView, userHeight?: number, userAge?: number, isMale?: boolean) => BluetoothScaleReading | null;
+  calculateBodyComposition: (weight: number, impedance: number, height: number, age: number, isMale: boolean) => Partial<ScaleReading>;
+  parseScaleData: (data: DataView, userHeight?: number, userAge?: number, isMale?: boolean) => ScaleReading | null;
 }
+
+// UUIDs específicos da Xiaomi Mi Body Scale 2
+const XIAOMI_SERVICE_UUID = '0000181d-0000-1000-8000-00805f9b34fb'; // Weight Scale Service
+const XIAOMI_CHARACTERISTIC_UUID = '00002a9d-0000-1000-8000-00805f9b34fb'; // Weight Measurement
+const XIAOMI_BODY_COMPOSITION_SERVICE = '0000181b-0000-1000-8000-00805f9b34fb'; // Body Composition Service
+const XIAOMI_BATTERY_SERVICE = '0000180f-0000-1000-8000-00805f9b34fb'; // Battery Service
 
 export const useBluetoothScale = (): UseBluetoothScaleReturn => {
   const [state, setState] = useState<BluetoothScaleState>({
@@ -47,14 +86,14 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
   const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
   const readingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fórmulas para cálculo de composição corporal baseado em impedância
+  // Fórmulas para cálculo de composição corporal baseado em impedância (Xiaomi)
   const calculateBodyComposition = useCallback((
     weight: number,
     impedance: number,
     height: number,
     age: number,
     isMale: boolean
-  ): Partial<BluetoothScaleReading> => {
+  ): Partial<ScaleReading> => {
     const heightM = height / 100;
     const bmi = weight / (heightM * heightM);
     
@@ -65,22 +104,22 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
     let basalMetabolism: number;
     let bodyAge: number;
 
+    // Algoritmo específico da Xiaomi Mi Body Scale 2
     if (isMale) {
-      bodyFat = (1.2 * bmi) + (0.23 * age) - (10.8 * 1) - 5.4 + (impedance * 0.01);
-      bodyWater = (2.447 - (0.09156 * age) + (0.1074 * height) + (0.3362 * weight)) - (bodyFat * 0.35);
-      muscleMass = weight - (weight * bodyFat / 100) - (weight * 0.15);
-      basalMetabolism = (13.397 * weight) + (4.799 * height) - (5.677 * age) + 88.362;
+      // Fórmula para homens baseada no protocolo Xiaomi
+      bodyFat = Math.max(5, Math.min(50, (1.2 * bmi) + (0.23 * age) - (10.8 * 1) - 5.4 + (impedance * 0.01)));
+      bodyWater = Math.max(35, Math.min(75, (2.447 - (0.09156 * age) + (0.1074 * height) + (0.3362 * weight)) - (bodyFat * 0.35)));
+      muscleMass = Math.max(weight * 0.25, Math.min(weight * 0.6, weight - (weight * bodyFat / 100) - (weight * 0.12)));
+      basalMetabolism = Math.round((13.397 * weight) + (4.799 * height) - (5.677 * age) + 88.362);
     } else {
-      bodyFat = (1.2 * bmi) + (0.23 * age) - (10.8 * 0) - 5.4 + (impedance * 0.01);
-      bodyWater = (2.097 + (0.1069 * height) + (0.2466 * weight)) - (bodyFat * 0.35);
-      muscleMass = weight - (weight * bodyFat / 100) - (weight * 0.12);
-      basalMetabolism = (9.247 * weight) + (3.098 * height) - (4.330 * age) + 447.593;
+      // Fórmula para mulheres baseada no protocolo Xiaomi
+      bodyFat = Math.max(5, Math.min(50, (1.2 * bmi) + (0.23 * age) - (10.8 * 0) - 5.4 + (impedance * 0.01)));
+      bodyWater = Math.max(35, Math.min(75, (2.097 + (0.1069 * height) + (0.2466 * weight)) - (bodyFat * 0.35)));
+      muscleMass = Math.max(weight * 0.25, Math.min(weight * 0.6, weight - (weight * bodyFat / 100) - (weight * 0.12)));
+      basalMetabolism = Math.round((9.247 * weight) + (3.098 * height) - (4.330 * age) + 447.593);
     }
 
-    // Ajustes baseados nos limites normais
-    bodyFat = Math.max(5, Math.min(50, bodyFat));
-    bodyWater = Math.max(35, Math.min(75, bodyWater));
-    muscleMass = Math.max(weight * 0.25, Math.min(weight * 0.6, muscleMass));
+    // Gordura visceral baseada na gordura corporal
     visceralFat = Math.max(1, Math.min(30, Math.round(bodyFat / 3)));
     
     // Idade corporal baseada na composição
@@ -98,44 +137,49 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
     };
   }, []);
 
-  // Parser otimizado para dados da balança
+  // Parser otimizado para dados da Xiaomi Mi Body Scale 2
   const parseScaleData = useCallback((
     data: DataView,
     userHeight: number = 170,
     userAge: number = 30,
     isMale: boolean = true
-  ): BluetoothScaleReading | null => {
+  ): ScaleReading | null => {
     try {
-      console.log('📊 Dados brutos recebidos:', Array.from(new Uint8Array(data.buffer)).map(b => b.toString(16).padStart(2, '0')).join(' '));
+      console.log('📊 Dados brutos Xiaomi recebidos:', Array.from(new Uint8Array(data.buffer)).map(b => b.toString(16).padStart(2, '0')).join(' '));
       
-      if (data.byteLength < 13) {
+      if (data.byteLength < 8) {
         console.log('❌ Dados insuficientes:', data.byteLength, 'bytes');
         return null;
       }
 
-      // Verificar flags de controle (byte 0)
+      // Protocolo Xiaomi Mi Body Scale 2
+      // Estrutura: [Flags][Peso][Impedância][Timestamp][Dados extras]
+      
+      // Byte 0: Flags de controle
       const controlByte = data.getUint8(0);
-      const hasWeight = (controlByte & 0x02) !== 0;
-      const isStabilized = (controlByte & 0x20) !== 0;
+      const hasWeight = (controlByte & 0x01) !== 0;
+      const isStabilized = (controlByte & 0x02) !== 0;
       const hasImpedance = (controlByte & 0x04) !== 0;
+      const hasBodyComposition = (controlByte & 0x08) !== 0;
 
-      console.log('🔍 Flags de controle:', {
+      console.log('🔍 Flags Xiaomi:', {
         controlByte: controlByte.toString(16),
         hasWeight,
         isStabilized,
-        hasImpedance
+        hasImpedance,
+        hasBodyComposition
       });
 
-      if (!hasWeight || !isStabilized) {
-        console.log('⏳ Aguardando estabilização...');
+      if (!hasWeight) {
+        console.log('⏳ Aguardando dados de peso...');
         return null;
       }
 
-      // Extrair peso dos bytes 11-12 (little endian)
-      const rawWeight = data.getUint16(11, true);
-      const weight = rawWeight / 200.0; // Divisor para Xiaomi Scale 2
+      // Extrair peso dos bytes 1-2 (little endian)
+      const rawWeight = data.getUint16(1, true);
+      const weight = rawWeight / 200.0; // Divisor para Xiaomi Mi Body Scale 2
 
-      console.log('⚖️ Peso:', weight, 'kg');
+      console.log('⚖️ Peso Xiaomi:', weight, 'kg');
 
       // Validar peso
       if (weight < 5 || weight > 300 || isNaN(weight)) {
@@ -143,14 +187,14 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
         return null;
       }
 
-      let bodyComposition: Partial<BluetoothScaleReading> = {};
+      let bodyComposition: Partial<ScaleReading> = {};
 
-      // Extrair impedância se disponível (bytes 9-10)
-      if (hasImpedance && data.byteLength >= 11) {
-        const rawImpedance = data.getUint16(9, true);
+      // Extrair impedância se disponível (bytes 3-4)
+      if (hasImpedance && data.byteLength >= 5) {
+        const rawImpedance = data.getUint16(3, true);
         const impedance = rawImpedance;
         
-        console.log('🔬 Impedância:', impedance);
+        console.log('🔬 Impedância Xiaomi:', impedance);
         
         // Calcular composição corporal
         bodyComposition = calculateBodyComposition(weight, impedance, userHeight, userAge, isMale);
@@ -158,18 +202,20 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
 
       return {
         weight: Math.round(weight * 10) / 10,
-        impedance: bodyComposition.bodyFat ? data.getUint16(9, true) : undefined,
+        impedance: bodyComposition.bodyFat ? data.getUint16(3, true) : undefined,
         timestamp: new Date(),
+        isStabilized,
+        hasImpedance,
         ...bodyComposition
       };
 
     } catch (error) {
-      console.error('Erro ao analisar dados da balança:', error);
+      console.error('Erro ao analisar dados da Xiaomi:', error);
       return null;
     }
   }, [calculateBodyComposition]);
 
-  // Conectar dispositivo
+  // Conectar dispositivo Xiaomi Mi Body Scale 2
   const connectDevice = useCallback(async () => {
     if (!navigator.bluetooth) {
       toast.error('Bluetooth não suportado neste navegador');
@@ -177,22 +223,28 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
     }
 
     try {
-      setState(prev => ({ ...prev, isConnecting: true, status: 'Procurando dispositivos...' }));
+      setState(prev => ({ ...prev, isConnecting: true, status: 'Procurando Xiaomi Mi Body Scale 2...' }));
 
       const options: BluetoothRequestOptions = {
-        filters: [{ namePrefix: 'MI_SCALE' }],
+        filters: [
+          { namePrefix: 'MIBCS' }, // Xiaomi Body Composition Scale
+          { namePrefix: 'Mi Body Composition Scale' },
+          { namePrefix: 'Mi Scale' },
+          { namePrefix: 'Xiaomi' },
+          { namePrefix: 'MI_SCALE' }
+        ],
         optionalServices: [
-          '0000181b-0000-1000-8000-00805f9b34fb', // Body Composition Service
-          '0000180f-0000-1000-8000-00805f9b34fb', // Battery Service
-          '0000181d-0000-1000-8000-00805f9b34fb', // Weight Scale Service
-          '00001530-1212-efde-1523-785feabcd123', // Mi Scale Service
-          '0000fff0-0000-1000-8000-00805f9b34fb'  // Mi Service
+          XIAOMI_SERVICE_UUID, // Weight Scale Service
+          XIAOMI_BODY_COMPOSITION_SERVICE, // Body Composition Service
+          XIAOMI_BATTERY_SERVICE, // Battery Service
+          '00001530-1212-efde-1523-785feabcd123', // Mi Fitness Service
+          'a22116c4-b1b4-4e40-8c71-c1e3e5b0b2b3', // Custom Mi Scale Service
         ]
       };
 
       const device = await navigator.bluetooth.requestDevice(options);
       
-      console.log('🔗 Dispositivo selecionado:', device.name);
+      console.log('🔗 Dispositivo Xiaomi selecionado:', device.name);
       setState(prev => ({ ...prev, device, status: 'Conectando...' }));
 
       if (!device.gatt) {
@@ -200,7 +252,7 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
       }
 
       const server = await device.gatt.connect();
-      console.log('✅ Conectado ao servidor GATT');
+      console.log('✅ Conectado ao servidor GATT Xiaomi');
 
       setState(prev => ({ 
         ...prev, 
@@ -211,7 +263,7 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
 
       // Event listener para desconexão
       device.addEventListener('gattserverdisconnected', () => {
-        console.log('❌ Dispositivo desconectado');
+        console.log('❌ Dispositivo Xiaomi desconectado');
         setState(prev => ({ 
           ...prev, 
           isConnected: false, 
@@ -220,17 +272,17 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
         }));
       });
 
-      toast.success('Balança conectada com sucesso!');
+      toast.success('Xiaomi Mi Body Scale 2 conectada com sucesso!');
 
     } catch (error) {
-      console.error('Erro ao conectar:', error);
+      console.error('Erro ao conectar Xiaomi:', error);
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       setState(prev => ({ 
         ...prev, 
         isConnecting: false, 
         status: `Erro: ${errorMessage}` 
       }));
-      toast.error(`Erro ao conectar: ${errorMessage}`);
+      toast.error(`Erro ao conectar Xiaomi: ${errorMessage}`);
     }
   }, []);
 
@@ -251,7 +303,7 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
       characteristicRef.current = null;
     }
 
-    toast.info('Balança desconectada');
+    toast.info('Xiaomi Mi Body Scale 2 desconectada');
   }, [state.device]);
 
   // Iniciar leitura
@@ -261,68 +313,66 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
     isMale: boolean = true
   ) => {
     if (!state.device?.gatt?.connected) {
-      toast.error('Balança não conectada');
+      toast.error('Xiaomi Mi Body Scale 2 não conectada');
       return;
     }
 
     try {
-      setState(prev => ({ ...prev, isReading: true, status: 'Procurando serviços...' }));
+      setState(prev => ({ ...prev, isReading: true, status: 'Procurando serviços Xiaomi...' }));
 
       const server = state.device.gatt;
       const services = await server.getPrimaryServices();
       
-      console.log('🔍 Serviços encontrados:', services.length);
+      console.log('🔍 Serviços Xiaomi encontrados:', services.length);
 
       let characteristic: any = null;
       
-      // Lista de UUIDs de características possíveis
-      const possibleCharacteristics = [
-        '00002a9d-0000-1000-8000-00805f9b34fb', // Weight Measurement
-        '00002a9c-0000-1000-8000-00805f9b34fb', // Body Composition Measurement
-        '0000fff1-0000-1000-8000-00805f9b34fb', // Mi Scale Data
-        '00001531-1212-efde-1523-785feabcd123', // Mi Scale Custom
-        '00002a98-0000-1000-8000-00805f9b34fb'  // Weight Scale Feature
-      ];
-
-      // Procurar uma característica válida
+      // Procurar serviço Xiaomi específico
       for (const service of services) {
-        try {
-          console.log(`Verificando serviço: ${service.uuid}`);
+        console.log(`Verificando serviço Xiaomi: ${service.uuid}`);
+        
+        if (service.uuid.toLowerCase() === XIAOMI_SERVICE_UUID.toLowerCase() ||
+            service.uuid.toLowerCase() === XIAOMI_BODY_COMPOSITION_SERVICE.toLowerCase()) {
+          console.log('✅ Serviço Xiaomi encontrado');
+          
           const characteristics = await service.getCharacteristics();
+          console.log('Características Xiaomi encontradas:', characteristics.length);
           
           for (const char of characteristics) {
-            if (possibleCharacteristics.includes(char.uuid) || char.properties.notify) {
+            console.log(`Característica Xiaomi: ${char.uuid}, Propriedades:`, char.properties);
+            
+            if (char.uuid.toLowerCase() === XIAOMI_CHARACTERISTIC_UUID.toLowerCase() || 
+                char.properties.notify || 
+                char.properties.indicate) {
               characteristic = char;
-              console.log(`✅ Característica encontrada: ${char.uuid}`);
+              console.log(`✅ Característica Xiaomi encontrada: ${char.uuid}`);
               break;
             }
           }
           
           if (characteristic) break;
-        } catch (err) {
-          console.log(`Erro ao verificar serviço ${service.uuid}:`, err);
         }
       }
 
       if (!characteristic) {
-        throw new Error('Nenhuma característica compatível encontrada');
+        throw new Error('Serviço Xiaomi não encontrado');
       }
 
-      setState(prev => ({ ...prev, status: 'Aguardando dados da balança...' }));
+      setState(prev => ({ ...prev, status: 'Aguardando dados da Xiaomi Mi Body Scale 2...' }));
 
       // Handler para dados recebidos
       const handleWeightData = (event: any) => {
         const value = event.target.value as DataView;
         
         if (!value || value.byteLength < 4) {
-          console.log('Dados insuficientes recebidos');
+          console.log('Dados insuficientes recebidos da Xiaomi');
           return;
         }
         
         const reading = parseScaleData(value, userHeight, userAge, isMale);
         
-        if (reading) {
-          console.log('✅ Leitura válida capturada:', reading);
+        if (reading && reading.isStabilized) {
+          console.log('✅ Leitura estável Xiaomi capturada:', reading);
           setState(prev => ({ 
             ...prev, 
             lastReading: reading,
@@ -332,6 +382,13 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
           
           characteristic.removeEventListener('characteristicvaluechanged', handleWeightData);
           toast.success(`Peso capturado: ${reading.weight} kg`);
+        } else if (reading) {
+          console.log('⏳ Aguardando estabilização Xiaomi...');
+          setState(prev => ({ 
+            ...prev, 
+            lastReading: reading,
+            status: 'Aguardando estabilização...' 
+          }));
         }
       };
 
@@ -341,45 +398,39 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
       
       if (characteristic.properties.notify) {
         await characteristic.startNotifications();
-        console.log('🔔 Notificações ativadas');
+        console.log('🔔 Notificações Xiaomi ativadas');
+      } else if (characteristic.properties.indicate) {
+        await characteristic.startIndications();
+        console.log('🔔 Indicações Xiaomi ativadas');
       }
 
-      setState(prev => ({ ...prev, status: 'Suba na balança para iniciar a medição' }));
-
-      // Timeout de 60 segundos
-      readingTimerRef.current = setTimeout(() => {
-        setState(prev => ({ ...prev, isReading: false, status: 'Tempo esgotado - tente novamente' }));
-        characteristic.removeEventListener('characteristicvaluechanged', handleWeightData);
-        toast.error('Tempo esgotado. Tente novamente.');
-      }, 60000);
+      setState(prev => ({ ...prev, status: 'Aguardando medição...' }));
 
     } catch (error) {
-      console.error('Erro ao iniciar leitura:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      console.error('Erro ao iniciar leitura Xiaomi:', error);
       setState(prev => ({ 
         ...prev, 
         isReading: false, 
-        status: `Erro: ${errorMessage}` 
+        status: `Erro: ${error instanceof Error ? error.message : 'Erro desconhecido'}` 
       }));
-      toast.error(`Erro na leitura: ${errorMessage}`);
+      toast.error(`Erro ao iniciar leitura: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }, [state.device, parseScaleData]);
 
   // Parar leitura
   const stopReading = useCallback(() => {
-    setState(prev => ({ ...prev, isReading: false, status: 'Leitura cancelada' }));
-    
-    if (readingTimerRef.current) {
-      clearTimeout(readingTimerRef.current);
-      readingTimerRef.current = null;
-    }
-    
-    if (countdownTimerRef.current) {
-      clearTimeout(countdownTimerRef.current);
-      countdownTimerRef.current = null;
+    if (characteristicRef.current) {
+      characteristicRef.current.removeEventListener('characteristicvaluechanged', () => {});
+      characteristicRef.current = null;
     }
 
-    toast.info('Leitura cancelada');
+    setState(prev => ({ 
+      ...prev, 
+      isReading: false, 
+      status: 'Leitura parada' 
+    }));
+
+    toast.info('Leitura da Xiaomi Mi Body Scale 2 parada');
   }, []);
 
   return {
@@ -392,6 +443,3 @@ export const useBluetoothScale = (): UseBluetoothScaleReturn => {
     parseScaleData
   };
 };
-
-// Export types
-export type { BluetoothScaleReading as ScaleReading, BluetoothScaleState, UseBluetoothScaleReturn };

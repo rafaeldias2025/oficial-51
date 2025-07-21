@@ -135,7 +135,7 @@ export const AdminPanel: React.FC = () => {
       case 'anamnese':
         return <AnamneseManager />;
       case 'sessions':
-        return <div className="p-6 text-center text-muted-foreground">SessionManager temporariamente desabilitado</div>;
+        return <div className="p-6 text-center text-netflix-lightGray">SessionManager temporariamente desabilitado</div>;
       case 'analytics':
         return <AnalyticsDashboard />;
       case 'users':
@@ -148,26 +148,26 @@ export const AdminPanel: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-netflix-black">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-netflix-darkGray border-b border-netflix-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-8 w-8 text-brand-500" />
-                <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+                <BookOpen className="h-8 w-8 text-netflix-red" />
+                <h1 className="text-xl font-bold text-netflix-white">Admin Panel</h1>
               </div>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              <Badge variant="outline" className="bg-netflix-success/10 text-netflix-success border-netflix-success/20">
                 Sistema Ativo
               </Badge>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
+              <Button variant="netflix-outline" size="sm">
                 <Upload className="w-4 h-4 mr-2" />
                 Backup
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="netflix-outline" size="sm">
                 <Settings className="w-4 h-4 mr-2" />
                 Configurações
               </Button>
@@ -179,16 +179,16 @@ export const AdminPanel: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation Tabs */}
         <div className="mb-8">
-          <nav className="flex space-x-1 bg-white p-1 rounded-lg border border-gray-200">
+          <nav className="flex space-x-1 bg-netflix-darkGray p-1 rounded-lg border border-netflix-border overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <Button
                   key={tab.id}
-                  variant={activeTab === tab.id ? 'default' : 'ghost'}
+                  variant={activeTab === tab.id ? "netflix" : "netflix-outline"}
                   size="sm"
                   onClick={() => setActiveTab(tab.id)}
-                  className="flex items-center space-x-2"
+                  className={`flex items-center space-x-2 whitespace-nowrap ${activeTab === tab.id ? "" : "opacity-75 hover:opacity-100"}`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -199,7 +199,7 @@ export const AdminPanel: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white rounded-lg border border-gray-200">
+        <div className="bg-netflix-darkGray rounded-lg border border-netflix-border">
           {renderTabContent()}
         </div>
       </div>
@@ -212,132 +212,132 @@ const DashboardOverview: React.FC<{ stats: AdminStats }> = ({ stats }) => {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
-        <p className="text-gray-600">Visão geral da plataforma</p>
+        <h2 className="text-2xl font-bold text-netflix-white">Dashboard</h2>
+        <p className="text-netflix-lightGray">Visão geral da plataforma</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Cursos</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-netflix-white">Total de Cursos</CardTitle>
+            <BookOpen className="h-4 w-4 text-netflix-lightGray" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalCourses}</div>
-            <p className="text-xs text-muted-foreground">Cursos ativos</p>
+            <div className="text-2xl font-bold text-netflix-white">{stats.totalCourses}</div>
+            <p className="text-xs text-netflix-lightGray">Cursos ativos</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Módulos</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-netflix-white">Total de Módulos</CardTitle>
+            <FileText className="h-4 w-4 text-netflix-lightGray" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalModules}</div>
-            <p className="text-xs text-muted-foreground">Módulos criados</p>
+            <div className="text-2xl font-bold text-netflix-white">{stats.totalModules}</div>
+            <p className="text-xs text-netflix-lightGray">Módulos criados</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Aulas</CardTitle>
-            <Video className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-netflix-white">Total de Aulas</CardTitle>
+            <Video className="h-4 w-4 text-netflix-lightGray" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalLessons}</div>
-            <p className="text-xs text-muted-foreground">Aulas publicadas</p>
+            <div className="text-2xl font-bold text-netflix-white">{stats.totalLessons}</div>
+            <p className="text-xs text-netflix-lightGray">Aulas publicadas</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-netflix-white">Total de Usuários</CardTitle>
+            <Users className="h-4 w-4 text-netflix-lightGray" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Usuários registrados</p>
+            <div className="text-2xl font-bold text-netflix-white">{stats.totalUsers.toLocaleString()}</div>
+            <p className="text-xs text-netflix-lightGray">Usuários registrados</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Plus className="h-5 w-5" />
+            <CardTitle className="flex items-center space-x-2 text-netflix-white">
+              <Plus className="h-5 w-5 text-netflix-red" />
               <span>Ações Rápidas</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="netflix-outline">
               <BookOpen className="w-4 h-4 mr-2" />
               Adicionar Curso
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="netflix-outline">
               <FileText className="w-4 h-4 mr-2" />
               Adicionar Módulo
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="netflix-outline">
               <Video className="w-4 h-4 mr-2" />
               Adicionar Aula
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="netflix-outline">
               <Target className="w-4 h-4 mr-2" />
               Adicionar Jornada
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="netflix-outline">
               <CheckCircle className="w-4 h-4 mr-2" />
               Adicionar Quiz
             </Button>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
+            <CardTitle className="flex items-center space-x-2 text-netflix-white">
+              <TrendingUp className="h-5 w-5 text-netflix-info" />
               <span>Métricas</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-sm">Visualizações:</span>
-              <span className="text-sm font-medium">{stats.totalViews.toLocaleString()}</span>
+              <span className="text-sm text-netflix-lightGray">Visualizações:</span>
+              <span className="text-sm font-medium text-netflix-white">{stats.totalViews.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm">Receita:</span>
-              <span className="text-sm font-medium">R$ {stats.totalRevenue.toLocaleString()}</span>
+              <span className="text-sm text-netflix-lightGray">Receita:</span>
+              <span className="text-sm font-medium text-netflix-white">R$ {stats.totalRevenue.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm">Taxa de Conclusão:</span>
-              <span className="text-sm font-medium">67%</span>
+              <span className="text-sm text-netflix-lightGray">Taxa de Conclusão:</span>
+              <span className="text-sm font-medium text-netflix-white">67%</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-netflix-darkGray border-netflix-border">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Award className="h-5 w-5" />
+            <CardTitle className="flex items-center space-x-2 text-netflix-white">
+              <Award className="h-5 w-5 text-netflix-warning" />
               <span>Top Performers</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm">7 CHAVES</span>
-              <Badge variant="outline">1º</Badge>
+              <span className="text-sm text-netflix-white">7 CHAVES</span>
+              <Badge variant="outline" className="border-netflix-red text-netflix-white">1º</Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">12 CHÁS</span>
-              <Badge variant="outline">2º</Badge>
+              <span className="text-sm text-netflix-white">12 CHÁS</span>
+              <Badge variant="outline" className="border-netflix-red text-netflix-white">2º</Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">PÍLULAS DO BEM</span>
-              <Badge variant="outline">3º</Badge>
+              <span className="text-sm text-netflix-white">PÍLULAS DO BEM</span>
+              <Badge variant="outline" className="border-netflix-red text-netflix-white">3º</Badge>
             </div>
           </CardContent>
         </Card>
@@ -349,10 +349,10 @@ const DashboardOverview: React.FC<{ stats: AdminStats }> = ({ stats }) => {
 const UsersManager: React.FC = () => {
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Gerenciar Usuários</h2>
-      <p className="text-gray-600 mb-6">Sistema de usuários em desenvolvimento...</p>
-      <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-        <p className="text-gray-500">User Manager - Em desenvolvimento</p>
+      <h2 className="text-2xl font-bold text-netflix-white mb-4">Gerenciar Usuários</h2>
+      <p className="text-netflix-lightGray mb-6">Sistema de usuários em desenvolvimento...</p>
+      <div className="h-64 flex items-center justify-center bg-netflix-black/30 rounded">
+        <p className="text-netflix-lightGray">User Manager - Em desenvolvimento</p>
       </div>
     </div>
   );
@@ -361,10 +361,10 @@ const UsersManager: React.FC = () => {
 const SettingsManager: React.FC = () => {
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Configurações</h2>
-      <p className="text-gray-600 mb-6">Configurações do sistema em desenvolvimento...</p>
-      <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-        <p className="text-gray-500">Settings Manager - Em desenvolvimento</p>
+      <h2 className="text-2xl font-bold text-netflix-white mb-4">Configurações</h2>
+      <p className="text-netflix-lightGray mb-6">Configurações do sistema em desenvolvimento...</p>
+      <div className="h-64 flex items-center justify-center bg-netflix-black/30 rounded">
+        <p className="text-netflix-lightGray">Settings Manager - Em desenvolvimento</p>
       </div>
     </div>
   );

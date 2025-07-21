@@ -99,173 +99,81 @@ export const BluetoothScaleConnection: React.FC<BluetoothScaleConnectionProps> =
         .limit(1)
         .maybeSingle();
 
-      // Buscar última pesagem para calcular progresso
-      const { data: ultimaPesagem } = await supabase
-        .from('pesagens')
-        .select('peso_kg, data_medicao')
-        .eq('user_id', profile.id)
-        .order('data_medicao', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      // Dados padrão se não houver perfil
-      const altura = dadosFisicos?.altura_cm || 170;
-      const sexo = dadosFisicos?.sexo?.toLowerCase() || 'masculino';
-      
       // Calcular idade
-      let idade = 30; // padrão
-      if (dadosFisicos?.data_nascimento) {
-        const nascimento = new Date(dadosFisicos.data_nascimento);
-        const hoje = new Date();
-        idade = hoje.getFullYear() - nascimento.getFullYear();
-        const mes = hoje.getMonth() - nascimento.getMonth();
-        if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
-          idade--;
-        }
-      }
+      const idade = dadosFisicos?.data_nascimento 
+        ? Math.floor((new Date().getTime() - new Date(dadosFisicos.data_nascimento).getTime()) / (1000 * 60 * 60 * 24 * 365.25))
+        : 30;
 
-      const peso = reading.weight;
-      const alturaMetros = altura / 100;
+      const isMale = dadosFisicos?.sexo === 'Masculino';
+      const altura = dadosFisicos?.altura_cm || 170;
 
-      // Cálculos automáticos
-      const imc = peso / (alturaMetros * alturaMetros);
-      
-      // Gordura corporal usando fórmula específica
-      const gorduraCorporal = sexo === 'masculino' 
-        ? (1.20 * imc) + (0.23 * idade) - 16.2
-        : (1.20 * imc) + (0.23 * idade) - 5.4;
-
-      // Tipo de corpo
-      let tipoCorpo = "";
-      if (imc < 18.5) {
-        tipoCorpo = "Magro";
-      } else if (imc >= 18.5 && imc < 25) {
-        tipoCorpo = "Normal";
-      } else {
-        tipoCorpo = "Sobrepeso";
-        if (gorduraCorporal > (sexo === 'masculino' ? 22 : 30)) {
-          tipoCorpo = "Sobrepeso com gordura alta";
-        }
-      }
-
-      // Massa magra estimada (peso total - gordura)
-      const massaGorduraKg = (peso * gorduraCorporal) / 100;
-      const massaMagraKg = peso - massaGorduraKg;
-
-      // Água corporal (73% da massa magra)
-      const aguaCorporal = (massaMagraKg * 0.73 / peso) * 100;
-
-      // Gordura visceral (15% da gordura total)
-      const gorduraVisceral = gorduraCorporal * 0.15;
-
-      // Massa óssea (3.8% do peso)
-      const massaOssea = peso * 0.038;
-
-      // Proteína (20% da massa magra convertida para %)
-      const proteina = (massaMagraKg * 0.20 / peso) * 100;
-
-      // Massa muscular = massa magra - ossos - água
-      const massaMuscular = massaMagraKg - massaOssea - (peso * aguaCorporal / 100);
-
-      // Metabolismo basal
-      const metabolismoBasal = sexo === 'masculino'
-        ? 10 * peso + 6.25 * altura - 5 * idade + 5
-        : 10 * peso + 6.25 * altura - 5 * idade - 161;
-
-      // Pontuação corporal (começar com 100 e subtrair)
-      let pontuacaoCorporal = 100;
-      if (imc > 25) pontuacaoCorporal -= 10;
-      if (gorduraCorporal > (sexo === 'masculino' ? 22 : 30)) pontuacaoCorporal -= 10;
-      if (aguaCorporal < 55) pontuacaoCorporal -= 10;
-      if (gorduraVisceral > 10) pontuacaoCorporal -= 10;
-
-      // Progresso em relação à última pesagem
-      const progresso = ultimaPesagem ? ultimaPesagem.peso_kg - peso : 0;
-
-      // 🔄 ETAPA 1: Inserir dados completos na tabela pesagens
-      const circunferenciaFinal = confirmedData?.circunferencia_abdominal_cm || dadosSaude?.circunferencia_abdominal_cm || 90;
-      const metaPesoFinal = confirmedData?.meta_peso_kg || dadosSaude?.meta_peso_kg || peso;
-      
+      // 🔄 ETAPA 2: Salvar pesagem
       const { error: pesagemError } = await supabase
         .from('pesagens')
         .insert({
           user_id: profile.id,
-          peso_kg: peso,
-          imc: Math.round(imc * 10) / 10,
-          circunferencia_abdominal_cm: circunferenciaFinal,
-          gordura_corporal_pct: Math.round(gorduraCorporal * 10) / 10,
-          agua_corporal_pct: Math.round(aguaCorporal * 10) / 10,
-          massa_muscular_kg: Math.round(massaMuscular * 10) / 10,
-          massa_ossea_kg: Math.round(massaOssea * 10) / 10,
-          gordura_visceral: Math.round(gorduraVisceral),
-          taxa_metabolica_basal: Math.round(metabolismoBasal),
-          tipo_corpo: tipoCorpo,
-          origem_medicao: 'bioimpedância_bluetooth',
-          data_medicao: reading.timestamp.toISOString()
+          peso_kg: reading.weight,
+          agua_corporal_pct: reading.bodyWater,
+          gordura_corporal_pct: reading.bodyFat,
+          gordura_visceral: reading.visceralFat,
+          massa_muscular_kg: reading.muscleMass,
+          massa_ossea_kg: 2.9, // Valor padrão
+          taxa_metabolica_basal: reading.basalMetabolism,
+          tipo_corpo: reading.bodyType,
+          origem_medicao: 'openScale',
+          data_medicao: reading.timestamp.toISOString(),
+          circunferencia_abdominal_cm: confirmedData?.circunferencia_abdominal_cm || circunferenciaAbdominal
         });
 
-      if (pesagemError) {
-        console.error('Erro ao inserir pesagem completa:', pesagemError);
-        throw pesagemError;
-      }
+      if (pesagemError) throw pesagemError;
 
-      // 🔄 ETAPA 2: Atualizar dados de saúde automaticamente com valores da balança
-      try {
-
-        // Segundo: Atualizar dados_saude_usuario
-        const { error: saudeError } = await supabase
-          .from('dados_saude_usuario')
-          .upsert({
-            user_id: profile.id,
-            peso_atual_kg: peso,
-            altura_cm: altura,
-            circunferencia_abdominal_cm: circunferenciaFinal,
-            meta_peso_kg: metaPesoFinal,
-            data_atualizacao: new Date().toISOString()
-          });
-        
-        if (saudeError) {
-          console.error('Erro ao atualizar dados de saúde:', saudeError);
-          throw saudeError;
-        }
-      } catch (healthError) {
-        console.error('Erro no salvamento dos dados:', healthError);
-        toast({
-          title: "Erro ao salvar dados",
-          description: "Não foi possível registrar a pesagem. Tente novamente.",
-          variant: "destructive"
+      // 🔄 ETAPA 3: Atualizar dados de saúde
+      const { error: dadosSaudeError } = await supabase
+        .from('dados_saude_usuario')
+        .upsert({
+          user_id: profile.id,
+          peso_atual_kg: reading.weight,
+          altura_cm: altura,
+          circunferencia_abdominal_cm: confirmedData?.circunferencia_abdominal_cm || circunferenciaAbdominal,
+          meta_peso_kg: confirmedData?.meta_peso_kg || reading.weight * 0.9,
+          imc: reading.weight / Math.pow(altura / 100, 2),
+          data_atualizacao: new Date().toISOString()
         });
-        return;
-      }
 
-      // Mensagem de sucesso personalizada
-      const progressoTexto = progresso !== 0 
-        ? ` | Progresso: ${progresso > 0 ? '+' : ''}${progresso.toFixed(1)}kg`
-        : '';
-      
-      const dataUltimaPesagem = ultimaPesagem?.data_medicao 
-        ? ` | Última: ${new Date(ultimaPesagem.data_medicao).toLocaleDateString('pt-BR')}`
-        : '';
+      if (dadosSaudeError) throw dadosSaudeError;
 
-      toast({
-        title: "✅ Pesagem registrada e todos os dados corporais atualizados!",
-        description: `Peso: ${peso}kg | IMC: ${imc.toFixed(1)} | Tipo: ${tipoCorpo} | Pontuação: ${pontuacaoCorporal}/100${progressoTexto}${dataUltimaPesagem}`,
-      });
+      // 🔄 ETAPA 4: Atualizar dados físicos
+      const { error: dadosFisicosError } = await supabase
+        .from('dados_fisicos_usuario')
+        .upsert({
+          user_id: profile.id,
+          nome_completo: user?.user_metadata?.full_name || 'Usuário',
+          peso_atual_kg: reading.weight,
+          altura_cm: altura,
+          circunferencia_abdominal_cm: confirmedData?.circunferencia_abdominal_cm || circunferenciaAbdominal,
+          meta_peso_kg: confirmedData?.meta_peso_kg || reading.weight * 0.9,
+          data_nascimento: dadosFisicos?.data_nascimento || new Date().toISOString(),
+          sexo: dadosFisicos?.sexo || 'Não informado'
+        });
 
-      // Limpar leitura e fechar modal
-      stopReading();
-      setShowCircunferenciaInput(false);
-      setIsOpen(false);
-      
-      // Atualizar dados e chamar callback
+      if (dadosFisicosError) throw dadosFisicosError;
+
+      // 🔄 ETAPA 5: Atualizar interface
       await refetch();
       onDataSaved?.();
+
+      toast({
+        title: "✅ Pesagem registrada com sucesso!",
+        description: `Peso: ${reading.weight} kg | IMC: ${(reading.weight / Math.pow(altura / 100, 2)).toFixed(1)}`,
+      });
+
+      setIsOpen(false);
 
     } catch (error) {
       console.error('Erro ao salvar dados:', error);
       toast({
-        title: "Erro ao salvar",
-        description: "Não foi possível salvar os dados da pesagem",
+        title: "Erro ao salvar dados",
+        description: "Tente novamente ou entre em contato com o suporte",
         variant: "destructive",
       });
     } finally {
@@ -273,292 +181,233 @@ export const BluetoothScaleConnection: React.FC<BluetoothScaleConnectionProps> =
     }
   };
 
+  const handleStartReading = async () => {
+    if (!isConnected) {
+      await connectDevice();
+      return;
+    }
+
+    try {
+      setIsProcessingData(true);
+      await startReading();
+    } catch (error) {
+      console.error('Erro ao iniciar leitura:', error);
+      toast({
+        title: "Erro ao iniciar leitura",
+        description: "Verifique se a openScale está ligada e próxima",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessingData(false);
+    }
+  };
+
+  const handleSaveReading = async () => {
+    if (!lastReading) return;
+    
+    await processAndSaveScaleData(lastReading, {
+      circunferencia_abdominal_cm: circunferenciaAbdominal
+    });
+  };
+
   const getStatusIcon = () => {
-    if (isConnecting) return <Loader className="h-5 w-5 animate-spin text-blue-500" />;
-    if (isConnected) return <Wifi className="h-5 w-5 text-green-500" />;
-    return <Bluetooth className="h-5 w-5 text-muted-foreground" />;
+    if (isConnecting) return <Loader className="h-4 w-4 animate-spin" />;
+    if (isConnected) return <CheckCircle className="h-4 w-4 text-green-500" />;
+    return <AlertCircle className="h-4 w-4 text-red-500" />;
   };
 
   const getStatusColor = () => {
-    if (isConnecting) return 'bg-blue-500';
-    if (isConnected) return 'bg-green-500 animate-pulse';
-    return 'bg-muted-foreground';
+    if (isConnecting) return 'text-blue-600';
+    if (isConnected) return 'text-green-600';
+    return 'text-red-600';
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button 
-            className="bg-instituto-purple hover:bg-instituto-purple/80 text-white shadow-lg"
-            size="lg"
-          >
-            <Scale className="h-5 w-5 mr-2" />
-            ⚖️ Balança Inteligente
+          <Button variant="outline" className="w-full">
+            <Scale className="mr-2 h-4 w-4" />
+            Conectar openScale
           </Button>
         )}
       </DialogTrigger>
       
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Scale className="h-5 w-5 text-instituto-purple" />
-            Xiaomi Mi Body Composition Scale 2
+            <Bluetooth className="h-5 w-5" />
+            openScale - Balança Inteligente
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4">
-          {/* Status da Conexão */}
-          <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
-            <div className="flex items-center gap-3">
-              {getStatusIcon()}
-              <div>
-                <p className="font-medium">
-                  {isConnected ? `Conectado: ${device?.name || 'Mi Scale 2'}` : 'Não conectado'}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {status}
-                </p>
-              </div>
-            </div>
-            <div className={`w-3 h-3 rounded-full ${getStatusColor()}`} />
-          </div>
-
-          {/* Instruções */}
-          {!isConnected && (
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <AlertCircle className="h-4 w-4" />
-                📋 Instruções para Conexão
-              </h4>
-              <ol className="text-sm text-blue-700 space-y-1">
-                <li><span className="font-medium">1.</span> Certifique-se que a balança está ligada</li>
-                <li><span className="font-medium">2.</span> Coloque em superfície plana e rígida</li>
-                <li><span className="font-medium">3.</span> Ative o Bluetooth no seu dispositivo</li>
-                <li><span className="font-medium">4.</span> Clique em "Conectar Balança"</li>
-                <li><span className="font-medium">5.</span> Selecione sua balança na lista</li>
-              </ol>
-            </div>
-          )}
-
-          {/* Instruções durante pesagem */}
-          {isReading && (
-            <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-              <h4 className="font-semibold text-orange-800 mb-2 flex items-center gap-2">
-                <Timer className="h-4 w-4 animate-pulse" />
-                ⚖️ Processo de Pesagem
-              </h4>
-              <div className="space-y-2">
-                <p className="text-sm text-orange-700">
-                  <strong>{status}</strong>
-                </p>
-                {countdown > 0 && (
-                  <div className="bg-orange-200 rounded-full h-2">
-                    <div 
-                      className="bg-orange-600 h-2 rounded-full transition-all duration-1000"
-                      style={{ 
-                        width: countdown <= 5 
-                          ? `${((5 - countdown) / 5) * 100}%`
-                          : `${((10 - countdown) / 10) * 100}%`
-                      }}
-                    />
-                  </div>
+          {/* Status da conexão */}
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {getStatusIcon()}
+                  <span className={`text-sm font-medium ${getStatusColor()}`}>
+                    {status}
+                  </span>
+                </div>
+                {device && (
+                  <span className="text-xs text-muted-foreground">
+                    {device.name}
+                  </span>
                 )}
-                <p className="text-xs text-orange-600">
-                  Mantenha-se parado na balança até a captura automática
-                </p>
               </div>
-            </div>
-          )}
+            </CardContent>
+          </Card>
 
-          {/* Botões de Ação */}
-          <div className="space-y-3">
+          {/* Controles */}
+          <div className="flex gap-2">
             {!isConnected ? (
               <Button 
-                onClick={connectDevice}
+                onClick={handleStartReading}
                 disabled={isConnecting}
-                className="w-full bg-instituto-purple hover:bg-instituto-purple/80"
-                size="lg"
+                className="flex-1"
               >
                 {isConnecting ? (
                   <>
-                    <Loader className="h-4 w-4 mr-2 animate-spin" />
-                    Procurando balança...
+                    <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    Conectando...
                   </>
                 ) : (
                   <>
-                    <Bluetooth className="h-4 w-4 mr-2" />
-                    🔗 Conectar Balança
+                    <Bluetooth className="mr-2 h-4 w-4" />
+                    Conectar openScale
                   </>
                 )}
               </Button>
             ) : (
-              <div className="space-y-2">
-                {!isReading ? (
-                  <>
-                    <Button 
-                      onClick={() => startReading()}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white"
-                      size="lg"
-                    >
-                      <Scale className="h-4 w-4 mr-2" />
-                      ⚖️ Capturar Peso
-                    </Button>
-                    <Button 
-                      onClick={disconnectDevice}
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                    >
-                      <X className="h-4 w-4 mr-2" />
-                      Desconectar
-                    </Button>
-                  </>
-                ) : (
-                  <Button 
-                    onClick={() => {
-                      stopReading();
-                      setIsOpen(false);
-                    }}
-                    variant="outline"
-                    size="lg"
-                    className="w-full border-red-200 text-red-600 hover:bg-red-50"
-                  >
-                    <X className="h-4 w-4 mr-2" />
-                    ⏹️ Cancelar Pesagem
-                  </Button>
-                )}
-              </div>
+              <>
+                <Button 
+                  onClick={handleStartReading}
+                  disabled={isReading}
+                  className="flex-1"
+                >
+                  {isReading ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      Lendo...
+                    </>
+                  ) : (
+                    <>
+                      <Scale className="mr-2 h-4 w-4" />
+                      Iniciar Pesagem
+                    </>
+                  )}
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={disconnectDevice}
+                  size="icon"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </>
             )}
           </div>
 
-          {/* Dados Capturados - Processo Automático */}
-          {lastReading && !showCircunferenciaInput && (
-            <Card className="bg-green-50 border-green-200">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-center text-green-700 flex items-center justify-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
-                  🔁 Dados Capturados - Processamento Automático
-                </CardTitle>
+          {/* Leitura atual */}
+          {lastReading && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Leitura Atual</CardTitle>
               </CardHeader>
-              <CardContent>
-                {/* Resumo dos dados capturados automaticamente */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <h5 className="font-semibold text-blue-800 mb-2">📊 Dados Processados Automaticamente:</h5>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>✅ Peso: <strong>{lastReading.weight}kg</strong></div>
-                    <div>✅ Gordura: <strong>{lastReading.bodyFat?.toFixed(1)}%</strong></div>
-                    <div>✅ Água: <strong>{lastReading.bodyWater?.toFixed(1)}%</strong></div>
-                    <div>✅ Massa Muscular: <strong>{lastReading.muscleMass?.toFixed(1)}kg</strong></div>
-                    <div>✅ Gordura Visceral: <strong>{lastReading.visceralFat}</strong></div>
-                    <div>✅ Metabolismo: <strong>{lastReading.basalMetabolism}</strong></div>
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium">Peso</Label>
+                    <p className="text-2xl font-bold text-primary">
+                      {lastReading.weight} kg
+                    </p>
                   </div>
+                  {lastReading.bodyFat && (
+                    <div>
+                      <Label className="text-sm font-medium">Gordura Corporal</Label>
+                      <p className="text-lg font-semibold">
+                        {lastReading.bodyFat}%
+                      </p>
+                    </div>
+                  )}
                 </div>
                 
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-                  <h5 className="font-semibold text-orange-800 mb-2">📐 Circunferência Abdominal Necessária</h5>
-                  <p className="text-sm text-orange-700 mb-3">
-                    Para completar o processo, informe sua circunferência abdominal atual:
-                  </p>
+                {lastReading.muscleMass && (
+                  <div>
+                    <Label className="text-sm font-medium">Massa Muscular</Label>
+                    <p className="text-lg font-semibold">
+                      {lastReading.muscleMass} kg
+                    </p>
+                  </div>
+                )}
+
+                {lastReading.bodyWater && (
+                  <div>
+                    <Label className="text-sm font-medium">Água Corporal</Label>
+                    <p className="text-lg font-semibold">
+                      {lastReading.bodyWater}%
+                    </p>
+                  </div>
+                )}
+
+                {lastReading.basalMetabolism && (
+                  <div>
+                    <Label className="text-sm font-medium">Taxa Metabólica</Label>
+                    <p className="text-lg font-semibold">
+                      {lastReading.basalMetabolism} kcal
+                    </p>
+                  </div>
+                )}
+
+                {/* Input para circunferência abdominal */}
+                <div>
+                  <Label htmlFor="circunferencia" className="text-sm font-medium">
+                    Circunferência Abdominal (cm)
+                  </Label>
+                  <Input
+                    id="circunferencia"
+                    type="number"
+                    value={circunferenciaAbdominal}
+                    onChange={(e) => setCircunferenciaAbdominal(Number(e.target.value))}
+                    placeholder="90"
+                    className="mt-1"
+                  />
                 </div>
-                
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={() => {
-                      setShowCircunferenciaInput(true);
-                      setCircunferenciaAbdominal(dadosSaude?.circunferencia_abdominal_cm || 90);
-                    }}
-                    className="flex-1 bg-instituto-purple hover:bg-instituto-purple/80"
-                    size="lg"
-                  >
-                    <Ruler className="h-4 w-4 mr-2" />
-                    📐 Inserir Circunferência
-                  </Button>
-                  <Button 
-                    onClick={stopReading}
-                    variant="outline"
-                    size="lg"
-                  >
-                    🔄 Nova Pesagem
-                  </Button>
-                </div>
+
+                {/* Botão salvar */}
+                <Button 
+                  onClick={handleSaveReading}
+                  disabled={isSaving}
+                  className="w-full"
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      Salvando...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Salvar Pesagem
+                    </>
+                  )}
+                </Button>
               </CardContent>
             </Card>
           )}
 
-          {/* Input da Circunferência Abdominal */}
-          {lastReading && showCircunferenciaInput && (
-            <Card className="bg-orange-50 border-orange-200">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-center text-orange-700 flex items-center justify-center gap-2">
-                  <Ruler className="h-5 w-5" />
-                  📐 Circunferência Abdominal
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="bg-white rounded-lg p-4">
-                    <Label htmlFor="circunferencia" className="text-sm font-medium">
-                      Circunferência Abdominal (cm)
-                    </Label>
-                    <Input
-                      id="circunferencia"
-                      type="number"
-                      value={circunferenciaAbdominal}
-                      onChange={(e) => setCircunferenciaAbdominal(Number(e.target.value))}
-                      className="mt-2"
-                      min="50"
-                      max="200"
-                      step="0.1"
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Meça na altura do umbigo, em pé, após expirar
-                    </p>
-                  </div>
-
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h6 className="font-medium text-green-800 mb-2">🎯 Dados Finais do Processo:</h6>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div>Peso: <strong>{lastReading.weight}kg</strong></div>
-                      <div>Gordura: <strong>{lastReading.bodyFat?.toFixed(1)}%</strong></div>
-                      <div>Água: <strong>{lastReading.bodyWater?.toFixed(1)}%</strong></div>
-                      <div>Músculo: <strong>{lastReading.muscleMass?.toFixed(1)}kg</strong></div>
-                      <div>Circunf.: <strong>{circunferenciaAbdominal}cm</strong></div>
-                      <div>Tipo: <strong>{lastReading.bodyType}</strong></div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={() => processAndSaveScaleData(lastReading, {
-                        circunferencia_abdominal_cm: circunferenciaAbdominal,
-                        meta_peso_kg: dadosSaude?.meta_peso_kg || lastReading.weight
-                      })}
-                      disabled={isSaving || circunferenciaAbdominal < 50 || circunferenciaAbdominal > 200}
-                      className="flex-1 bg-instituto-green hover:bg-instituto-green/80"
-                      size="lg"
-                    >
-                      {isSaving ? (
-                        <>
-                          <Loader className="h-4 w-4 mr-2 animate-spin" />
-                          Finalizando...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          ✅ Finalizar e Atualizar Gráficos
-                        </>
-                      )}
-                    </Button>
-                    <Button 
-                      onClick={() => setShowCircunferenciaInput(false)}
-                      variant="outline"
-                      size="lg"
-                      disabled={isSaving}
-                    >
-                      ⬅️ Voltar
-                    </Button>
-                  </div>
+          {/* Instruções */}
+          {!lastReading && (
+            <Card>
+              <CardContent className="p-4">
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p>📱 Certifique-se de que a Xiaomi Mi Body Scale 2 está ligada</p>
+                  <p>🔗 Mantenha o dispositivo próximo ao computador</p>
+                  <p>⚖️ Suba na balança quando solicitado</p>
+                  <p>⏳ Aguarde a estabilização da leitura</p>
                 </div>
               </CardContent>
             </Card>

@@ -13,6 +13,7 @@ import { PublicRanking } from './PublicRanking';
 import MinhasMetas from './MinhasMetas';
 
 import { BeneficiosVisuais } from './BeneficiosVisuais';
+import { UserTools } from './user/UserTools';
 // Netflix course carousel removed - using paid courses only
 import { MotivationalMessages } from './intelligent/MotivationalMessages';
 import { SmartAnalytics } from './intelligent/SmartAnalytics';
@@ -37,7 +38,9 @@ import {
   ChevronRight,
   Video,
   UserCog,
-  Scale
+  Scale,
+  LogOut,
+  User
 } from 'lucide-react';
 
 // Dados mock para demonstração
@@ -115,7 +118,7 @@ export const MinhaJornada: React.FC = () => {
   const [userMood, setUserMood] = useState<'happy' | 'sad' | 'neutral' | 'motivated' | 'tired'>('neutral');
   const [currentStreak, setCurrentStreak] = useState(7);
   
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handlePointsEarned = (points: number) => {
@@ -236,25 +239,25 @@ export const MinhaJornada: React.FC = () => {
               </Card>
             </div>
             
-            {/* Botão Admin (dev only) */}
+            {/* Botões de Ação */}
             <div className="mt-8 flex gap-4 justify-center">
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={() => setIsAdmin(!isAdmin)}
+                onClick={() => window.location.href = '/dashboard'}
                 className="border-netflix-border text-netflix-text hover:bg-netflix-hover"
               >
-                {isAdmin ? 'Sair do Modo Admin' : 'Modo Admin (Dev)'}
+                <User className="w-4 h-4 mr-2" />
+                Área do Usuário
               </Button>
-              {isAdmin && (
-                <Button
-                  size="sm"
-                  onClick={() => window.location.href = '/admin'}
-                  className="instituto-button animate-glow"
-                >
-                  Painel Admin Completo
-                </Button>
-              )}
+              <Button
+                size="sm"
+                onClick={signOut}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sair
+              </Button>
             </div>
           
           <p className="text-netflix-text-muted mt-8">
@@ -279,8 +282,9 @@ export const MinhaJornada: React.FC = () => {
         ...baseItems,
         { id: 'balanca-pareamento', label: '📡 Atualizar Medidas com Balança', icon: Scale },
         { id: 'sessoes', label: 'Minhas Sessões', icon: Video },
+        { id: 'semanal', label: 'Semanal', icon: Calendar },
         { id: 'testes-sabotadores', label: 'Testes Sabotadores', icon: BookOpen },
-        { id: 'biblioteca', label: 'Biblioteca de Cursos', icon: GraduationCap },
+        { id: 'biblioteca', label: 'Plataforma dos Sonhos', icon: GraduationCap },
         { id: 'diario', label: 'Diário de Saúde', icon: FileText },
         { id: 'avaliacao-semanal', label: 'Desempenho Semanal', icon: Calendar },
         { id: 'desafios', label: 'Desafios', icon: Award },
@@ -313,6 +317,16 @@ export const MinhaJornada: React.FC = () => {
         );
       case 'beneficios':
         return <BeneficiosVisuais />;
+      case 'semanal':
+        return userType === 'cliente' ? <UserTools /> : (
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-netflix-text mb-4">Área Restrita</h2>
+            <p className="text-netflix-text-muted mb-6">Esta seção é exclusiva para clientes</p>
+            <Button onClick={handleClienteAccess} className="instituto-button">
+              Acessar como Cliente
+            </Button>
+          </div>
+        );
       case 'testes-sabotadores':
         return userType === 'cliente' ? <TesteSabotadores /> : (
           <div className="text-center py-12">
@@ -326,10 +340,10 @@ export const MinhaJornada: React.FC = () => {
       case 'biblioteca':
         return userType === 'cliente' ? (
           <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-netflix-text mb-4">Biblioteca de Cursos</h2>
-            <p className="text-netflix-text-muted mb-6">Acesse nossos cursos pagos premium</p>
+            <h2 className="text-2xl font-bold text-netflix-text mb-4">Plataforma dos Sonhos</h2>
+            <p className="text-netflix-text-muted mb-6">Acesse nossa plataforma completa de transformação</p>
             <Button onClick={() => setActiveSection('inicio')} className="instituto-button">
-              Ver Cursos Premium
+              Acessar Plataforma
             </Button>
           </div>
         ) : (
@@ -494,8 +508,8 @@ export const MinhaJornada: React.FC = () => {
             {/* Conteúdo baseado no tipo de usuário */}
             {userType === 'cliente' && (
               <div className="bg-netflix-card p-6 rounded-lg border border-netflix-border">
-                <h3 className="text-lg font-semibold text-netflix-text mb-2">Cursos Premium</h3>
-                <p className="text-netflix-text-muted">Acesse nossa biblioteca completa de cursos pagos</p>
+                <h3 className="text-lg font-semibold text-netflix-text mb-2">Plataforma dos Sonhos</h3>
+                <p className="text-netflix-text-muted">Acesse nossa plataforma completa de transformação</p>
               </div>
             )}
           </div>

@@ -55,6 +55,15 @@ const formatarHumor = (humor: string) => {
 export const BeneficiosVisuais: React.FC = () => {
   const { user } = useAuth();
   const { dadosSaude, missoesDaSemana, loading, refetch } = useDadosSaude();
+  
+  // Debug logs
+  console.log('🔍 BeneficiosVisuais Debug:', {
+    user: !!user,
+    loading,
+    dadosSaude: !!dadosSaude,
+    missoesDaSemana: missoesDaSemana?.length || 0
+  });
+  
   // Estado consolidado para todos os dados
   const [dadosConsolidados, setDadosConsolidados] = useState({
     dadosSaude,
@@ -83,9 +92,12 @@ export const BeneficiosVisuais: React.FC = () => {
 
   // Função centralizada para buscar e consolidar TODOS os dados
   const atualizarTodosOsDados = React.useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('🚫 BeneficiosVisuais: Usuário não autenticado');
+      return;
+    }
     
-    console.log('🔄 Atualizando TODOS os dados automaticamente...');
+    console.log('🔄 BeneficiosVisuais: Atualizando TODOS os dados automaticamente...');
     setDadosConsolidados(prev => ({ ...prev, isLoading: true }));
     
     try {
@@ -96,6 +108,8 @@ export const BeneficiosVisuais: React.FC = () => {
         .single();
 
       if (profile) {
+        console.log('✅ BeneficiosVisuais: Perfil encontrado:', profile.id);
+        
         // Buscar TODOS os dados em paralelo
         const [pesagensResult, fisicaResult, saudeResult] = await Promise.all([
           supabase
@@ -103,68 +117,36 @@ export const BeneficiosVisuais: React.FC = () => {
             .select('*')
             .eq('user_id', profile.id)
             .order('data_medicao', { ascending: false })
-            .limit(30),
-          
+            .limit(10),
           supabase
             .from('dados_fisicos_usuario')
             .select('*')
             .eq('user_id', profile.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle(),
-            
+            .order('updated_at', { ascending: false })
+            .limit(1),
           supabase
             .from('dados_saude_usuario')
             .select('*')
             .eq('user_id', profile.id)
-            .order('data_atualizacao', { ascending: false })
+            .order('updated_at', { ascending: false })
             .limit(1)
-            .maybeSingle()
         ]);
 
-        // Processar dados de pesagem mais recente se disponível
-        let dadosSaudeAtualizado = saudeResult.data;
-        
-        if (pesagensResult.data && pesagensResult.data.length > 0) {
-          const pesagemRecente = pesagensResult.data[0];
-          const altura = fisicaResult.data?.altura_cm || dadosSaudeAtualizado?.altura_cm || 170;
-          const alturaMetros = altura / 100;
-          const imcCalculado = pesagemRecente.peso_kg / (alturaMetros * alturaMetros);
-          
-          // Atualizar dados de saúde com pesagem mais recente
-          dadosSaudeAtualizado = {
-            ...dadosSaudeAtualizado,
-            peso_atual_kg: pesagemRecente.peso_kg,
-            altura_cm: altura,
-            imc: Math.round(imcCalculado * 10) / 10,
-            data_atualizacao: pesagemRecente.data_medicao,
-            circunferencia_abdominal_cm: dadosSaudeAtualizado?.circunferencia_abdominal_cm || 90
-          };
-        }
-
-        const pesagensFormatadas = pesagensResult.data?.map(p => ({
-          data: p.data_medicao,
-          peso: p.peso_kg,
-          imc: p.imc || 0,
-          circunferencia: p.circunferencia_abdominal_cm,
-          gordura_corporal_pct: p.gordura_corporal_pct
-        })) || [];
-
-        setDadosConsolidados({
-          dadosSaude: dadosSaudeAtualizado,
-          historicoPesagens: pesagensFormatadas,
-          dadosFisicos: fisicaResult.data,
-          isLoading: false
+        console.log('📊 BeneficiosVisuais: Dados buscados:', {
+          pesagens: pesagensResult.data?.length || 0,
+          fisica: !!fisicaResult.data,
+          saude: !!saudeResult.data
         });
 
-        console.log('✅ Todos os dados atualizados:', {
-          dadosSaude: !!dadosSaudeAtualizado,
-          pesagens: pesagensFormatadas.length,
-          dadosFisicos: !!fisicaResult.data
+        setDadosConsolidados({
+          dadosSaude: saudeResult.data?.[0] || null,
+          historicoPesagens: pesagensResult.data || [],
+          dadosFisicos: fisicaResult.data?.[0] || null,
+          isLoading: false
         });
       }
     } catch (error) {
-      console.error('❌ Erro ao atualizar dados:', error);
+      console.error('❌ BeneficiosVisuais: Erro ao atualizar dados:', error);
       setDadosConsolidados(prev => ({ ...prev, isLoading: false }));
     }
   }, [user]);
@@ -172,7 +154,7 @@ export const BeneficiosVisuais: React.FC = () => {
   // Atualizar quando dados de saúde mudam
   useEffect(() => {
     atualizarTodosOsDados();
-  }, [atualizarTodosOsDados, dadosSaude]);
+  }, [atualizarTodosOsDados]);
 
   // Listener em tempo real para atualizações automáticas
   useEffect(() => {

@@ -23,12 +23,18 @@ export const useProgressData = () => {
   });
 
   const fetchProgressData = React.useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('🚫 useProgressData: Usuário não autenticado');
+      return;
+    }
+    
+    console.log('🔄 useProgressData: Iniciando busca de dados para usuário:', user.id);
     
     try {
       setData(prev => ({ ...prev, loading: true, error: null }));
 
       // Buscar profile do usuário
+      console.log('👤 useProgressData: Buscando perfil do usuário...');
       let { data: profile } = await supabase
         .from('profiles')
         .select('id')
@@ -36,7 +42,7 @@ export const useProgressData = () => {
         .maybeSingle();
 
       if (!profile) {
-        console.warn('Profile não encontrado, criando perfil padrão');
+        console.warn('⚠️ useProgressData: Profile não encontrado, criando perfil padrão');
         // Criar perfil padrão temporário
         const { data: newProfile } = await supabase
           .from('profiles')
@@ -50,12 +56,16 @@ export const useProgressData = () => {
         
         if (newProfile) {
           profile = newProfile;
+          console.log('✅ useProgressData: Perfil criado com sucesso');
         } else {
           throw new Error('Não foi possível criar o perfil');
         }
+      } else {
+        console.log('✅ useProgressData: Perfil encontrado:', profile.id);
       }
 
       // Buscar dados físicos atuais
+      console.log('📊 useProgressData: Buscando dados físicos...');
       const { data: dadosFisicos } = await supabase
         .from('dados_fisicos_usuario')
         .select('*')
@@ -64,26 +74,37 @@ export const useProgressData = () => {
         .limit(1)
         .maybeSingle();
 
+      console.log('📊 useProgressData: Dados físicos encontrados:', !!dadosFisicos);
+
       // Buscar histórico de pesagens (mais recentes primeiro)
+      console.log('⚖️ useProgressData: Buscando pesagens...');
       const { data: pesagens } = await supabase
         .from('pesagens')
         .select('*')
         .eq('user_id', profile.id)
         .order('data_medicao', { ascending: false });
 
+      console.log('⚖️ useProgressData: Pesagens encontradas:', pesagens?.length || 0);
+
       // Buscar histórico de medidas
+      console.log('📏 useProgressData: Buscando histórico de medidas...');
       const { data: historicoMedidas } = await supabase
         .from('historico_medidas')
         .select('*')
         .eq('user_id', profile.id)
         .order('data_medicao', { ascending: true });
 
+      console.log('📏 useProgressData: Histórico de medidas encontrado:', historicoMedidas?.length || 0);
+
       // Buscar metas de peso
+      console.log('🎯 useProgressData: Buscando metas de peso...');
       const { data: metasPeso } = await supabase
         .from('weight_goals')
         .select('*')
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false });
+
+      console.log('🎯 useProgressData: Metas de peso encontradas:', metasPeso?.length || 0);
 
       setData({
         pesagens: pesagens || [],
@@ -94,7 +115,7 @@ export const useProgressData = () => {
         error: null
       });
 
-      console.log('Dados de progresso atualizados:', { 
+      console.log('✅ useProgressData: Dados de progresso atualizados com sucesso:', { 
         pesagens: pesagens?.length || 0, 
         dadosFisicos: !!dadosFisicos,
         historicoMedidas: historicoMedidas?.length || 0,
@@ -102,7 +123,7 @@ export const useProgressData = () => {
       });
 
     } catch (error) {
-      console.error('Erro ao buscar dados de progresso:', error);
+      console.error('❌ useProgressData: Erro ao buscar dados de progresso:', error);
       setData(prev => ({
         ...prev,
         loading: false,
@@ -113,7 +134,7 @@ export const useProgressData = () => {
 
   useEffect(() => {
     fetchProgressData();
-  }, [fetchProgressData]);
+  }, [user]);
 
   // Real-time updates para pesagens e dados físicos
   useEffect(() => {
@@ -174,7 +195,7 @@ export const useProgressData = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user?.id, fetchProgressData]);
+  }, [user?.id]);
 
   return data;
 };

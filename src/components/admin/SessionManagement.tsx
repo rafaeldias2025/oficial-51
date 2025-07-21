@@ -30,7 +30,8 @@ interface SessionForm {
 const wheelTools = [
   { id: 'energia_vital', name: 'Roda da Energia Vital', description: 'Avalie seu equilíbrio energético' },
   { id: 'roda_vida', name: 'Roda da Vida', description: 'Analise os 5 pilares da sua vida' },
-  { id: 'saude_energia', name: 'Roda da Saúde e Energia', description: 'Diagnóstico completo dos hábitos' }
+  { id: 'saude_energia', name: 'Roda da Saúde e Energia', description: 'Diagnóstico completo dos hábitos' },
+  { id: 'gratidao_proposito', name: 'Roda de Gratidão e Propósito', description: 'Explore gratidão e propósito' }
 ];
 
 export const SessionManagement: React.FC = () => {

@@ -22,13 +22,14 @@ import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { WelcomeHeader } from "@/components/WelcomeHeader";
 import { ClientSessions } from "@/components/sessions/ClientSessions";
 import { RequiredDataModal } from "@/components/RequiredDataModal";
-import { PaidCourses } from "@/components/courses/PaidCourses";
+
 import { AdvancedHealthDashboard } from "@/components/dashboard/AdvancedHealthDashboard";
 import { HealthLayout } from "@/components/layout/HealthLayout";
 import { UserAssessments } from "@/components/user/UserAssessments";
 
 import { GoogleFitIntegration } from "@/components/GoogleFitIntegration";
 import { PlataformaSonhos } from "@/components/plataforma/PlataformaSonhos";
+import { BluetoothScaleTest } from "@/components/BluetoothScaleTest";
 
 import { useAuth } from "@/hooks/useAuth";
 import { 
@@ -58,6 +59,8 @@ import {
   ClipboardList
 } from "lucide-react";
 
+import { TestProgress } from '@/components/TestProgress';
+
 // Dados mock para ranking
 const topRankingUsers = [
   {id: 1, name: "Ana Silva", points: 3200, position: 1, lastPosition: 2, streak: 25, completedChallenges: 28, cidade: "São Paulo", trend: 'up' as const, positionChange: 1},
@@ -68,18 +71,26 @@ const topRankingUsers = [
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const [activeSection, setActiveSection] = useState('dashboard');
-  const [rankingTimeFilter, setRankingTimeFilter] = useState<'week' | 'month' | 'all'>('week');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [rankingTimeFilter, setRankingTimeFilter] = useState<'week' | 'month' | 'all'>('week');
+
+  // Debug logs
+  console.log('🔍 Dashboard Debug:', {
+    user: !!user,
+    userId: user?.id,
+    userEmail: user?.email,
+    activeSection
+  });
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'inicio', label: 'Missão do Dia', icon: Activity },
     { id: 'plataforma-sonhos', label: 'Plataforma dos Sonhos', icon: GraduationCap },
-    { id: 'cursos-pagos', label: 'Cursos Premium', icon: GraduationCap },
     { id: 'sessoes', label: 'Sessões', icon: FileText },
     { id: 'ranking', label: 'Ranking', icon: Trophy },
     { id: 'avaliacoes', label: 'Avaliações', icon: ClipboardList },
+    { id: 'semanal', label: '📊 Semanal', icon: Calendar, highlight: true },
     { id: 'avaliacao-semanal', label: 'Avaliação Semanal', icon: Calendar },
     { id: 'metas', label: 'Minhas Metas', icon: Target },
     { id: 'desafios', label: 'Desafios', icon: Award },
@@ -88,6 +99,7 @@ const Dashboard = () => {
     { id: 'meu-progresso', label: 'Meu Progresso', icon: BarChart3 },
     { id: 'analise-avancada', label: 'Análise Avançada', icon: BarChart3 },
     { id: 'google-fit', label: 'Google Fit', icon: Activity },
+    { id: 'openScale-test', label: 'Teste Xiaomi Mi Body Scale 2', icon: Scale },
     { id: 'assinaturas', label: 'Assinaturas', icon: CreditCard },
     { id: 'apps', label: 'Apps', icon: Grid },
     { id: 'ajuda', label: 'Ajuda', icon: HelpCircle },
@@ -100,8 +112,6 @@ const Dashboard = () => {
         return <ModernDashboard user={{name: user?.email?.split('@')[0] || 'Usuário'}} />;
       case 'inicio':
         return <MissaoDia isVisitor={false} />;
-      case 'cursos-pagos':
-        return <PaidCourses />;
       case 'sessoes':
         return <ClientSessions />;
       case 'ranking':
@@ -113,6 +123,8 @@ const Dashboard = () => {
         );
       case 'avaliacoes':
         return <UserAssessments />;
+      case 'semanal':
+        return <AvaliacaoSemanal />;
       case 'avaliacao-semanal':
         return <AvaliacaoSemanal />;
       case 'metas':
@@ -126,6 +138,7 @@ const Dashboard = () => {
       case 'meu-progresso':
         return (
           <div className="space-y-8">
+            <TestProgress />
             <BeneficiosVisuais />
             <ProgressCharts />
           </div>
@@ -134,6 +147,8 @@ const Dashboard = () => {
         return <AdvancedHealthDashboard />;
       case 'google-fit':
         return <GoogleFitIntegration />;
+      case 'openScale-test':
+        return <BluetoothScaleTest />;
       case 'plataforma-sonhos':
         return <PlataformaSonhos isEmbedded={true} onBack={() => setActiveSection('dashboard')} />;
       case 'assinaturas':
@@ -151,42 +166,46 @@ const Dashboard = () => {
   const SidebarContent = ({ isCollapsed = false }: { isCollapsed?: boolean }) => (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-border">
+      <div className="p-4 border-b border-border bg-gradient-to-r from-background to-muted/20">
         <div className="flex items-center justify-between">
           {!isCollapsed ? (
             <Link 
               to="/" 
-              className="flex items-center gap-2 text-gradient hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 text-gradient hover:opacity-80 transition-all duration-300 hover:scale-105"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
+              <span className="font-medium">Voltar</span>
             </Link>
           ) : (
             <Link 
               to="/" 
-              className="flex items-center justify-center text-primary hover:text-primary/80 transition-colors"
+              className="flex items-center justify-center text-primary hover:text-primary/80 transition-all duration-300 hover:scale-110"
               title="Voltar"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
           )}
           
-          {/* Botão de colapsar - só no desktop */}
-          <div className="hidden lg:flex items-center gap-2">
+          {/* Botões do lado direito */}
+          <div className="flex items-center gap-2">
+            {/* Botão de colapsar - só no desktop */}
+            <div className="hidden lg:flex items-center gap-2">
+              <NetflixGhostButton
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                className="hover:bg-primary/10 border border-border/50 hover:border-primary/30 transition-all duration-300"
+              >
+                {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+              </NetflixGhostButton>
+            </div>
+            
+            {/* Botão de fechar mobile */}
             <NetflixGhostButton
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden hover:bg-destructive/10 border border-border/50 hover:border-destructive/30 transition-all duration-300"
             >
-              {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+              <X className="w-5 h-5" />
             </NetflixGhostButton>
           </div>
-          
-          {/* Botão de fechar mobile */}
-          <NetflixGhostButton
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden"
-          >
-            <X className="w-5 h-5" />
-          </NetflixGhostButton>
         </div>
       </div>
 
@@ -210,16 +229,18 @@ const Dashboard = () => {
               transition={{ delay: index * 0.05 }}
             >
               <ModernButton
-                variant={activeSection === item.id ? "gradient" : "ghost"}
+                variant={activeSection === item.id ? "gradient" : item.highlight ? "destructive" : "ghost"}
                 onClick={() => {
                   setActiveSection(item.id);
                   setSidebarOpen(false);
                 }}
                 className={`w-full justify-start gap-3 transition-all duration-300 ${
                   activeSection === item.id 
-                    ? 'glow-primary shadow-lg scale-105' 
-                    : 'hover:bg-muted/50 hover:scale-105'
-                } ${isCollapsed ? 'px-2' : 'px-4'}`}
+                    ? 'glow-primary shadow-lg scale-105 border border-primary/30' 
+                    : item.highlight
+                    ? 'bg-red-500/10 border border-red-500/30 text-red-500 hover:bg-red-500/20 hover:border-red-500/50'
+                    : 'hover:bg-muted/50 hover:scale-105 hover:border-border/50 border border-transparent'
+                } ${isCollapsed ? 'px-2' : 'px-4'} rounded-lg`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
                 {!isCollapsed && <span className="font-medium">{item.label}</span>}
@@ -238,11 +259,11 @@ const Dashboard = () => {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border bg-gradient-to-r from-muted/20 to-background">
         <ModernButton
           onClick={signOut}
           variant="ghost"
-          className={`w-full ${isCollapsed ? 'justify-center' : 'justify-start'} text-muted-foreground hover:text-foreground hover:bg-muted/50`}
+          className={`w-full ${isCollapsed ? 'justify-center' : 'justify-start'} text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300`}
           title={isCollapsed ? "Sair" : undefined}
         >
           <LogOut className="w-5 h-5" />
@@ -256,16 +277,17 @@ const Dashboard = () => {
     <ModernLayout variant="default">
       <div className="min-h-screen">
         {/* Mobile Header */}
-        <div className="lg:hidden glass-card border-b border-border p-4">
+        <div className="lg:hidden glass-card border-b border-border p-4 bg-gradient-to-r from-background to-muted/10">
           <div className="flex items-center justify-between">
             <ModernButton
               variant="ghost"
               size="icon"
               onClick={() => setSidebarOpen(true)}
+              className="hover:bg-primary/10 border border-border/50 hover:border-primary/30 transition-all duration-300 rounded-lg"
             >
               <Menu className="w-6 h-6" />
             </ModernButton>
-            <h1 className="text-xl font-semibold text-gradient">
+            <h1 className="text-xl font-semibold text-gradient bg-clip-text">
               {menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
             </h1>
             <div className="w-10" />
@@ -279,7 +301,7 @@ const Dashboard = () => {
               width: sidebarCollapsed ? '80px' : '280px' 
             }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="hidden lg:flex lg:flex-col glass-card border-r border-border"
+            className="hidden lg:flex lg:flex-col glass-card border-r border-border shadow-xl"
           >
             <SidebarContent isCollapsed={sidebarCollapsed} />
           </motion.div>
@@ -292,7 +314,7 @@ const Dashboard = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+                  className="lg:hidden fixed inset-0 bg-background/90 backdrop-blur-md z-40"
                   onClick={() => setSidebarOpen(false)}
                 />
                 <motion.div
@@ -300,7 +322,7 @@ const Dashboard = () => {
                   animate={{ x: 0 }}
                   exit={{ x: -280 }}
                   transition={{ type: "spring", damping: 30, stiffness: 150 }}
-                  className="lg:hidden fixed left-0 top-0 bottom-0 w-80 glass-card border-r border-border z-50"
+                  className="lg:hidden fixed left-0 top-0 bottom-0 w-80 glass-card border-r border-border z-50 shadow-2xl"
                 >
                   <SidebarContent isCollapsed={false} />
                 </motion.div>

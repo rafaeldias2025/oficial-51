@@ -1,9 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 import { autoTestUserTools } from '../utils/autoTestUserTools.js';
 
-// Configure suas variáveis de ambiente ou coloque aqui diretamente
-const SUPABASE_URL = 'https://skcfeldqipxaomrjfuym.supabase.co';
-const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrY2ZlbGRxaXB4YW9tcmpmdXltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNjk5OTU1NywiZXhwIjoyMDUyNTc1NTU3fQ.4TKHlMV2V8LjmnlFBErvU3OL_RpwEKNT4sF8YYK2-z8';
+// Configure suas variáveis de ambiente
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://skcfeldqipxaomrjfuym.supabase.co';
+const SUPABASE_SERVICE_ROLE_KEY = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('ERRO: VITE_SUPABASE_SERVICE_ROLE_KEY não configurada');
+  process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 

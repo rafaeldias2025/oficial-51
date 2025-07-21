@@ -1,0 +1,178 @@
+/* CORREÇÕES ESPECÍFICAS PARA AUTH.TSX - NETFLIX THEME */
+
+/* Override do background principal */
+.min-h-screen.bg-gradient-to-br.from-slate-900.via-purple-900.to-slate-900 {
+  background: var(--netflix-black) !important;
+}
+
+/* Override dos elementos de background */
+.absolute.inset-0.bg-gradient-to-br.from-purple-600\/10.to-slate-900\/10 {
+  background: var(--netflix-gradient-dark) !important;
+}
+
+/* Override do título principal */
+.text-4xl.font-bold.bg-gradient-to-r.from-white.to-purple-200 {
+  background: linear-gradient(to right, var(--netflix-white), var(--netflix-light-gray)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Override do subtítulo */
+.text-purple-200.text-lg.font-medium {
+  color: var(--netflix-light-gray) !important;
+}
+
+/* Override das estrelas de rating */
+.text-yellow-400 {
+  color: var(--netflix-white) !important;
+}
+
+/* Override do texto de rating */
+.text-sm.text-purple-200.ml-2 {
+  color: var(--netflix-light-gray) !important;
+}
+
+/* Override dos botões administrativos */
+.border-2.border-amber-400.text-amber-400 {
+  border-color: var(--netflix-red) !important;
+  color: var(--netflix-white) !important;
+}
+
+.border-2.border-green-400.text-green-400 {
+  border-color: var(--netflix-success) !important;
+  color: var(--netflix-white) !important;
+}
+
+/* Override dos tabs */
+.data-state-active-bg-white.data-state-active-text-purple-600 {
+  background-color: var(--netflix-red) !important;
+  color: var(--netflix-white) !important;
+}
+
+/* Override dos inputs */
+.border-slate-200.focus-border-purple-500 {
+  border-color: var(--netflix-border) !important;
+}
+
+.border-slate-200.focus-border-purple-500:focus {
+  border-color: var(--netflix-red) !important;
+}
+
+/* Override dos botões de submit */
+.bg-gradient-to-r.from-purple-600.to-purple-700 {
+  background: var(--netflix-red) !important;
+}
+
+.hover-from-purple-700.hover-to-purple-800:hover {
+  background: var(--netflix-red-hover) !important;
+}
+
+/* Override das sombras */
+.hover-shadow-purple-500-25 {
+  box-shadow: var(--netflix-shadow-md) !important;
+}
+
+/* Override dos links */
+.text-purple-600.hover-underline {
+  color: var(--netflix-red) !important;
+}
+
+/* Override do testimonial */
+.text-sm.text-purple-200.italic {
+  color: var(--netflix-light-gray) !important;
+}
+
+.text-xs.text-purple-300.mt-1 {
+  color: var(--netflix-light-gray) !important;
+}
+
+/* Override do ícone do logo */
+.bg-gradient-to-r.from-yellow-400.to-orange-500 {
+  background: var(--netflix-red) !important;
+}
+
+/* Override dos inputs de senha */
+.border-red-500.focus-border-red-500 {
+  border-color: var(--netflix-error) !important;
+}
+
+/* Override dos estados de erro */
+.text-red-500 {
+  color: var(--netflix-error) !important;
+}
+
+/* Override dos estados de sucesso */
+.text-green-500 {
+  color: var(--netflix-success) !important;
+}
+
+/* Override dos badges de segurança */
+.bg-emerald-50.text-emerald-700 {
+  background-color: var(--netflix-success) !important;
+  color: var(--netflix-white) !important;
+}
+
+/* Override dos placeholders */
+::placeholder {
+  color: var(--netflix-light-gray) !important;
+}
+
+/* Override dos selects */
+.h-12.border-slate-200.focus-border-purple-500 {
+  border-color: var(--netflix-border) !important;
+  background-color: var(--netflix-input-bg) !important;
+  color: var(--netflix-white) !important;
+}
+
+/* Override dos ícones nos inputs */
+.text-slate-400 {
+  color: var(--netflix-light-gray) !important;
+}
+
+/* Override dos checkmarks */
+.text-green-500 {
+  color: var(--netflix-success) !important;
+}
+
+/* Override dos textos de erro */
+.text-red-500.flex.items-center.gap-1 {
+  color: var(--netflix-error) !important;
+}
+
+/* Override dos termos de uso */
+.text-purple-600.hover-underline.cursor-pointer {
+  color: var(--netflix-red) !important;
+}
+
+/* Override dos spinners de loading */
+.border-white.border-t-transparent {
+  border-color: var(--netflix-white) !important;
+  border-top-color: transparent !important;
+}
+
+/* Override dos cards */
+.bg-white-95.backdrop-blur-sm {
+  background-color: var(--netflix-dark-gray) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* Override das tabs list */
+.bg-slate-100 {
+  background-color: var(--netflix-medium-gray) !important;
+}
+
+/* Override dos triggers de tab */
+.data-state-active-bg-white {
+  background-color: var(--netflix-red) !important;
+}
+
+/* Override dos títulos dos cards */
+.text-slate-800 {
+  color: var(--netflix-white) !important;
+}
+
+/* Override das descrições */
+.text-slate-600 {
+  color: var(--netflix-light-gray) !important;
+} 

@@ -18,7 +18,6 @@ const LessonEditPage: React.FC = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    content: '',
     duration: '',
     order: 0,
     is_active: true
@@ -29,11 +28,13 @@ const LessonEditPage: React.FC = () => {
       // Simular carregamento da aula
       setLesson({
         id: lessonId,
+        module_id: 'module-1',
         title: 'Aula 1: Introdução',
         description: 'Introdução ao curso',
-        content: 'Conteúdo da aula...',
-        duration: 30,
-        order: 1,
+        video_url: '',
+        content_text: '',
+        duration_minutes: 30,
+        order_index: 1,
         is_active: true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
@@ -42,7 +43,6 @@ const LessonEditPage: React.FC = () => {
       setFormData({
         title: 'Aula 1: Introdução',
         description: 'Introdução ao curso',
-        content: 'Conteúdo da aula...',
         duration: '30',
         order: 1,
         is_active: true
@@ -128,11 +128,11 @@ const LessonEditPage: React.FC = () => {
             </div>
 
             <div>
-              <Label htmlFor="content">Conteúdo da Aula</Label>
+              <Label htmlFor="content_text">Conteúdo da Aula</Label>
               <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => handleInputChange('content', e.target.value)}
+                id="content_text"
+                value={lesson?.content_text || ''}
+                onChange={(e) => setLesson(prev => prev ? {...prev, content_text: e.target.value} : null)}
                 placeholder="Conteúdo detalhado da aula..."
                 rows={10}
               />

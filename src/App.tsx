@@ -40,6 +40,7 @@ const UserSessionsDemo = lazy(() => import('@/pages/UserSessionsDemo').then(modu
 const SessionResultsDemo = lazy(() => import('@/pages/SessionResultsDemo').then(module => ({ default: module.SessionResultsDemo })));
 const FlowAuditor = lazy(() => import('@/components/audit/FlowAuditor').then(module => ({ default: module.default })));
 const FlowFixer = lazy(() => import('@/components/audit/FlowFixer').then(module => ({ default: module.default })));
+const SabotadoresDemo = lazy(() => import('@/pages/SabotadoresDemo').then(module => ({ default: module.SabotadoresDemo })));
 
 // Lazy loading do painel administrativo
 const AdminTestRoute = lazy(() => import('@/components/admin/AdminTestRoute').then(module => ({ default: module.AdminTestRoute })));
@@ -343,13 +344,23 @@ const AppContent = () => {
                 <FlowAuditor />
               </Suspense>
             } />
-            <Route path="/correcao-fluxos" element={
-              <Suspense fallback={<PageFallback page="Correção de Fluxos" />}>
-                <FlowFixer />
-              </Suspense>
-            } />
+                    <Route path="/correcao-fluxos" element={
+          <Suspense fallback={<PageFallback page="Correção de Fluxos" />}>
+            <FlowFixer />
+          </Suspense>
+        } />
+        <Route path="/sabotadores-demo" element={
+          <Suspense fallback={<PageFallback page="Sabotadores do Emagrecimento" />}>
+            <SabotadoresDemo />
+          </Suspense>
+        } />
             <Route path="/tools" element={
               <Suspense fallback={<PageFallback page="Ferramentas" />}>
+                <ToolsPage />
+              </Suspense>
+            } />
+            <Route path="/admin/tools" element={
+              <Suspense fallback={<PageFallback page="Gerenciar Ferramentas" />}>
                 <ToolsPage />
               </Suspense>
             } />

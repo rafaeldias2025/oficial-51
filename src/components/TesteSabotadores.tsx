@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, ArrowLeft, Target, CheckCircle, Lightbulb, BarChart3, TrendingDown } from "lucide-react";
+import { ArrowRight, ArrowLeft, Target, CheckCircle, Lightbulb, BarChart3, TrendingDown, Trash2, RotateCcw, AlertTriangle, XCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell, CartesianGrid } from 'recharts';
 import {
@@ -16,7 +16,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
-const perguntas = [
+// Sistema de Lixeira de Segurança
+interface PerguntaComLixeira {
+  id: number;
+  texto: string;
+  ativa: boolean;
+  naLixeira: boolean;
+  dataExclusao?: Date;
+  categoria?: string;
+}
+
+// Todas as perguntas originais
+const perguntasOriginais = [
   "Eu sempre escolho roupas que mais disfarçam meu excesso de peso.",
   "Tenho peças que disfarçam meu corpo, e por isso prefiro até lavar mais vezes essas mesmas peças roupa 'do que' ir às compras e me sentir frustrado(a).",
   "Mesmo quando emagreço, guardo as roupas de quando eu estava acima do peso.",
@@ -142,7 +153,8 @@ const opcoes = [
   { value: 1, label: "Discordo Fortemente" }
 ];
 
-const calcularSabotadores = (respostas: (number | null)[]) => {
+const calcularSabotadores = (respostas: (number | null)[], perguntasAtivas: string[]) => {
+  // Mapear índices das perguntas ativas para os sabotadores
   const sabotadores = {
     roupas: [0, 1, 2, 3, 4],
     dinheiro: [5, 6, 7, 8, 9],
@@ -313,7 +325,68 @@ export const TesteSabotadores: React.FC = () => {
   const [testCompleted, setTestCompleted] = useState(false);
   const [resultData, setResultData] = useState<any>(null);
   const [testId, setTestId] = useState<string | null>(null);
+  const [perguntasComLixeira, setPerguntasComLixeira] = useState<PerguntaComLixeira[]>(inicializarPerguntasComLixeira());
+  const [mostrarLixeira, setMostrarLixeira] = useState(false);
+  const [perguntasAtivas, setPerguntasAtivas] = useState<string[]>(getPerguntasAtivas(inicializarPerguntasComLixeira()));
   const { user } = useAuth();
+
+  // Funções de gerenciamento da lixeira
+  const moverParaLixeira = (id: number) => {
+    setPerguntasComLixeira(prev => 
+      prev.map(p => 
+        p.id === id 
+          ? { ...p, naLixeira: true, dataExclusao: new Date(), ativa: false }
+          : p
+      )
+    );
+    toast.success('Pergunta movida para a lixeira de segurança');
+    atualizarPerguntasAtivas();
+  };
+
+  const restaurarDaLixeira = (id: number) => {
+    setPerguntasComLixeira(prev => 
+      prev.map(p => 
+        p.id === id 
+          ? { ...p, naLixeira: false, dataExclusao: undefined, ativa: true }
+          : p
+      )
+    );
+    toast.success('Pergunta restaurada com sucesso');
+    atualizarPerguntasAtivas();
+  };
+
+  const excluirDefinitivamente = (id: number) => {
+    setPerguntasComLixeira(prev => 
+      prev.map(p => 
+        p.id === id 
+          ? { ...p, ativa: false, naLixeira: false }
+          : p
+      )
+    );
+    toast.success('Pergunta excluída definitivamente');
+    atualizarPerguntasAtivas();
+  };
+
+  const atualizarPerguntasAtivas = () => {
+    const ativas = getPerguntasAtivas(perguntasComLixeira);
+    setPerguntasAtivas(ativas);
+  };
+
+  const getPerguntasNaLixeira = () => {
+    return perguntasComLixeira.filter(p => p.naLixeira);
+  };
+
+  const limparLixeira = () => {
+    setPerguntasComLixeira(prev => 
+      prev.map(p => 
+        p.naLixeira 
+          ? { ...p, ativa: false, naLixeira: false }
+          : p
+      )
+    );
+    toast.success('Lixeira limpa com sucesso');
+    atualizarPerguntasAtivas();
+  };
 
 
 
@@ -406,7 +479,7 @@ export const TesteSabotadores: React.FC = () => {
           pergunta_id: perguntaId,
           resposta: resposta,
           data_hora: new Date().toISOString(),
-          pergunta_texto: perguntas[perguntaId - 1]
+          pergunta_texto: perguntasOriginais[perguntaId - 1]
         }
       };
 
@@ -456,7 +529,7 @@ export const TesteSabotadores: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      const scores = calcularSabotadores(respostas);
+      const scores = calcularSabotadores(respostas, perguntasAtivas);
       
       const topSabotadores = Object.entries(scores)
         .sort(([,a], [,b]) => b - a)
@@ -600,6 +673,80 @@ export const TesteSabotadores: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Interface de Gerenciamento da Lixeira */}
+      {mostrarLixeira && (
+        <Card className="border-orange-200 bg-orange-50">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between text-orange-800">
+              <div className="flex items-center gap-2">
+                <Trash2 className="h-6 w-6 text-orange-600" />
+                Lixeira de Segurança
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setMostrarLixeira(false)}
+                  className="text-orange-600 border-orange-300"
+                >
+                  Fechar
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={limparLixeira}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Limpar Tudo
+                </Button>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {getPerguntasNaLixeira().length === 0 ? (
+                <p className="text-orange-600 text-center py-4">Lixeira vazia</p>
+              ) : (
+                getPerguntasNaLixeira().map((pergunta) => (
+                  <div key={pergunta.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-orange-200">
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-700">{pergunta.texto}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="outline" className="text-xs">
+                          {pergunta.categoria}
+                        </Badge>
+                        <span className="text-xs text-orange-600">
+                          Excluída em: {pergunta.dataExclusao?.toLocaleDateString('pt-BR')}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => restaurarDaLixeira(pergunta.id)}
+                        className="text-green-600 border-green-300 hover:bg-green-50"
+                      >
+                        <RotateCcw className="h-3 w-3 mr-1" />
+                        Restaurar
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => excluirDefinitivamente(pergunta.id)}
+                        className="text-red-600 border-red-300 hover:bg-red-50"
+                      >
+                        <XCircle className="h-3 w-3 mr-1" />
+                        Excluir
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -607,7 +754,20 @@ export const TesteSabotadores: React.FC = () => {
               <Target className="h-6 w-6 text-instituto-orange" />
               Teste dos Sabotadores
             </div>
-
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">
+                {perguntasAtivas.length} perguntas ativas
+              </Badge>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setMostrarLixeira(!mostrarLixeira)}
+                className="text-orange-600 border-orange-300"
+              >
+                <Trash2 className="h-4 w-4 mr-1" />
+                Lixeira ({getPerguntasNaLixeira().length})
+              </Button>
+            </div>
           </CardTitle>
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground">
@@ -626,9 +786,20 @@ export const TesteSabotadores: React.FC = () => {
             className="space-y-6"
           >
             <div className="p-6 bg-muted rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">
-                {perguntas[currentQuestion - 1]}
-              </h3>
+              <div className="flex items-start justify-between mb-4">
+                <h3 className="text-lg font-semibold flex-1">
+                  {perguntasOriginais[currentQuestion - 1]}
+                </h3>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => moverParaLixeira(currentQuestion)}
+                  className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 p-1"
+                  title="Mover para lixeira de segurança"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
               
               <div className="space-y-3">
                 {opcoes.map((opcao) => (
@@ -683,4 +854,58 @@ export const TesteSabotadores: React.FC = () => {
       </Card>
     </div>
   );
+};
+
+// Função para obter perguntas ativas (não na lixeira)
+const getPerguntasAtivas = (perguntas: PerguntaComLixeira[]): string[] => {
+  return perguntas
+    .filter(p => p.ativa && !p.naLixeira)
+    .map(p => p.texto);
+};
+
+// Função para obter categoria da pergunta
+const getCategoriaPergunta = (id: number): string => {
+  const categorias = {
+    roupas: [1, 2, 3, 4, 5],
+    dinheiro: [6, 7, 8, 9, 10],
+    estranheza_mudanca: [11, 12, 13, 14, 15],
+    magreza_infancia: [16, 17, 18, 19, 20],
+    rivalidade: [21, 22, 23, 24, 25],
+    valvula_escape: [26, 27, 28, 29, 30],
+    falta_crencas: [31, 32, 33, 34, 35],
+    atividade_fisica: [36, 37, 38, 39, 40],
+    crenca_contraria: [41, 42, 43, 44, 45],
+    prazer_comida: [46, 47, 48, 49, 50],
+    obesidade_riqueza: [51, 52, 53, 54, 55],
+    tamanho_fortaleza: [56, 57, 58, 59, 60],
+    apego_autoimagem: [61, 62, 63, 64, 65],
+    problemas_conjuge: [66, 67, 68, 69, 70],
+    fuga_beleza: [71, 72, 73, 74, 75],
+    protecao_filhos: [76, 77, 78, 79, 80],
+    fuga_afetiva: [81, 82, 83, 84, 85],
+    biotipo_identidade: [86, 87, 88, 89, 90],
+    comida_afeto: [91, 92, 93, 94, 95],
+    perdas_presente: [96, 97, 98, 99, 100],
+    perdas_infancia: [101, 102, 103, 104, 105],
+    critico: [106, 107, 108, 109, 110],
+    boazinha: [111, 112, 113, 114, 115]
+  };
+
+  for (const [categoria, ids] of Object.entries(categorias)) {
+    if (ids.includes(id)) {
+      return categoria;
+    }
+  }
+  return 'outros';
+};
+
+// Função para inicializar perguntas com sistema de lixeira
+const inicializarPerguntasComLixeira = (): PerguntaComLixeira[] => {
+  return perguntasOriginais.map((texto, index) => ({
+    id: index + 1,
+    texto,
+    ativa: true,
+    naLixeira: false,
+    categoria: getCategoriaPergunta(index + 1)
+  }));
 };

@@ -4,8 +4,13 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = 'https://skcfeldqipxaomrjfuym.supabase.co';
-const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrY2ZlbGRxaXB4YW9tcmpmdXltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNjk5OTU1NywiZXhwIjoyMDUyNTc1NTU3fQ.4TKHlMV2V8LjmnlFBErvU3OL_RpwEKNT4sF8YYK2-z8';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://skcfeldqipxaomrjfuym.supabase.co';
+const SUPABASE_SERVICE_ROLE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error('VITE_SUPABASE_SERVICE_ROLE_KEY is required for autoTestUserTools');
+}
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 // userId: id do usuário (auth)

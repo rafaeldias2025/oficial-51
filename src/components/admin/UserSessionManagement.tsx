@@ -710,6 +710,24 @@ export const UserSessionManagement: React.FC<UserSessionManagementProps> = ({ us
                                 <span className="block text-xs text-netflix-text-muted">8 áreas: Sono, Intestino, Atividade Física, Alimentação, etc.</span>
                               </Label>
                             </div>
+                            
+                            <div className="flex items-center space-x-2">
+                              <Checkbox 
+                                id="gratidao_proposito"
+                                checked={newSession.wheel_tools.includes('gratidao_proposito')}
+                                onCheckedChange={(checked) => {
+                                  if (checked) {
+                                    setNewSession({...newSession, wheel_tools: [...newSession.wheel_tools, 'gratidao_proposito']});
+                                  } else {
+                                    setNewSession({...newSession, wheel_tools: newSession.wheel_tools.filter(t => t !== 'gratidao_proposito')});
+                                  }
+                                }}
+                              />
+                              <Label htmlFor="gratidao_proposito" className="text-netflix-text cursor-pointer">
+                                <span className="font-medium">Roda de Gratidão e Propósito</span>
+                                <span className="block text-xs text-netflix-text-muted">6 áreas: Gratidão, Apreciação, Esperança, Propósito, Conexões, Crescimento</span>
+                              </Label>
+                            </div>
                           </div>
                         </div>
 

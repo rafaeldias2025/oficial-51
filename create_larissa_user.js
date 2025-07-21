@@ -8,83 +8,72 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function createLarissaUser() {
   try {
-    console.log('👤 Criando usuário Larissa Barbosa...');
-    
-    // 1. Criar usuário no auth.users
-    console.log('\n🔐 Criando usuário no sistema de autenticação...');
-    
-    const userId = '00000000-0000-0000-0000-000000000007'; // ID único para Larissa
-    
-    const { data: authUser, error: authError } = await supabase
-      .from('auth.users')
-      .insert({
-        id: userId,
-        email: 'larissabarbosa@gmail.com',
-        encrypted_password: '$2a$10$example.hash.for.password.10203040',
-        email_confirmed_at: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      })
-      .select()
-      .single();
-      
+    console.log('🔄 Criando usuário Larissa...');
+
+    // 1. Criar usuário no sistema de auth
+    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+      email: 'larissa@institutodossonhos.com',
+      password: '10203040',
+      email_confirm: true,
+      user_metadata: {
+        full_name: 'Larissa Barbosa'
+      }
+    });
+
     if (authError) {
-      console.log('⚠️ Usuário já pode existir no auth, continuando...');
-    } else {
-      console.log('✅ Usuário criado no sistema de autenticação');
+      console.error('❌ Erro ao criar usuário no auth:', authError);
+      return;
     }
-    
-    // 2. Criar perfil do usuário
-    console.log('\n👤 Criando perfil do usuário...');
-    
+
+    console.log('✅ Usuário criado no auth:', authData.user.id);
+
+    // 2. Criar perfil na tabela profiles
+    const profileData = {
+      id: authData.user.id,
+      email: 'larissa@institutodossonhos.com',
+      full_name: 'Larissa Barbosa',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .insert({
-        id: userId,
-        email: 'larissabarbosa@gmail.com',
-        full_name: 'Larissa Barbosa',
-        avatar_url: null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      })
+      .insert([profileData])
       .select()
       .single();
-      
+
     if (profileError) {
       console.error('❌ Erro ao criar perfil:', profileError);
       return;
     }
-    
-    console.log('✅ Perfil criado com sucesso');
-    
-    // 3. Verificar se o usuário foi criado
-    console.log('\n🔍 Verificando usuário criado...');
+
+    console.log('✅ Perfil criado:', profile);
+
+    // 3. Verificar se foi criado corretamente
     const { data: checkUser, error: checkError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('email', 'larissabarbosa@gmail.com')
+      .eq('email', 'larissa@institutodossonhos.com')
       .single();
-      
+
     if (checkError) {
       console.error('❌ Erro ao verificar usuário:', checkError);
       return;
     }
-    
-    console.log('✅ Usuário verificado:');
+
+    console.log('🎉 Usuário Larissa criado com sucesso!');
+    console.log('📋 Detalhes:');
     console.log(`   - ID: ${checkUser.id}`);
     console.log(`   - Nome: ${checkUser.full_name}`);
     console.log(`   - Email: ${checkUser.email}`);
-    console.log(`   - Criado em: ${checkUser.created_at}`);
-    
-    console.log('\n🎉 Usuário Larissa Barbosa criado com sucesso!');
-    console.log('🔑 Credenciais de login:');
-    console.log('   - Email: larissabarbosa@gmail.com');
+    console.log('\n🔐 Credenciais de Login:');
+    console.log('   - Email: larissa@institutodossonhos.com');
     console.log('   - Senha: 10203040');
-    
+
   } catch (error) {
     console.error('❌ Erro geral:', error);
   }
 }
 
-// Executar a criação do usuário
+// Executar o script
 createLarissaUser(); 

@@ -9,6 +9,8 @@ export interface ScaleReading {
   basalMetabolism?: number;
   bodyAge?: number;
   bodyType?: string;
+  isStabilized: boolean;
+  hasImpedance: boolean;
 }
 
 export interface BluetoothScaleReading extends ScaleReading {}

@@ -2,7 +2,17 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Brain, Star } from 'lucide-react';
-import { MissaoDia } from '@/hooks/useMissaoDia';
+
+// Tipo temporário para compatibilidade
+interface MissaoDia {
+  estresse_nivel?: number;
+  fome_emocional?: boolean;
+  gratidao?: string;
+  pequena_vitoria?: string;
+  intencao_para_amanha?: string;
+  nota_dia?: number;
+  [key: string]: any;
+}
 
 interface MissionMenteEmocoesProps {
   missao: MissaoDia | null;

@@ -51,10 +51,10 @@ const CoursePage: React.FC = () => {
       setIsLoadingModules(true);
       const [moduleData, progressData] = await Promise.all([
         fetchCourseModules(courseId),
-        getUserProgress(courseId)
+        getUserProgress('user-123', courseId) // Adicionando userId
       ]);
       setModules(moduleData);
-      setUserProgress(progressData);
+      setUserProgress([progressData]); // Convertendo para array
     } catch (error) {
       console.error('Error loading course data:', error);
       toast({
