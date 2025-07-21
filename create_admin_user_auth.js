@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Configuração do Supabase
-const supabaseUrl = 'http://localhost:54321';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU';
+// Configuração do Supabase - USAR VARIÁVEIS DE AMBIENTE
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'http://localhost:54321';
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU';
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -12,8 +12,8 @@ async function createAdminUserAuth() {
 
     // 1. Criar usuário no sistema de auth do Supabase
     const { data: userData, error: userError } = await supabase.auth.admin.createUser({
-      email: 'superadmin@institutodossonhos.com',
-      password: 'superadmin123',
+      email: process.env.ADMIN_EMAIL || 'admin@instituto.com',
+      password: process.env.ADMIN_PASSWORD || 'admin123',
       email_confirm: true,
       user_metadata: {
         full_name: 'Super Administrador - Acesso Total',
@@ -44,7 +44,7 @@ async function createAdminUserAuth() {
         .from('profiles')
         .insert({
           user_id: userData.user.id,
-          email: 'superadmin@institutodossonhos.com',
+          email: process.env.ADMIN_EMAIL || 'admin@instituto.com',
           full_name: 'Super Administrador - Acesso Total',
           role: 'admin',
           admin_level: 999
@@ -81,8 +81,8 @@ async function createAdminUserAuth() {
     }
 
     console.log('🎉 USUÁRIO ADMIN CRIADO COM SUCESSO!');
-    console.log('👑 Email: superadmin@institutodossonhos.com');
-    console.log('🔑 Senha: superadmin123');
+    console.log('👑 Email: ' + (process.env.ADMIN_EMAIL || 'admin@instituto.com'));
+    console.log('🔑 Senha: [PROTEGIDA]');
     console.log('🆔 ID: ' + userData.user.id);
     console.log('📋 Nome: Super Administrador - Acesso Total');
     console.log('🔐 role: admin');
@@ -98,9 +98,8 @@ async function createAdminUserAuth() {
     console.log('\n🚀 PRÓXIMOS PASSOS:');
     console.log('1. Reinicie o servidor de desenvolvimento');
     console.log('2. Acesse: http://localhost:8082/auth');
-    console.log('3. Login com: superadmin@institutodossonhos.com');
-    console.log('4. Senha: superadmin123');
-    console.log('5. Agora você terá acesso total!');
+    console.log('3. Login com as credenciais configuradas');
+    console.log('4. Agora você terá acesso total!');
 
     console.log('\n🔗 LINKS IMPORTANTES:');
     console.log('📊 Dashboard: http://localhost:8082/admin/dashboard');
