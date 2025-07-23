@@ -60,6 +60,7 @@ import {
 } from "lucide-react";
 
 import { TestProgress } from '@/components/TestProgress';
+import { MeuProgresso } from '@/components/MeuProgresso';
 
 // Dados mock para ranking
 const topRankingUsers = [
@@ -136,13 +137,7 @@ const Dashboard = () => {
       case 'teste-sabotadores':
         return <TesteSabotadores />;
       case 'meu-progresso':
-        return (
-          <div className="space-y-8">
-            <TestProgress />
-            <BeneficiosVisuais />
-            <ProgressCharts />
-          </div>
-        );
+        return <MeuProgresso />;
       case 'analise-avancada':
         return <AdvancedHealthDashboard />;
       case 'google-fit':

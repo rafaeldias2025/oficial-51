@@ -1,5 +1,5 @@
 import React from 'react';
-import { CourseGrid } from './CourseGrid';
+import KwifyStyle from './KwifyStyle';
 
 interface PlataformaSonhosProps {
   isEmbedded?: boolean;
@@ -10,14 +10,7 @@ export const PlataformaSonhos: React.FC<PlataformaSonhosProps> = ({
   isEmbedded = false,
   onBack
 }) => {
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Conteúdo Principal */}
-      <main className="p-8">
-        <div className="max-w-7xl mx-auto">
-          <CourseGrid />
-        </div>
-      </main>
-    </div>
-  );
-}; 
+  return <KwifyStyle />;
+};
+
+export default PlataformaSonhos; 

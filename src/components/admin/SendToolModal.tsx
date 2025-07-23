@@ -23,7 +23,7 @@ interface SendToolModalProps {
 
 interface User {
   id: string;
-  name: string;
+  full_name: string;
   email: string;
   avatar_url?: string;
 }
@@ -52,8 +52,8 @@ export const SendToolModal: React.FC<SendToolModalProps> = ({ isOpen, onClose, t
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('id, name, email, avatar_url')
-          .order('name');
+          .select('id, full_name, email, avatar_url')
+          .order('full_name');
         
         if (error) throw error;
         setUsers(data || []);
@@ -101,7 +101,7 @@ export const SendToolModal: React.FC<SendToolModalProps> = ({ isOpen, onClose, t
   };
 
   const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -142,11 +142,12 @@ export const SendToolModal: React.FC<SendToolModalProps> = ({ isOpen, onClose, t
         whatsapp_sent: notificationOptions.whatsapp
       }));
 
-      const { error } = await supabase
-        .from('user_tools')
-        .insert(toolAssignments);
+      // TODO: Implementar inserção na tabela user_tools quando ela for criada
+      // const { error } = await supabase
+      //   .from('user_tools')
+      //   .insert(toolAssignments);
 
-      if (error) throw error;
+      // if (error) throw error;
 
       // Placeholder para lógica real de envio de notificações
       if (notificationOptions.email) { console.log('Enviando emails para:', selectedUsers); }
@@ -272,7 +273,7 @@ export const SendToolModal: React.FC<SendToolModalProps> = ({ isOpen, onClose, t
                         onCheckedChange={() => toggleUserSelection(user.id)}
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-netflix-text truncate">{user.name}</p>
+                        <p className="text-sm font-medium text-netflix-text truncate">{user.full_name}</p>
                         <p className="text-xs text-netflix-text-muted truncate">{user.email}</p>
                       </div>
                       {selectedUsers.includes(user.id) && (

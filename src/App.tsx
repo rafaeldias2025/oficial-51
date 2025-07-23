@@ -10,6 +10,8 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import '@/styles/health-dashboard.css';
 import '@/styles/homepage-auth-improvements.css';
 import { NetflixThemeTest } from '@/components/NetflixThemeTest';
+import EdmundoPage from '@/pages/EdmundoPage';
+import ProjetoPrincipal from '@/pages/ProjetoPrincipal';
 
 // Lazy loading das páginas principais
 const Index = lazy(() => import('@/pages/Index'));
@@ -405,6 +407,9 @@ const AppContent = () => {
                 <NotFound />
               </Suspense>
             } />
+            {/* Rota direta para Edmundo Roveri sem autenticação */}
+            <Route path="/edmundo" element={<EdmundoPage />} />
+            <Route path="/projeto" element={<ProjetoPrincipal />} />
           </Routes>
         </AnimatePresence>
         

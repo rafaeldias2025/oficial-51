@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,8 @@ import { Scale, Ruler } from 'lucide-react';
 import { useDadosSaude, DadosSaude } from '@/hooks/useDadosSaude';
 import { BluetoothScaleConnection } from './BluetoothScaleConnection';
 import { useToast } from '@/hooks/use-toast';
+import { XiaomiScaleTroubleshooter } from '@/components/XiaomiScaleTroubleshooter';
+import { XiaomiScaleAdjuster } from '@/components/XiaomiScaleAdjuster';
 
 interface AtualizarMedidasModalProps {
   trigger?: React.ReactNode;
@@ -107,6 +109,9 @@ export const AtualizarMedidasModal: React.FC<AtualizarMedidasModalProps> = ({ tr
             <Ruler className="h-5 w-5" />
             Atualizar Medidas
           </DialogTitle>
+          <DialogDescription>
+            Atualize suas medidas físicas para acompanhar seu progresso
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -120,24 +125,32 @@ export const AtualizarMedidasModal: React.FC<AtualizarMedidasModalProps> = ({ tr
               Conecte sua balança Xiaomi para preencher automaticamente peso e composição corporal
             </p>
             
-            <BluetoothScaleConnection 
-              trigger={
-                <Button 
-                  variant="outline"
-                  className="border-instituto-purple text-instituto-purple hover:bg-instituto-purple/10"
-                  size="sm"
-                >
-                  <Scale className="h-4 w-4 mr-2" />
-                  🔗 Conectar Balança Xiaomi
-                </Button>
-              }
-              onDataSaved={() => {
-                // Recarregar dados da saúde para atualizar o formulário
-                setTimeout(() => {
-                  window.location.reload();
-                }, 500);
-              }}
-            />
+            <div className="space-y-3">
+              <BluetoothScaleConnection 
+                trigger={
+                  <Button 
+                    variant="outline"
+                    className="border-instituto-purple text-instituto-purple hover:bg-instituto-purple/10"
+                    size="sm"
+                  >
+                    <Scale className="h-4 w-4 mr-2" />
+                    🔗 Conectar Balança Xiaomi
+                  </Button>
+                }
+                onDataSaved={() => {
+                  // Recarregar dados da saúde para atualizar o formulário
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 500);
+                }}
+              />
+              
+              {/* Ferramentas de Diagnóstico */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <XiaomiScaleTroubleshooter />
+                <XiaomiScaleAdjuster />
+              </div>
+            </div>
             
             <div className="mt-3 text-xs text-muted-foreground">
               ✅ Peso será preenchido automaticamente nos campos abaixo

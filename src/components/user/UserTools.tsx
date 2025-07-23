@@ -50,23 +50,27 @@ export const UserTools: React.FC = () => {
         if (!profile) throw new Error('Perfil não encontrado');
 
         // Usando any para contornar o problema de tipos do Supabase
-        const { data, error } = await supabase
-          .from('user_tools' as any)
-          .select(`
-            id,
-            tool_id,
-            status,
-            scheduled_date,
-            sent_date,
-            completed_date,
-            custom_message,
-            tool:coaching_tools(id, name, description, category, estimated_time, total_questions)
-          `)
-          .eq('user_id', profile.id)
-          .order('sent_date', { ascending: false });
+        // TODO: Implementar quando a tabela user_tools for criada
+        // const { data, error } = await supabase
+        //   .from('user_tools' as any)
+        //   .select(`
+        //     id,
+        //     tool_id,
+        //     status,
+        //     scheduled_date,
+        //     sent_date,
+        //     completed_date,
+        //     custom_message,
+        //     tool:coaching_tools(id, name, description, category, estimated_time, total_questions)
+        //   `)
+        //   .eq('user_id', profile.id)
+        //   .order('sent_date', { ascending: false });
 
-        if (error) throw error;
-        setTools(data as UserTool[] || []);
+        // if (error) throw error;
+        // setTools(data as UserTool[] || []);
+        
+        // Dados mockados temporariamente
+        setTools([]);
       } catch (error) {
         console.error('Erro ao carregar ferramentas:', error);
         toast({
@@ -92,12 +96,13 @@ export const UserTools: React.FC = () => {
 
   const startTool = async (toolId: string) => {
     try {
-      const { error } = await supabase
-        .from('user_tools' as any)
-        .update({ status: 'in_progress' })
-        .eq('id', toolId);
+      // TODO: Implementar quando a tabela user_tools for criada
+      // const { error } = await supabase
+      //   .from('user_tools' as any)
+      //   .update({ status: 'in_progress' })
+      //   .eq('id', toolId);
       
-      if (error) throw error;
+      // if (error) throw error;
       
       // Atualizar o estado local
       setTools(prev => prev.map(tool => 

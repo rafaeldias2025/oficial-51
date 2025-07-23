@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Clock, Star, Flame } from 'lucide-react';
-import { useDailyMissions } from '@/hooks/useDailyMissions';
+// import { useDailyMissions } from '@/hooks/useDailyMissions';
 import { useUserPoints } from '@/hooks/useUserPoints';
 
 interface MissoesDiariasProps {
@@ -13,12 +13,23 @@ interface MissoesDiariasProps {
 
 export const MissoesDiarias: React.FC<MissoesDiariasProps> = ({ onPointsEarned }) => {
   const { fetchRanking } = useUserPoints();
-  const { missions, totalPointsToday, loading, completeMission } = useDailyMissions(fetchRanking);
+  // const { missions, totalPointsToday, loading, completeMission } = useDailyMissions(fetchRanking);
 
   const handleCompleteMission = (missionId: string) => {
-    completeMission(missionId, onPointsEarned);
+    // TODO: Implementar quando o hook useDailyMissions for criado
+    console.log('Completando missão:', missionId);
+    onPointsEarned?.(5);
   };
 
+  // Dados mockados temporariamente
+  const missions = [
+    { id: '1', title: 'Beber água', description: 'Beber 2L de água hoje', completed: true, points: 5, icon: '💧' },
+    { id: '2', title: 'Exercício', description: 'Fazer 30 min de exercício', completed: false, points: 10, icon: '🏃‍♂️' },
+    { id: '3', title: 'Meditação', description: 'Meditar por 10 minutos', completed: false, points: 8, icon: '🧘‍♀️' }
+  ];
+  const totalPointsToday = 5;
+  const loading = false;
+  
   const completedMissions = missions.filter(m => m.completed).length;
   const completionPercentage = (completedMissions / missions.length) * 100;
 

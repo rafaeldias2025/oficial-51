@@ -1,140 +1,128 @@
-# ✅ **Status do Docker e Supabase - RESOLVIDO**
+# ✅ **PORTA DO SISTEMA: 8080**
 
-## 🎯 **O que foi feito:**
+## 📋 **Configuração Atual:**
 
-### ✅ **1. Docker iniciado com sucesso**
-```bash
-# Docker Desktop foi iniciado
-open -a Docker
-
-# Verificação: Docker está rodando
-docker ps
-# Resultado: 10 containers Supabase rodando
+### **✅ Porta Principal:**
+```
+<code_block_to_apply_changes_from>
 ```
 
-### ✅ **2. Supabase iniciado com sucesso**
-```bash
-# Supabase parado e reiniciado
-npx supabase stop
-npx supabase start
+### ** Arquivos de Configuração:**
 
-# Status: Funcionando
-API URL: http://127.0.0.1:54321
-Studio URL: http://127.0.0.1:54323
-DB URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+**1. Vite Config (`vite.config.ts`):**
+```typescript
+server: {
+  host: "::",
+  port: 8080,
+},
 ```
 
-### ✅ **3. Servidor de desenvolvimento iniciado**
+**2. Playwright Config (`playwright.config.ts`):**
+```typescript
+use: {
+  baseURL: 'http://localhost:8080',
+},
+```
+
+**3. Package.json Scripts:**
+```json
+"dev": "vite"
+```
+
+---
+
+## 🌐 **URLs do Sistema:**
+
+### **🏠 Página Principal:**
+```
+http://localhost:8080/
+```
+
+### ** Cursos:**
+```
+http://localhost:8080/courses
+```
+
+### **🔐 Autenticação:**
+```
+http://localhost:8080/auth
+```
+
+### **📊 Dashboard:**
+```
+http://localhost:8080/dashboard
+```
+
+### **️ Admin:**
+```
+http://localhost:8080/admin
+```
+
+---
+
+## 🔧 **Como Iniciar o Sistema:**
+
+### **1. Comando para Iniciar:**
 ```bash
-# Servidor rodando em background
 npm run dev
-# URL: http://localhost:8080
 ```
 
-## 📊 **Status Atual:**
-
-### ✅ **Funcionando:**
-- ✅ **Docker Desktop** - Rodando
-- ✅ **Supabase Local** - 10 containers ativos
-- ✅ **Servidor de Desenvolvimento** - http://localhost:8080
-- ✅ **Página de Cursos** - Carregando corretamente
-- ✅ **18 Cursos** - Exibidos na interface
-
-### ❌ **Ainda com problemas:**
-- ❌ **WebSocket timeout** - 30 segundos
-- ❌ **Cliques nos botões** - Não respondem
-- ❌ **Navegação interativa** - Falha
-
-## 🔍 **Análise dos Problemas Restantes:**
-
-### **1. WebSocket Timeout**
-```javascript
-// Erro: WebSocket response timeout after 30000ms
-// Causa: Problema de conectividade entre browser e servidor
+### **2. Acesso:**
+```
+http://localhost:8080
 ```
 
-### **2. Botões não funcionam**
-```typescript
-// Botões "Start Course" não respondem
-// Possível causa: Event handlers não estão sendo executados
+### **3. Verificação:**
+- Abra o navegador
+- Digite: `http://localhost:8080`
+- Deve carregar a página inicial
+
+---
+
+## ⚠️ **Problemas Conhecidos:**
+
+### **1. WebSocket Timeout:**
+- **Problema:** Timeout após 30 segundos
+- **Sintoma:** Cliques nos botões não respondem
+- **Solução:** Reiniciar o servidor
+
+### **2. Docker/Supabase:**
+- **Problema:** Supabase local pode não estar rodando
+- **Verificação:** `docker ps`
+- **Solução:** `npx supabase start`
+
+---
+
+## 🎯 **Status Atual:**
+
+### **✅ Funcionando:**
+- ✅ Servidor rodando na porta 8080
+- ✅ Página inicial carregando
+- ✅ Lista de cursos visível
+- ✅ Interface responsiva
+
+### **⚠️ Problemas:**
+- ⚠️ WebSocket timeout (30s)
+- ⚠️ Cliques nos botões podem falhar
+- ⚠️ Navegação pode ser instável
+
+---
+
+##  **Conclusão:**
+
+**O sistema está rodando na porta 8080!**
+
+**Para acessar:**
+```
+http://localhost:8080
 ```
 
-### **3. Navegação falha**
-```typescript
-// Navegação programática funciona
-// Navegação por cliques falha
-```
+**Para verificar se está funcionando:**
+1. Abra o navegador
+2. Digite: `http://localhost:8080`
+3. Deve carregar a página inicial do Instituto dos Sonhos
 
-## 🛠️ **Soluções Implementadas:**
-
-### ✅ **Infraestrutura Corrigida:**
-1. **Docker Desktop** - Iniciado ✅
-2. **Supabase Local** - Rodando ✅
-3. **Servidor Dev** - Funcionando ✅
-4. **Banco de Dados** - Conectado ✅
-
-### ✅ **Sistema Básico Funcionando:**
-1. **Página de cursos** - Carregando ✅
-2. **Lista de cursos** - Exibida ✅
-3. **Interface responsiva** - Funcionando ✅
-
-## 🎯 **Próximos Passos:**
-
-### **1. Corrigir WebSocket (URGENTE)**
-```typescript
-// Verificar configuração do Vite
-// Aumentar timeout
-// Verificar proxy settings
-```
-
-### **2. Corrigir Event Handlers**
-```typescript
-// Verificar se os onClick estão sendo registrados
-// Adicionar logs de debug
-// Verificar se há erros no console
-```
-
-### **3. Testar Navegação**
-```typescript
-// Testar navegação programática
-// Verificar se as rotas estão funcionando
-// Testar acesso direto às URLs
-```
-
-## 📈 **Progresso:**
-
-### **Antes:**
-- ❌ Docker não rodando
-- ❌ Supabase não funcionando
-- ❌ Sistema completamente quebrado
-
-### **Agora:**
-- ✅ Docker rodando
-- ✅ Supabase funcionando
-- ✅ Sistema básico funcionando
-- ⚠️ Apenas interações do usuário com problemas
-
-## 💡 **Conclusão:**
-
-**✅ Infraestrutura corrigida com sucesso!**
-
-**O que foi resolvido:**
-- Docker Desktop iniciado
-- Supabase local funcionando
-- Servidor de desenvolvimento rodando
-- Página de cursos carregando
-
-**O que ainda precisa ser corrigido:**
-- WebSocket timeout (30s)
-- Cliques nos botões
-- Navegação interativa
-
-**Status: 80% resolvido!** 🚀
-
-**Para testar agora:**
-1. Acesse: http://localhost:8080/courses
-2. Veja os cursos carregando
-3. Tente clicar nos botões (pode dar timeout)
-4. Use navegação direta via URL
-
-**A infraestrutura está funcionando, só precisamos corrigir as interações do usuário!** 🎯 
+**Se não carregar:**
+1. Verifique se o servidor está rodando: `npm run dev`
+2. Verifique se não há outro processo na porta 8080
+3. Tente reiniciar o servidor 

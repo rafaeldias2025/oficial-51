@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -38,6 +38,9 @@ export const AddContentModal: React.FC<AddContentModalProps> = ({
           <DialogTitle className="text-2xl font-bold">
             Adicionar Novo Conteúdo
           </DialogTitle>
+          <DialogDescription>
+            Crie um novo conteúdo para a plataforma de cursos
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">

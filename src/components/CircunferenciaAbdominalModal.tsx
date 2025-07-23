@@ -1,13 +1,13 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { usePesagemCompleta } from '@/hooks/usePesagemCompleta';
+import { useDadosSaude } from '@/hooks/useDadosSaude';
 import { Ruler, Save } from 'lucide-react';
 
 interface CircunferenciaAbdominalModalProps {
@@ -26,7 +26,7 @@ export const CircunferenciaAbdominalModal: React.FC<CircunferenciaAbdominalModal
   const [circunferencia, setCircunferencia] = useState('');
   const { user } = useAuth();
   const { toast } = useToast();
-  const { salvarPesagemCompleta, loading } = usePesagemCompleta();
+  const { salvarDadosSaude, loading } = useDadosSaude();
 
   const handleSave = async () => {
     if (!circunferencia || !user?.id) {
@@ -60,11 +60,15 @@ export const CircunferenciaAbdominalModal: React.FC<CircunferenciaAbdominalModal
     try {
       console.log('Iniciando salvamento - Peso:', pesoAtual, 'Circunferência:', circunferenciaNum);
       
-      // Salvar pesagem completa na tabela pesagens
-      await salvarPesagemCompleta({
-        peso_kg: pesoAtual,
+      // Salvar dados de saúde
+      await salvarDadosSaude({
+        peso_atual_kg: pesoAtual,
         circunferencia_abdominal_cm: circunferenciaNum,
-        origem_medicao: 'manual'
+        altura_cm: 170, // Valor padrão, será atualizado se necessário
+        meta_peso_kg: pesoAtual,
+        nome_completo: 'Usuário',
+        data_nascimento: new Date().toISOString().split('T')[0],
+        sexo: 'masculino'
       });
 
       // Calcular risco cardiometabólico automaticamente
@@ -118,6 +122,9 @@ export const CircunferenciaAbdominalModal: React.FC<CircunferenciaAbdominalModal
             <Ruler className="h-5 w-5 text-instituto-orange" />
             Circunferência Abdominal
           </DialogTitle>
+          <DialogDescription className="text-netflix-text-muted">
+            Meça sua circunferência abdominal para completar a análise de saúde
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
