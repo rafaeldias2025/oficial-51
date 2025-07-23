@@ -13,32 +13,44 @@ async function migrarDadosSistemas() {
     const usuariosSistemas = [
       {
         id: '11111111-1111-1111-1111-111111111111',
+<<<<<<< HEAD
         full_name: 'João Silva - SistemaTizeCoach',
+=======
+        full_name: 'João Silva - Instituto dos Sonhos',
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
         email: 'joao.silva@institutodossonhos.com',
         created_at: new Date('2025-01-15').toISOString()
       },
       {
         id: '22222222-2222-2222-2222-222222222222',
+<<<<<<< HEAD
         full_name: 'Maria Santos - SistemaGB',
+=======
+        full_name: 'Maria Santos - Instituto dos Sonhos',
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
         email: 'maria.santos@institutodossonhos.com',
         created_at: new Date('2025-01-20').toISOString()
       },
       {
         id: '33333333-3333-3333-3333-333333333333',
-        full_name: 'Pedro Oliveira - SistemaTizeCoach',
-        email: 'pedro.oliveira@sistemetizecoach.com',
+        full_name: 'Pedro Oliveira - Instituto dos Sonhos',
+        email: 'pedro.oliveira@institutodossonhos.com',
         created_at: new Date('2025-02-01').toISOString()
       },
       {
         id: '44444444-4444-4444-4444-444444444444',
+<<<<<<< HEAD
         full_name: 'Ana Costa - SistemaGB',
+=======
+        full_name: 'Ana Costa - Instituto dos Sonhos',
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
         email: 'ana.costa@institutodossonhos.com',
         created_at: new Date('2025-02-10').toISOString()
       },
       {
         id: '55555555-5555-5555-5555-555555555555',
-        full_name: 'Carlos Lima - SistemaTizeCoach',
-        email: 'carlos.lima@sistemetizecoach.com',
+        full_name: 'Carlos Lima - Instituto dos Sonhos',
+        email: 'carlos.lima@institutodossonhos.com',
         created_at: new Date('2025-02-15').toISOString()
       }
     ];
@@ -65,7 +77,7 @@ async function migrarDadosSistemas() {
         scheduled_date: new Date('2025-01-15').toISOString(),
         started_at: new Date('2025-01-15T10:00:00').toISOString(),
         completed_at: new Date('2025-01-15T10:20:00').toISOString(),
-        instructions: 'Avaliação do SistemaTizeCoach - Foco em metas pessoais e profissionais',
+        instructions: 'Avaliação do Instituto dos Sonhos - Foco em metas pessoais e profissionais',
         created_at: new Date('2025-01-15').toISOString()
       },
       {
@@ -75,7 +87,7 @@ async function migrarDadosSistemas() {
         scheduled_date: new Date('2025-01-20').toISOString(),
         started_at: new Date('2025-01-20T14:00:00').toISOString(),
         completed_at: new Date('2025-01-20T14:15:00').toISOString(),
-        instructions: 'Avaliação do SistemaGB - Análise de saúde mental e equilíbrio emocional',
+        instructions: 'Avaliação do Instituto dos Sonhos - Análise de saúde mental e equilíbrio emocional',
         created_at: new Date('2025-01-20').toISOString()
       },
       {
@@ -85,7 +97,7 @@ async function migrarDadosSistemas() {
         scheduled_date: new Date('2025-02-01').toISOString(),
         started_at: new Date('2025-02-01T09:00:00').toISOString(),
         completed_at: new Date('2025-02-01T09:25:00').toISOString(),
-        instructions: 'Avaliação do SistemaTizeCoach - Diagnóstico de hábitos e rotinas',
+        instructions: 'Avaliação do Instituto dos Sonhos - Diagnóstico de hábitos e rotinas',
         created_at: new Date('2025-02-01').toISOString()
       },
       {
@@ -93,7 +105,7 @@ async function migrarDadosSistemas() {
         tool_id: 13, // Avaliação de Relacionamentos
         status: 'pending',
         scheduled_date: new Date('2025-02-15').toISOString(),
-        instructions: 'Avaliação do SistemaGB - Análise de relacionamentos pessoais e profissionais',
+        instructions: 'Avaliação do Instituto dos Sonhos - Análise de relacionamentos pessoais e profissionais',
         created_at: new Date('2025-02-10').toISOString()
       },
       {
@@ -103,7 +115,7 @@ async function migrarDadosSistemas() {
         scheduled_date: new Date('2025-02-15').toISOString(),
         started_at: new Date('2025-02-15T16:00:00').toISOString(),
         completed_at: new Date('2025-02-15T16:20:00').toISOString(),
-        instructions: 'Avaliação do SistemaTizeCoach - Reavaliação de metas trimestrais',
+        instructions: 'Avaliação do Instituto dos Sonhos - Reavaliação de metas trimestrais',
         created_at: new Date('2025-02-15').toISOString()
       }
     ];
@@ -133,7 +145,7 @@ async function migrarDadosSistemas() {
         }),
         insights: 'Usuário demonstra excelente foco em metas, com boa produtividade e bem-estar equilibrado.',
         recommendations: 'Manter rotina atual, focar em melhorar produtividade em 10%.',
-        summary: 'Avaliação positiva do SistemaTizeCoach - Cliente em excelente progresso.',
+        summary: 'Avaliação positiva do Instituto dos Sonhos - Cliente em excelente progresso.',
         created_at: new Date('2025-01-15T10:20:00').toISOString()
       },
       {
@@ -146,7 +158,7 @@ async function migrarDadosSistemas() {
         }),
         insights: 'Usuário apresenta bom equilíbrio emocional, com espaço para melhorias na área social.',
         recommendations: 'Trabalhar habilidades sociais e comunicação interpessoal.',
-        summary: 'Avaliação do SistemaGB - Bem-estar emocional em desenvolvimento.',
+        summary: 'Avaliação do Instituto dos Sonhos - Bem-estar emocional em desenvolvimento.',
         created_at: new Date('2025-01-20T14:15:00').toISOString()
       },
       {
@@ -159,7 +171,7 @@ async function migrarDadosSistemas() {
         }),
         insights: 'Usuário possui excelentes hábitos e rotinas bem estabelecidas.',
         recommendations: 'Manter excelente padrão, considerar mentorias para outros.',
-        summary: 'Avaliação do SistemaTizeCoach - Produtividade exemplar.',
+        summary: 'Avaliação do Instituto dos Sonhos - Produtividade exemplar.',
         created_at: new Date('2025-02-01T09:25:00').toISOString()
       }
     ];
@@ -182,7 +194,7 @@ async function migrarDadosSistemas() {
     console.log('- 5 usuários dos sistemas anteriores inseridos');
     console.log('- 5 avaliações dos sistemas anteriores inseridas');
     console.log('- 3 resultados de avaliações inseridos');
-    console.log('- Dados dos SistemasTizeCoach e SistemaGB integrados');
+    console.log('- Dados dos SistemasTizeCoach e Instituto dos Sonhos integrados');
     
   } catch (error) {
     console.error('❌ Erro geral na migração:', error);

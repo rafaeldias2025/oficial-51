@@ -8,6 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function createLarissaUser() {
   try {
+<<<<<<< HEAD
     console.log('🔄 Criando usuário Larissa...');
 
     // 1. Criar usuário no sistema de auth
@@ -20,6 +21,28 @@ async function createLarissaUser() {
       }
     });
 
+=======
+    console.log('👤 Criando usuário Larissa Barbosa...');
+    
+    // 1. Criar usuário no auth.users
+    console.log('\n🔐 Criando usuário no sistema de autenticação...');
+    
+    const userId = '00000000-0000-0000-0000-000000000007'; // ID único para Larissa
+    
+    const { data: authUser, error: authError } = await supabase
+      .from('auth.users')
+      .insert({
+        id: userId,
+        email: 'larissa@institutodossonhos.com',
+        encrypted_password: '$2a$10$example.hash.for.password.10203040',
+        email_confirmed_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+      
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
     if (authError) {
       console.error('❌ Erro ao criar usuário no auth:', authError);
       return;
@@ -38,7 +61,18 @@ async function createLarissaUser() {
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
+<<<<<<< HEAD
       .insert([profileData])
+=======
+      .insert({
+        id: userId,
+        email: 'larissa@institutodossonhos.com',
+        full_name: 'Larissa Barbosa',
+        avatar_url: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
       .select()
       .single();
 
@@ -66,7 +100,14 @@ async function createLarissaUser() {
     console.log(`   - ID: ${checkUser.id}`);
     console.log(`   - Nome: ${checkUser.full_name}`);
     console.log(`   - Email: ${checkUser.email}`);
+<<<<<<< HEAD
     console.log('\n🔐 Credenciais de Login:');
+=======
+    console.log(`   - Criado em: ${checkUser.created_at}`);
+    
+    console.log('\n🎉 Usuário Larissa Barbosa criado com sucesso!');
+    console.log('🔑 Credenciais de login:');
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
     console.log('   - Email: larissa@institutodossonhos.com');
     console.log('   - Senha: 10203040');
 

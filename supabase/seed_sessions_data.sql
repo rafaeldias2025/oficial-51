@@ -26,8 +26,8 @@ INSERT INTO coaching_tools (name, description, category, total_questions, estima
 ]',
 '{"categories": ["Neurológico", "Emocional", "Cardiovascular", "Visual", "Auditivo", "Respiratório", "Vocal", "Pulmonar", "Digestivo", "Hepático", "Renal", "Muscular", "Ósseo", "Imunológico", "Endócrino"], "max_score": 10, "interpretation": {"0-3": "Sistema comprometido", "4-6": "Sistema necessita atenção", "7-8": "Sistema saudável", "9-10": "Sistema excelente"}}'),
 
--- SISTEMAGB
-('SistemaGB', 'Avaliação completa de bem-estar e qualidade de vida', 'Bem-estar', 20, 20,
+-- INSTITUTO DOS SONHOS
+('Instituto dos Sonhos', 'Avaliação completa de bem-estar e qualidade de vida', 'Bem-estar', 20, 20,
 '[
   {"number": 1, "text": "Como você avalia sua qualidade do sono?", "type": "scale", "category": "Fisiológico", "min": 1, "max": 10},
   {"number": 2, "text": "Como você avalia sua alimentação?", "type": "scale", "category": "Fisiológico", "min": 1, "max": 10},

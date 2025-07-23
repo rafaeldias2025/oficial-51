@@ -4,9 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Settings, Edit3, BookOpen, Plus } from 'lucide-react';
-import { CourseHeroSection } from '@/components/courses/CourseHeroSection';
 import { CourseModulesSection } from '@/components/courses/CourseModulesSection';
-import { useCourses } from '@/hooks/useCourses';
+// useCourses temporariamente desabilitado
 import { CourseModule } from '@/types/admin';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -15,14 +14,12 @@ const CoursePage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { 
-    courses, 
-    loading, 
-    isAdmin, 
-    fetchCourseModules, 
-    getUserProgress,
-    markLessonAsCompleted 
-  } = useCourses();
+  // Hook temporariamente substituído por dados mock
+  const courses: any[] = [];
+  const loading = false;
+  const isAdmin = false;
+  const fetchCourseModules = async (courseId: string) => [];
+  const getUserProgress = async (courseId: string) => [];
 
   const [course, setCourse] = useState<any>(null);
   const [modules, setModules] = useState<CourseModule[]>([]);
@@ -173,14 +170,11 @@ const CoursePage: React.FC = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <CourseHeroSection
-        course={course}
-        isAdmin={isAdmin}
-        onEditCoverVideo={handleEditCoverVideo}
-        onStartCourse={handleStartCourse}
-        onResumeCourse={handleResumeCourse}
-      />
+      {/* Hero Section - Temporariamente desabilitado */}
+      <div className="bg-muted p-8 text-center">
+        <h1 className="text-2xl font-bold">{course?.title}</h1>
+        <p className="text-muted-foreground mt-2">{course?.description}</p>
+      </div>
 
       {/* Course Content */}
       <div className="container mx-auto px-4 py-8">

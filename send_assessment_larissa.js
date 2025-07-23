@@ -95,6 +95,7 @@ async function sendAssessmentToLarissa() {
       console.error('❌ Erro ao adicionar perguntas:', questionsError);
       return;
     }
+<<<<<<< HEAD
 
     console.log('✅ Perguntas adicionadas:', questionsData);
 
@@ -126,6 +127,28 @@ async function sendAssessmentToLarissa() {
     console.log(`   - Perguntas: ${questions.length}`);
     console.log(`   - Status: ${assessment.status}`);
 
+=======
+    
+    console.log('✅ Atribuição verificada:');
+    console.log(`   - Usuário: ${checkAssignment.profiles?.full_name}`);
+    console.log(`   - Email: ${checkAssignment.profiles?.email}`);
+    console.log(`   - Ferramenta: ${checkAssignment.coaching_tools?.name}`);
+    console.log(`   - Status: ${checkAssignment.status}`);
+    
+    // 5. Gerar links
+    console.log('\n🔗 Links gerados:');
+    console.log(`   - Avaliação: http://localhost:8081/assessment/${tool.id}?assignment=${assignmentData.id}`);
+    console.log(`   - Painel do usuário: http://localhost:8081/dashboard`);
+    
+    console.log('\n📧 Informações para Larissa:');
+    console.log('   - Email: larissa@institutodossonhos.com');
+    console.log('   - Senha: 10203040');
+    console.log('   - Avaliação: Roda da Saúde Galileu');
+    console.log('   - Data limite: 7 dias');
+    
+    console.log('\n🎉 Avaliação enviada para Larissa Barbosa com sucesso!');
+    
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
   } catch (error) {
     console.error('❌ Erro geral:', error);
   }

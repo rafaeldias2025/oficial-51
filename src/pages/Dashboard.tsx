@@ -22,10 +22,16 @@ import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { WelcomeHeader } from "@/components/WelcomeHeader";
 import { ClientSessions } from "@/components/sessions/ClientSessions";
 import { RequiredDataModal } from "@/components/RequiredDataModal";
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+// PaidCourses e UserAssessments temporariamente desabilitados
+=======
+>>>>>>> f3f84d6 (Atualização geral do projeto)
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
 import { AdvancedHealthDashboard } from "@/components/dashboard/AdvancedHealthDashboard";
 import { HealthLayout } from "@/components/layout/HealthLayout";
-import { UserAssessments } from "@/components/user/UserAssessments";
 
 import { GoogleFitIntegration } from "@/components/GoogleFitIntegration";
 import { PlataformaSonhos } from "@/components/plataforma/PlataformaSonhos";
@@ -113,6 +119,15 @@ const Dashboard = () => {
         return <ModernDashboard user={{name: user?.email?.split('@')[0] || 'Usuário'}} />;
       case 'inicio':
         return <MissaoDia isVisitor={false} />;
+<<<<<<< HEAD
+=======
+      case 'cursos-pagos':
+<<<<<<< HEAD
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Cursos Premium</h2><p>Funcionalidade temporariamente desabilitada</p></div>;
+=======
+        return <div className="p-4">Cursos pagos em desenvolvimento</div>;
+>>>>>>> f3f84d6 (Atualização geral do projeto)
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
       case 'sessoes':
         return <ClientSessions />;
       case 'ranking':
@@ -123,9 +138,13 @@ const Dashboard = () => {
           />
         );
       case 'avaliacoes':
+<<<<<<< HEAD
         return <UserAssessments />;
       case 'semanal':
         return <AvaliacaoSemanal />;
+=======
+        return <div className="p-8"><h2 className="text-2xl font-bold mb-4">Avaliações</h2><p>Funcionalidade temporariamente desabilitada</p></div>;
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
       case 'avaliacao-semanal':
         return <AvaliacaoSemanal />;
       case 'metas':

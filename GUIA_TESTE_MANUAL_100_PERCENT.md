@@ -52,7 +52,7 @@
 
 #### **PASSO 8: Acessar Dashboard**
 - **URL:** `http://localhost:8082/dashboard`
-- **Login:** `larissabarbosa@gmail.com`
+- **Login:** `larissa@institutodossonhos.com`
 - **Senha:** `10203040`
 - **✅ Verificar:** Dashboard pessoal carrega
 

@@ -18,6 +18,10 @@ const LessonEditPage: React.FC = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+<<<<<<< HEAD
+=======
+    video_url: '',
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
     duration: '',
     order: 0,
     is_active: true
@@ -31,18 +35,27 @@ const LessonEditPage: React.FC = () => {
         module_id: 'module-1',
         title: 'Aula 1: Introdução',
         description: 'Introdução ao curso',
+<<<<<<< HEAD
         video_url: '',
         content_text: '',
+=======
+        video_url: 'https://exemplo.com/video.mp4',
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
         duration_minutes: 30,
         order_index: 1,
         is_active: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        module_id: 'module-1'
       });
 
       setFormData({
         title: 'Aula 1: Introdução',
         description: 'Introdução ao curso',
+<<<<<<< HEAD
+=======
+        video_url: 'https://exemplo.com/video.mp4',
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
         duration: '30',
         order: 1,
         is_active: true
@@ -128,6 +141,7 @@ const LessonEditPage: React.FC = () => {
             </div>
 
             <div>
+<<<<<<< HEAD
               <Label htmlFor="content_text">Conteúdo da Aula</Label>
               <Textarea
                 id="content_text"
@@ -135,6 +149,14 @@ const LessonEditPage: React.FC = () => {
                 onChange={(e) => setLesson(prev => prev ? {...prev, content_text: e.target.value} : null)}
                 placeholder="Conteúdo detalhado da aula..."
                 rows={10}
+=======
+              <Label htmlFor="video_url">URL do Vídeo</Label>
+              <Input
+                id="video_url"
+                value={formData.video_url}
+                onChange={(e) => handleInputChange('video_url', e.target.value)}
+                placeholder="https://youtube.com/watch?v=..."
+>>>>>>> 4846d544f11e74d16f8f110ad6be41e8bc96feb6
               />
             </div>
 

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { EnhancedLessonPlayer } from '@/components/courses/EnhancedLessonPlayer';
-import { useCourses } from '@/hooks/useCourses';
+// EnhancedLessonPlayer e useCourses temporariamente desabilitados
 import { CourseModule } from '@/types/admin';
 import { useToast } from '@/hooks/use-toast';
 
 const LessonPlayerPage: React.FC = () => {
   const { courseId, lessonId } = useParams<{ courseId: string; lessonId: string }>();
   const { toast } = useToast();
-  const { fetchCourseModules } = useCourses();
+  const fetchCourseModules = async (courseId: string) => [];
   const [modules, setModules] = useState<CourseModule[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,11 +56,14 @@ const LessonPlayerPage: React.FC = () => {
   }
 
   return (
-    <EnhancedLessonPlayer
-      courseId={courseId}
-      lessonId={lessonId}
-      modules={modules}
-    />
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-4">Player de Aula</h1>
+        <p className="text-muted-foreground mb-2">Curso: {courseId}</p>
+        <p className="text-muted-foreground">Aula: {lessonId}</p>
+        <p className="text-sm text-muted-foreground mt-4">Funcionalidade temporariamente desabilitada</p>
+      </div>
+    </div>
   );
 };
 
